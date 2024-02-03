@@ -1,0 +1,41 @@
+﻿body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+.datalist-container {
+    display: flex;
+    margin-top: 50px;
+    justify-content: center;
+    text-align: center;
+}
+.item-label {
+    margin-right: 10px;
+    place-content: center;
+    text-align: center;
+}
+
+.feedback {
+    width: 50px;
+    margin-right: 10px;
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+.item-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.item-template {
+    width: 200px;
+    height: 225px;
+    animation: slideIn 1s ease forwards;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+}
+.profilePicture {
+    border-radius: 100%;
+    padding-top: 5px;
+}

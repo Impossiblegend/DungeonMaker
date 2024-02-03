@@ -1,0 +1,21 @@
+﻿body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.labels {
+    margin: 10px;
+}
+
+#Discard {
+    cursor: pointer;
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+#MapTypesDDL,
+#mapName_TextBox,
+#L2 {
+    margin-right: 10px;
+}

@@ -1,0 +1,94 @@
+﻿body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-image: url('DungeonMakerBG2.jpg');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    transform: scale(0.9);
+}
+
+form {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.75);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+label {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff;
+}
+#About_Title, #Thanks_Title, #Contact_Title {
+    font-size: 24px;
+    font-weight: bold;
+}
+#About_Body, #Thanks_Body {
+    font-size: 16px;
+    line-height: 1.5;
+}
+#Contact_Textbox {
+    width: 100%;
+    padding: 20px;
+    margin-top: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    white-space: pre-wrap;
+    resize: none;
+}
+#Contact_Textbox:focus {
+    outline: none;
+    border-color: #007bff;
+}
+#Contact_Textbox::placeholder {
+    color: #aaa;
+}
+#SendButton{
+    background-color: #aaaaaa;
+    color: #000000;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold; 
+    font-family: 'Georgia', 'Times New Roman', serif;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#Back_Button {
+    background-color: #aaaaaa;
+    color: #000000;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 10px;
+}
+
+.image-button-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+#Rating {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+}

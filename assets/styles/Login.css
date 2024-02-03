@@ -1,0 +1,159 @@
+﻿*,
+*:before,
+*:after {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Cover the viewport height */
+    margin: 0;
+    background-image: url(DungeonMakerBG2.jpg);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    overflow: hidden; /* Prevent scrollbars */
+}
+
+.background {
+    width: 430px;
+    height: 520px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+    .background .shape {
+        height: 200px;
+        width: 200px;
+        position: absolute;
+        border-radius: 50%;
+    }
+
+form {
+    height: 520px;
+    width: 400px;
+    background-color: rgba(255, 255, 255, 0.13);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    animation: slideIn 1s ease forwards;
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+    padding: 50px 35px;
+}
+
+    form * {
+        color: #000000;
+        letter-spacing: 0.5px;
+        outline: none;
+        border: none;
+    }
+
+    form h3 {
+        font-size: 32px;
+        font-weight: 500;
+        line-height: 42px;
+        text-align: center;
+    }
+
+#UserName_Label, #Password_Label {
+    font-family: 'Gill Sans', sans-serif;
+    display: block;
+    margin-top: 32px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+#IsLogIn {
+    font-family: 'Gill Sans', sans-serif;
+    color: red;
+    display: block;
+    margin-top: 20px;
+    font-size: 12px;
+    font-weight: 200;
+}
+
+#Title_Label {
+    font-family: 'Gill Sans', sans-serif;
+    display: block;
+    margin-top: 0px;
+    font-size: 35px;
+    font-weight: 900;
+    text-align: center;
+}
+
+#Create_account_label, #Forgot_Password_Label, #Guest_Login {
+    font-family: 'Gill Sans', sans-serif;
+    color: blue;
+    display: inline-block;
+    margin: 3px 13px;
+    font-size: 12px;
+    font-weight: 200;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+#Forgot_Password_Label {
+    float: right;
+}
+
+.guest-link {
+    text-decoration: none;
+    color: blue;
+}
+
+input {
+    display: block;
+    height: 50px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.07);
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+::placeholder {
+    color: #999999;
+}
+
+#LogIn_Button {
+    margin-top: 50px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.07);
+    color: #000000;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+    #LogIn_Button:hover {
+        background-color: rgba(0, 0, 0, 0.17);
+        color: #000000;
+    }
+
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px) translate(-50%, -50%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) translate(-50%, -50%);
+    }
+}

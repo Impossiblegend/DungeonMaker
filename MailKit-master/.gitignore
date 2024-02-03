@@ -1,0 +1,17 @@
+MailKit/Resources/Resource.designer.cs
+*.csproj.nuget.dgspec.json
+*.csproj.nuget.cache
+*project.lock.json
+*.userprefs
+*.user
+*.suo
+*~
+test-results
+packages
+obj
+bin
+.vs
+*.patch
+*.tree
+*.zip
+.idea
