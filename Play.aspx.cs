@@ -27,7 +27,7 @@ namespace DungeonMaker
                     STARY.Text += ((GameObject)star).y + "_";
                 }
                 try { STARX.Text = STARX.Text.Remove(STARX.Text.Length - 1); }
-                catch (ArgumentOutOfRangeException ex) { }
+                catch (ArgumentOutOfRangeException ex) { Console.WriteLine(ex.Message); }
                 STARY.Text = STARY.Text.Remove(STARY.Text.Length - 1);
                 foreach (var trap in map.traps)
                 {
@@ -36,7 +36,7 @@ namespace DungeonMaker
                     TRAPTYPE.Text += ((Trap)trap).type + "_";
                 }
                 try { TRAPX.Text = TRAPX.Text.Remove(TRAPX.Text.Length - 1); }
-                catch (ArgumentOutOfRangeException ex) { Response.Redirect("Error.html"); }
+                catch (ArgumentOutOfRangeException ex) { Console.WriteLine(ex.Message); Response.Redirect("Error.html"); }
                 TRAPY.Text = TRAPY.Text.Remove(TRAPY.Text.Length - 1);
                 TRAPTYPE.Text = TRAPTYPE.Text.Remove(TRAPTYPE.Text.Length - 1);
             }
