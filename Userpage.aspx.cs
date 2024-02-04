@@ -121,8 +121,8 @@ namespace DungeonMaker
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                string date = ((Label)e.Item.FindControl("CreationDate")).Text;
-                ((Label)e.Item.FindControl("CreationDate")).Text = date.Remove(date.IndexOf(' '));
+                Label date = (Label)e.Item.FindControl("CreationDate");
+                date.Text = date.Text.Remove(date.Text.IndexOf(' '));
                 bool isPublic = (bool)DataBinder.Eval(e.Item.DataItem, "isPublic");
                 if (((User)Session["user"]).email == ((User)Session["userPage"]).email || ((User)Session["user"]).elevation == 2)
                 { //Initializes privacyButton if this is the user's userpage

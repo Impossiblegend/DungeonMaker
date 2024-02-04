@@ -153,6 +153,7 @@
     <Compile Include="Classes\Services\CommentService.cs" />
     <Compile Include="Classes\Services\PlayService.cs" />
     <Compile Include="Classes\Types\Comment.cs" />
+    <Compile Include="Classes\Types\Game.cs" />
     <Compile Include="Classes\Types\GameObject.cs" />
     <Compile Include="Classes\Types\Map.cs" />
     <Compile Include="Classes\Types\Trap.cs" />

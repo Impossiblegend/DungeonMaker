@@ -19,22 +19,19 @@ namespace DungeonMaker
                 string query = "SELECT Feedback.*, Users.username, Users.profilePicture FROM Users INNER JOIN Feedback ON Feedback.sender = Users.email";
                 FeedbackDataList.DataSource = ProductService.GetProductsByQuery(query, "Feedback");
                 FeedbackDataList.DataBind();
-                Cache["featured"] = new ArrayList();
+                //Cache["featured"] = new ArrayList();
             }
             foreach (DataListItem item in FeedbackDataList.Items)
             {
-                Label starRating = (Label)item.FindControl("starRating");
+                Comment comment = new Comment(int.Parse(((Label)item.FindControl("feedbackID")).Text));
                 PlaceHolder starsPlaceHolder = (PlaceHolder)item.FindControl("starsPlaceHolder");
-                if (int.TryParse(starRating.Text, out int rating))
+                for (int i = 0; i < comment.starRating; i++)
                 {
-                    for (int i = 0; i < rating; i++)
-                    {
-                        Image imgStar = new Image();
-                        imgStar.ImageUrl = "assets/ui/fullStar.png";
-                        imgStar.Width = 20;
-                        imgStar.Height = 20;
-                        starsPlaceHolder.Controls.Add(imgStar);
-                    }
+                    Image imgStar = new Image();
+                    imgStar.ImageUrl = "assets/ui/fullStar.png";
+                    imgStar.Width = 20;
+                    imgStar.Height = 20;
+                    starsPlaceHolder.Controls.Add(imgStar);
                 }
             }
         }
@@ -47,7 +44,7 @@ namespace DungeonMaker
                 if (body.Text.Length > 100) body.Text = body.Text.Remove(100).Insert(100, "...");
                 if (comment.isFeatured)
                 {
-                    ((ArrayList)Cache["featured"]).Add(comment);
+                    //((ArrayList)Cache["featured"]).Add(comment);
                     e.Item.BackColor = System.Drawing.Color.LightGreen;
                 }
             }
@@ -58,12 +55,12 @@ namespace DungeonMaker
             Comment comment = new Comment(int.Parse(((Label)e.Item.FindControl("feedbackID")).Text));
             if (e.CommandName == "Checkmark_Click") 
             {
-                ((ArrayList)Cache["featured"]).Add(comment);
+                //((ArrayList)Cache["featured"]).Add(comment);
                 e.Item.BackColor = System.Drawing.Color.LightGreen;
             }
             if (e.CommandName == "Cross_Click")
             {
-                ((ArrayList)Cache["featured"]).Remove(comment);
+                //((ArrayList)Cache["featured"]).Remove(comment);
                 e.Item.BackColor = System.Drawing.Color.Transparent;
             }
             CommentService.ChangeFeatured(comment.feedbackID);

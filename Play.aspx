@@ -5,6 +5,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <style>
+        #Finish{
+            bottom: 25px;
+        }
+    </style>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.js"></script>
     <script src="scripts/jquery-3.7.1.js"></script>
 </head>
@@ -19,6 +24,18 @@
             <asp:TextBox ID="TRAPY" runat="server" width = "0px" hidden="true"></asp:TextBox>
             <asp:TextBox ID="TRAPTYPE" runat="server" width = "0px" hidden="true"></asp:TextBox>
         </div>
+        <center>
+            <asp:Panel ID="EndPanel" runat="server" Visible="false">            
+                <asp:Image ID="Border" runat="server" ImageUrl="assets/ui/border.png"/>
+                <asp:Label ID="Victory" runat="server"></asp:Label>
+                <asp:Image ID="Skull" runat="server" ImageUrl="assets/ui/skull.png"/>
+                <asp:Label ID="DeathCounter" runat="server"></asp:Label>
+                <asp:Image ID="Star" runat="server" ImageUrl="assets/ui/fullStar.png"/>
+                <asp:Label ID="StarCounter" runat="server"></asp:Label>
+                <asp:Label ID="TimeElapsed" runat="server"></asp:Label>
+                <asp:Button ID="Finish" runat="server" Text="FINISH" OnClick="Finish_Click"/>
+            </asp:Panel>
+        </center>
     </form>
     <script src="scripts/Play.js"></script>
 </body>

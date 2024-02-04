@@ -18,8 +18,8 @@ namespace DungeonMaker.classes.Types
         public bool isPublic { get; set; }
         public int estTime { get; set; }
         public string thumbnail { get; set; }
-        public ArrayList stars { get; set; } //strictly of type GameObject
-        public ArrayList traps { get; set; } //strictly of type Trap
+        public List<GameObject> stars { get; set; }
+        public List<Trap> traps { get; set; }
         public bool isValid { get; set; }
         public Map() { }
         public Map(int mapID)

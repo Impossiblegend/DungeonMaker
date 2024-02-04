@@ -96,6 +96,51 @@ namespace DungeonMaker
         protected global::System.Web.UI.WebControls.DataList UsersDataList;
 
         /// <summary>
+        /// statisticsPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel statisticsPanel;
+
+        /// <summary>
+        /// statsList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl statsList;
+
+        /// <summary>
+        /// totalGamesPlayed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal totalGamesPlayed;
+
+        /// <summary>
+        /// totalMapsCreated control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal totalMapsCreated;
+
+        /// <summary>
+        /// numberOfUsers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal numberOfUsers;
+
+        /// <summary>
         /// FeaturedFeedback control.
         /// </summary>
         /// <remarks>

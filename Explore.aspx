@@ -53,15 +53,15 @@
         </asp:View>
     </asp:MultiView>
     </div>
-    <div class="statistics-panel">
+    <asp:Panel ID="statisticsPanel" runat="server" CssClass="statistics-panel" ScrollBars="Horizontal">        
         <h2>Statistics</h2>
-        <ul>
-            <li>Total games played this month: [X]</li>
-            <li>Total maps created: [X]</li>
-            <li>Number of users: [X]</li>
+        <ul id="statsList" runat="server">
+            <li>Total games played this month: <asp:Literal ID="totalGamesPlayed" runat="server"></asp:Literal></li>
+            <li>Total maps created: <asp:Literal ID="totalMapsCreated" runat="server"></asp:Literal></li>
+            <li>Number of users: <asp:Literal ID="numberOfUsers" runat="server"></asp:Literal></li>
             <!-- Add more statistics as needed -->
         </ul>
-    </div>
+    </asp:Panel>
     <asp:Panel ID="FeaturedFeedback" runat="server" CssClass="datalist-container">
         <asp:DataList ID="FeedbackDataList" runat="server" RepeatColumns="4" CellPadding="4" RepeatDirection="Horizontal" OnItemDataBound="FeedbackDataList_ItemDataBound">
             <ItemTemplate>

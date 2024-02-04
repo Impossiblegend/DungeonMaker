@@ -19,13 +19,16 @@ namespace DungeonMaker
         {
             //Default: newest
             if(!IsPostBack) 
-            { 
+            {
                 DataListMultiView.ActiveViewIndex = 0;
                 string query = "SELECT Feedback.*, Users.username, Users.profilePicture FROM Users INNER JOIN Feedback ON Feedback.sender = Users.email WHERE Feedback.isFeatured";
                 FeedbackDataList.DataSource = ProductService.GetProductsByQuery(query, "Feedback");
                 FeedbackDataList.DataBind();
                 if (Session["user"] == null) Session["user"] = new User();
                 if (((User)Session["user"]).elevation == 2) MapsDataList.ItemStyle.CssClass = "admin-maps-template";
+                ((Literal)statsList.FindControl("totalGamesPlayed")).Text = "[X]";
+                ((Literal)statsList.FindControl("totalMapsCreated")).Text = "[X]";
+                ((Literal)statsList.FindControl("numberOfUsers")).Text = "[X]";
             }
             Session["mapQuery"] = "SELECT mapID, mapName, username, thumbnail FROM Users INNER JOIN Maps ON " +
                 "Users.email = Maps.creator WHERE mapName LIKE '%%' AND isPublic ORDER BY mapID DESC";

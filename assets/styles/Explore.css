@@ -2,27 +2,32 @@
     margin: 0;
     font-family: Arial, sans-serif;
 }
+
 .search-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 80px;
 }
+
 .search-input-container {
     display: flex;
     align-items: center;
 }
+
 .search-input {
     height: 36px;
     width: 431px;
     margin-left: 10px;
 }
+
 .datalist-container {
     display: flex;
     margin-top: 50px;
     justify-content: center;
     text-align: center;
 }
+
 .item-image,
 .item-button {
     margin-top: 6px;
@@ -66,6 +71,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 5px;
 }
+
 .users-template {
     width: 150px;
     height: 200px;
@@ -74,6 +80,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 5px;
 }
+
 .maps-template {
     width: auto;
     height: auto;
@@ -82,6 +89,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 7px;
 }
+
 .admin-maps-template {
     width: 200px;
     height: 250px;
@@ -90,15 +98,20 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 7px;
 }
+
 .statistics-panel {
     background-color: #f4f4f4;
-    margin: 20px auto;
-    max-width: 400px;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    width: 200px;
+    height: fit-content;
     text-align: center;
-    margin-top: 75px;
-    margin-bottom: 75px;
+    position: absolute;
+    top: 150px;
+    left: 20px;
 }
+
 
     .statistics-panel h2 {
         margin-top: 0;
@@ -131,4 +144,3 @@
         transform: translateY(0);
     }
 }
-

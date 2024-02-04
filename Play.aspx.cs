@@ -21,19 +21,22 @@ namespace DungeonMaker
             {
                 Map map = (Map)Session["map"];
                 MAPTYPE.Text = map.mapType;
-                foreach (var star in map.stars) 
+                foreach (GameObject star in map.stars) 
                 { 
-                    STARX.Text += ((GameObject)star).x + "_"; 
-                    STARY.Text += ((GameObject)star).y + "_";
+                    STARX.Text += star.x + "_"; 
+                    STARY.Text += star.y + "_";
                 }
-                try { STARX.Text = STARX.Text.Remove(STARX.Text.Length - 1); }
+                try 
+                { 
+                    STARX.Text = STARX.Text.Remove(STARX.Text.Length - 1);
+                    STARY.Text = STARY.Text.Remove(STARY.Text.Length - 1);
+                }
                 catch (ArgumentOutOfRangeException ex) { Console.WriteLine(ex.Message); }
-                STARY.Text = STARY.Text.Remove(STARY.Text.Length - 1);
-                foreach (var trap in map.traps)
+                foreach (Trap trap in map.traps)
                 {
-                    TRAPX.Text += ((Trap)trap).x + "_";
-                    TRAPY.Text += ((Trap)trap).y + "_";
-                    TRAPTYPE.Text += ((Trap)trap).type + "_";
+                    TRAPX.Text += trap.x + "_";
+                    TRAPY.Text += trap.y + "_";
+                    TRAPTYPE.Text += trap.type + "_";
                 }
                 try { TRAPX.Text = TRAPX.Text.Remove(TRAPX.Text.Length - 1); }
                 catch (ArgumentOutOfRangeException ex) { Console.WriteLine(ex.Message); Response.Redirect("Error.html"); }
@@ -45,12 +48,23 @@ namespace DungeonMaker
         public static void GameEnd(string timeElapsed, string starsCollected, string deathCount, bool victory)
         {
             Play playPage = new Play();
-            playPage.UploadGame(int.Parse(timeElapsed), int.Parse(starsCollected), int.Parse(deathCount), victory);
+            playPage.ShowPanel(int.Parse(timeElapsed), int.Parse(starsCollected), int.Parse(deathCount), victory);
         }
-        private void UploadGame(int time, int stars, int deaths, bool victory) 
+        private void ShowPanel(int time, int stars, int deaths, bool victory) 
         {
-            string email = ((User)Session["user"]).email; //Don't record guest activity
-            if(email != null) PlayService.UploadGame(email, ((Map)Session["map"]).mapID, time, stars, deaths, victory); 
+            Victory.Text = victory ? "VICTORY" : "DEFEAT";
+            DeathCounter.Text = "x" + deaths;
+            StarCounter.Text = "x" + stars;
+            TimeElapsed.Text = time / 60 + ":" + time % 60;
+            EndPanel.Visible = true;
+            Session["game"] = new Game(PlayService.countGames(((Map)Session["map"]).mapID), (User)Session["user"], DateTime.Today, time, stars, deaths, victory);
+        }
+        protected void Finish_Click(object sender, EventArgs e)
+        {
+            Game game = (Game)Session["game"];
+            string email = game.player.email;
+            if (email == null) email = "Guest";
+            PlayService.UploadGame(email, ((Map)Session["map"]).mapID, game.time, game.stars, game.deaths, game.victory);
         }
     }
 }

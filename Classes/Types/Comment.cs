@@ -18,10 +18,10 @@ namespace DungeonMaker.classes.Types
         public Comment(int feedbackID)
         {
             this.feedbackID = feedbackID;
-            DataSet ds = ProductService.GetProductsByQuery("SELECT * FROM Feedback WHERE feedbackID = '" + feedbackID + "'", "Feedback");
+            DataSet ds = ProductService.GetProductsByQuery("SELECT * FROM Feedback WHERE feedbackID = " + feedbackID, "Feedback");
             DataRow comment = ds.Tables[0].Rows[0];
             this.sender = comment["sender"].ToString();
-            this.feedbackBody = comment["feecbackBody"].ToString();
+            this.feedbackBody = comment["feedbackBody"].ToString();
             this.starRating = Convert.ToInt32(comment["starRating"]);
             this.dateSent = (DateTime)comment["dateSent"];
             this.isFeatured = (bool)comment["isFeatured"];

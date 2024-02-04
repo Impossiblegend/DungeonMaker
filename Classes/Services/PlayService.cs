@@ -31,16 +31,17 @@ namespace DungeonMaker.classes.Services
             command.ExecuteNonQuery();
             Conn.Close();
         }
-        public static bool wasMapPlayed(int mapID) 
-        { //Returns true if map was played (respective mapID exists in Games table), and false otherwise
+        public static bool wasMapPlayed(int mapID) { return countGames(mapID) > 0; }
+        public static int countGames(int mapID) 
+        {
             OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
             OleDbCommand command = new OleDbCommand();
             command.Connection = Conn;
             command.CommandText = "SELECT Count(gameID) FROM Games WHERE mapID = " + mapID;
             Conn.Open();
-            bool f = Convert.ToInt32(command.ExecuteScalar()) != 0;
+            int count = Convert.ToInt32(command.ExecuteScalar());
             Conn.Close();
-            return f;
+            return count;
         }
     }
 }

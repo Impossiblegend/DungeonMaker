@@ -74,19 +74,6 @@ namespace DungeonMaker
             command.CommandText = "UPDATE Users SET profilePicture = '" + image + "' WHERE email = '" + email + "'";
             SafeExecute();
         }
-        public static bool SignIn(string username, string password)
-        { //Returns true if username and password match, otherwise returns false
-            command.CommandText = "SELECT userPassword FROM Users WHERE Username = @username";
-            command.Parameters.AddWithValue("@username", username);
-            Conn.Open();
-            if ((string)command.ExecuteScalar() == password)
-            {
-                Conn.Close();
-                return true;
-            }
-            Conn.Close();
-            return false;
-        }
         public static void UpdateFieldByEmail(string field, string value,  string email) 
         { //Changes a Users field by email (PK) to a parameter value
             command.CommandText = "UPDATE Users SET " + field + " = '" + value + "' WHERE email = '" + email + "'";

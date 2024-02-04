@@ -5,7 +5,7 @@
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 425 },
+            gravity: { y: 400 },
             debug: false
         }
     },
@@ -170,6 +170,7 @@ function create() {
     this.physics.add.overlap(player, portals, Victory, null, this);
     this.physics.add.overlap(player, traps, hitTrap, null, this);
 }
+
 function update(time) {
     gameRuntime = time * 0.001 - 2; //Converted to Seconds
     timeText.setText("Time Elapsed: " + Math.round(gameRuntime) + " s");
@@ -248,7 +249,7 @@ function hitTrap(player, trap) {
         clearTimeout(timeout1);
         clearTimeout(timeout2);
     }
-    catch { }
+    catch { /*console.timeLog();*/}
     deaths++;
     deathCounter.setText('Deaths: ' + deaths);
     this.physics.pause();
