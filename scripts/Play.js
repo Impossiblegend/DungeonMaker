@@ -172,7 +172,7 @@ function create() {
 }
 
 function update(time) {
-    gameRuntime = time * 0.001 - 2; //Converted to Seconds
+    gameRuntime = time * 0.001 - 1; //Converted to Seconds
     timeText.setText("Time Elapsed: " + Math.round(gameRuntime) + " s");
     if (gameOver) {
         entrance = true;
@@ -284,7 +284,7 @@ function gameEnd() {
         dataType: "json",
         success: function (response) {
             console.log(response.d);
-            window.location.href = "Explore.aspx";
+            //window.location.href = "Explore.aspx";
         },
         error: function (error) {
             console.log("Error: " + error.responseText);

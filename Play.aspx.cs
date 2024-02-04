@@ -52,6 +52,17 @@ namespace DungeonMaker
         }
         private void ShowPanel(int time, int stars, int deaths, bool victory) 
         {
+            //Victory = (Label)EndPanel.FindControl("Victory");
+            //if (Victory == null) Victory = new Label(); Victory.CssClass = "overlay";
+            //if (DeathCounter == null) DeathCounter = new Label(); DeathCounter.CssClass = "overlay";
+            //if (StarCounter == null) StarCounter = new Label(); StarCounter.CssClass = "overlay";
+            //if (TimeElapsed == null) TimeElapsed = new Label(); TimeElapsed.CssClass = "overlay";
+            //if (EndPanel == null) 
+            //{
+            //    EndPanel = new Panel();
+            //    EndPanel.CssClass = "container";
+            //    EndPanel.Controls.Add(Victory); EndPanel.Controls.Add(DeathCounter); EndPanel.Controls.Add(StarCounter); EndPanel.Controls.Add(TimeElapsed);
+            //}
             Victory.Text = victory ? "VICTORY" : "DEFEAT";
             DeathCounter.Text = "x" + deaths;
             StarCounter.Text = "x" + stars;
@@ -65,6 +76,7 @@ namespace DungeonMaker
             string email = game.player.email;
             if (email == null) email = "Guest";
             PlayService.UploadGame(email, ((Map)Session["map"]).mapID, game.time, game.stars, game.deaths, game.victory);
+            Response.Redirect("Explore.aspx");
         }
     }
 }
