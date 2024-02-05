@@ -38,7 +38,7 @@
             <asp:TextBox ID="TRAPTYPE" runat="server" width = "0px" hidden="true"></asp:TextBox>
         </div>
         <center>
-            <asp:Panel ID="EndPanel" runat="server" CssClass="container">
+            <asp:Panel ID="EndPanel" runat="server" CssClass="container" Visible="false">
                 <asp:Image ID="Border" runat="server" ImageUrl="assets/ui/border.png"/>
                 <div class="overlay">
                     <asp:Label ID="Victory" runat="server"></asp:Label> <br /> <br />
