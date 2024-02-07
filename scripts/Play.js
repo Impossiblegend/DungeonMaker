@@ -284,7 +284,7 @@ function gameEnd() {
         dataType: "json",
         success: function (response) {
             console.log(response.d);
-            //window.location.href = "Explore.aspx";
+            window.location.href = "Endscreen.aspx";
         },
         error: function (error) {
             console.log("Error: " + error.responseText);

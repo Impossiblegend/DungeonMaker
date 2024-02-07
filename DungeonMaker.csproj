@@ -113,6 +113,7 @@
     <Content Include="assets\loremipsum.txt" />
     <Content Include="assets\styles\About.css" />
     <Content Include="assets\styles\Adminpage.css" />
+    <Content Include="assets\styles\Endscreen.css" />
     <Content Include="assets\styles\Explore.css" />
     <Content Include="assets\styles\ForgotPassword.css" />
     <Content Include="assets\styles\Create.css" />
@@ -120,6 +121,7 @@
     <Content Include="assets\styles\Master.css" />
     <Content Include="assets\styles\Register.css" />
     <Content Include="assets\styles\Userpage.css" />
+    <Content Include="Endscreen.aspx" />
     <Content Include="Error.html" />
     <Content Include="Explore.aspx" />
     <Content Include="ForgotPassword.aspx" />
@@ -158,6 +160,13 @@
     <Compile Include="Classes\Types\Map.cs" />
     <Compile Include="Classes\Types\Trap.cs" />
     <Compile Include="Classes\Types\User.cs" />
+    <Compile Include="Endscreen.aspx.cs">
+      <DependentUpon>Endscreen.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Endscreen.aspx.designer.cs">
+      <DependentUpon>Endscreen.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Explore.aspx.cs">
       <DependentUpon>Explore.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

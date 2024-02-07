@@ -11,7 +11,7 @@ namespace DungeonMaker
 {
 
 
-    public partial class Play
+    public partial class Endscreen
     {
 
         /// <summary>
@@ -24,66 +24,84 @@ namespace DungeonMaker
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// QUIT control.
+        /// BG control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button QUIT;
+        protected global::System.Web.UI.WebControls.Image BG;
 
         /// <summary>
-        /// MAPTYPE control.
+        /// Border control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox MAPTYPE;
+        protected global::System.Web.UI.WebControls.Image Border;
 
         /// <summary>
-        /// STARX control.
+        /// Victory control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox STARX;
+        protected global::System.Web.UI.WebControls.Label Victory;
 
         /// <summary>
-        /// STARY control.
+        /// Skull control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox STARY;
+        protected global::System.Web.UI.WebControls.Image Skull;
 
         /// <summary>
-        /// TRAPX control.
+        /// DeathCounter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TRAPX;
+        protected global::System.Web.UI.WebControls.Label DeathCounter;
 
         /// <summary>
-        /// TRAPY control.
+        /// Star control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TRAPY;
+        protected global::System.Web.UI.WebControls.Image Star;
 
         /// <summary>
-        /// TRAPTYPE control.
+        /// StarCounter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TRAPTYPE;
+        protected global::System.Web.UI.WebControls.Label StarCounter;
+
+        /// <summary>
+        /// TimeElapsed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label TimeElapsed;
+
+        /// <summary>
+        /// Finish control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Finish;
     }
 }

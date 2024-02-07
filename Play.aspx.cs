@@ -48,44 +48,16 @@ namespace DungeonMaker
         public static void GameEnd(string timeElapsed, string starsCollected, string deathCount, bool victory)
         {
             Play playPage = new Play();
-            playPage.ShowPanel(int.Parse(timeElapsed), int.Parse(starsCollected), int.Parse(deathCount), victory);
+            playPage.SaveGame(int.Parse(timeElapsed), int.Parse(starsCollected), int.Parse(deathCount), victory);
         }
-        private void ShowPanel(int time, int stars, int deaths, bool victory) 
+        private void SaveGame(int time, int stars, int deaths, bool victory) 
         {
-            //Victory = (Label)EndPanel.FindControl("Victory");
-            if (Victory == null) Victory = new Label(); Victory.CssClass = "overlay";
-            if (DeathCounter == null) DeathCounter = new Label(); DeathCounter.CssClass = "overlay";
-            if (StarCounter == null) StarCounter = new Label(); StarCounter.CssClass = "overlay";
-            if (TimeElapsed == null) TimeElapsed = new Label(); TimeElapsed.CssClass = "overlay";
-            if (EndPanel == null)
-            {
-                EndPanel = new Panel();
-                EndPanel.CssClass = "container";
-                EndPanel.Controls.Add(Victory); EndPanel.Controls.Add(DeathCounter); EndPanel.Controls.Add(StarCounter); EndPanel.Controls.Add(TimeElapsed);
-            }
-            Victory.Text = victory ? "VICTORY" : "DEFEAT";
-            DeathCounter.Text = "x" + deaths;
-            StarCounter.Text = "x" + stars;
-            TimeElapsed.Text = SecToMin(time);
-            EndPanel.Visible = true;
-            Session["game"] = new Game(PlayService.countGames(((Map)Session["map"]).mapID), (User)Session["user"], DateTime.Today, time, stars, deaths, victory);
-        }
-        protected void Finish_Click(object sender, EventArgs e)
-        {
-            Game game = (Game)Session["game"];
+            Map map = (Map)Session["map"];
+            Game game = new Game(PlayService.countGames(map.mapID), (User)Session["user"], map, DateTime.Today, time, stars, deaths, victory);
+            Session["game"] = game;
             string email = game.player.email;
             if (email == null) email = "Guest";
-            PlayService.UploadGame(email, ((Map)Session["map"]).mapID, game.time, game.stars, game.deaths, game.victory);
-            Response.Redirect("Explore.aspx");
-        }
-        private string SecToMin(int sec) 
-        { //e.g. 128 sec --> 02:08 min
-            string min = "";
-            if (sec < 600) min = "0"; 
-            min += sec / 60 + ":";
-            if (sec % 60 < 10) min += "0";
-            min += sec % 60;
-            return min;
+            PlayService.UploadGame(email, map.mapID, game.time, game.stars, game.deaths, game.victory);
         }
     }
 }

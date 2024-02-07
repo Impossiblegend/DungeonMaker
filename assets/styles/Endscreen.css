@@ -1,0 +1,50 @@
+﻿body {
+    background-position: center;
+    background-size: cover;
+    background-color: #f0f0f0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    height: 250px;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.overlay {
+    position: absolute;
+    top: 33%;
+    left: 47%;
+    z-index: 1;
+    padding: 10px;
+    text-align: center;
+}
+
+.custom-button {
+    text-align: center;
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+    background-color: #4CAF50; /* Green background color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .custom-button:hover {
+        background-color: #45a049;
+    }
+
+    .custom-button:active {
+        background-color: #367939;
+    }
