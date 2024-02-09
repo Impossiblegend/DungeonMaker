@@ -53,12 +53,51 @@
         </asp:View>
     </asp:MultiView>
     </div>
+    <asp:Panel ID="BlankSpace1" runat="server" Height="30px"></asp:Panel>
+    <div class="container">        
+        <asp:Label ID="PopularMapsLabel" runat="server" Text="POPULAR MAPS" CssClass="Title"></asp:Label>
+        <asp:Panel ID="PopularMapsPanel" runat="server" CssClass="newest-datalist-container">
+            <asp:DataList ID="PopularMapsDataList" runat="server" CellPadding="4" RepeatDirection="Horizontal" OnItemDataBound="MapsDataList_ItemDataBound" OnItemCommand="MapsDataList_ItemCommand">
+                <ItemTemplate>
+                <div class="maps-template">
+                    <asp:Label ID="Title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
+                    <asp:Label ID="Creator" runat="server" CssClass="item-label" Text='<%# Bind("creatorUsername") %>'></asp:Label> <br />
+                    <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" Height="0px"></asp:Label>
+                    <asp:Image ID="Thumbnail" runat="server" Width="150px" CssClass="item-image" Height="75px" ImageUrl='<%# Bind("thumbnail") %>'/>
+                    <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton"/> <br />
+                    <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="30px" Width="110px" CssClass="Delete-Button" CommandName="DeleteButton" Visible="false" BackColor="#000000" />
+                </div>
+                </ItemTemplate>
+            </asp:DataList>
+        </asp:Panel>
+    </div>
+    <asp:Panel ID="BlankSpace2" runat="server" Height="30px"></asp:Panel>
+    <div class="container">
+        <asp:Label ID="NewestMapsLabel" runat="server" Text="NEWEST MAPS" CssClass="Title"></asp:Label>
+        <asp:Panel ID="NewestMapsPanel" runat="server" CssClass="newest-datalist-container">
+            <asp:DataList ID="NewestMapsDataList" runat="server" CellPadding="4" RepeatDirection="Horizontal" OnItemDataBound="MapsDataList_ItemDataBound" OnItemCommand="MapsDataList_ItemCommand">
+                <ItemTemplate>
+                <div class="maps-template">
+                    <asp:Label ID="Title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
+                    <asp:Label ID="Creator" runat="server" CssClass="item-label" Text='<%# Bind("username") %>'></asp:Label> <br />
+                    <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" Height="0px"></asp:Label>
+                    <asp:Image ID="Thumbnail" runat="server" Width="150px" CssClass="item-image" Height="75px" ImageUrl='<%# Bind("thumbnail") %>'/>
+                    <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton"/> <br />
+                    <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="30px" Width="110px" CssClass="Delete-Button" CommandName="DeleteButton" Visible="false" BackColor="#000000" />
+                </div>
+                </ItemTemplate>
+            </asp:DataList>
+        </asp:Panel>
+    </div>
     <asp:Panel ID="statisticsPanel" runat="server" CssClass="statistics-panel" ScrollBars="Horizontal">        
         <h2>Statistics</h2>
         <ul id="statsList" runat="server">
             <li>Total games played this month: <asp:Literal ID="totalGamesPlayed" runat="server"></asp:Literal></li>
             <li>Total maps created: <asp:Literal ID="totalMapsCreated" runat="server"></asp:Literal></li>
-            <li>Number of users: <asp:Literal ID="numberOfUsers" runat="server"></asp:Literal></li>
+            <li>Total registered users: <asp:Literal ID="numberOfUsers" runat="server"></asp:Literal></li>
+            <li><asp:Literal ID="prevGame" runat="server"></asp:Literal></li>
+            <li>User with most popular maps: <asp:Literal ID="mostPlayedUserMaps" runat="server"></asp:Literal></li>
+            <li>Most active user: <asp:Literal ID="mostActiveUser" runat="server"></asp:Literal></li>
             <!-- Add more statistics as needed -->
         </ul>
     </asp:Panel>

@@ -29,7 +29,7 @@ namespace DungeonMaker.Classes.Types
             this.datePlayed = (DateTime)game["datePlayed"];
             this.time = Convert.ToInt32(game["timeElapsed"]);
             this.stars = Convert.ToInt32(game["starsCollected"]);
-            this.deaths = Convert.ToInt32(game["deathCounter"]);
+            this.deaths = Convert.ToInt32(game["deathCount"]);
             this.victory = (bool)game["victory"];
         }
         public Game(int gameID, User player, Map map, DateTime datePlayed, int time, int stars, int deaths, bool victory)

@@ -18,21 +18,12 @@ namespace DungeonMaker
                 Victory.Text = game.victory ? "VICTORY" : "DEFEAT";
                 DeathCounter.Text = "x" + game.deaths;
                 StarCounter.Text = "x" + game.stars;
-                TimeElapsed.Text = SecToMin(game.time);
+                TimeElapsed.Text = Connect.SecToMin(game.time);
                 BG.Style["Width"] = "100%";
                 BG.Style["Height"] = "100%";
                 BG.ImageUrl = game.map.thumbnail;
             }
         }
         protected void Finish_Click(object sender, EventArgs e) { Response.Redirect("Explore.aspx"); }
-        private string SecToMin(int sec)
-        { //e.g. 128 sec --> 02:08 min
-            string min = "";
-            if (sec < 600) min = "0";
-            min += sec / 60 + ":";
-            if (sec % 60 < 10) min += "0";
-            min += sec % 60;
-            return min;
-        }
     }
 }

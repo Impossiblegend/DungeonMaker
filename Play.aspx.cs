@@ -52,6 +52,7 @@ namespace DungeonMaker
         }
         private void SaveGame(int time, int stars, int deaths, bool victory) 
         {
+            PlayService PS = new PlayService();
             Map map = (Map)Session["map"];
             Game game = new Game(PlayService.countGames(map.mapID), (User)Session["user"], map, DateTime.Today, time, stars, deaths, victory);
             Session["game"] = game;

@@ -4,6 +4,7 @@ var tempPlat = [];
 var sprites = [];
 var mapType = "blank";
 var maxCredits = 20;
+var creditsLabel;
 var Credits = maxCredits;
 var platforms;
 const self = this;
@@ -12,7 +13,6 @@ var TB2 = document.getElementById("TB2");
 var TB3 = document.getElementById("TB3");
 var TB4 = document.getElementById("TB4");
 var TB5 = document.getElementById("TB5");
-var L2 = document.getElementById("L2");
 var bg;
 
 class MapCreator extends Phaser.Scene {
@@ -38,7 +38,9 @@ class MapCreator extends Phaser.Scene {
     create() {
         platforms = this.add.group();
         var flag1 = false;
+        var flag2 = true;
         bg = this.add.image(375, 300, 'bg2').setScale(2.34);
+        creditsLabel = this.add.text(16, 16, 'Credits left: ' + maxCredits, { fontSize: '14px', fill: '#000' });
         platforms.create(150, 250, 'ground2');
         platforms.create(600, 460, 'ground3');
         platforms.create(600, 175, 'ground2');
@@ -57,18 +59,22 @@ class MapCreator extends Phaser.Scene {
             sprite.setInteractive({ draggable: true });
         }
         this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
+            var cost;
             switch (gameObject.texture.key) {
-                case "saw": var cost = 5;
-                default: var cost = 0;
+                case "saw": cost = 5;
+                default: cost = 0;
             }
-            if (Credits >= cost) {
+            if (Credits >= cost + 5|| gameObject.texture.key != "saw") {
                 dragX = Phaser.Math.Clamp(dragX, 0, 1250);
                 gameObject.x = dragX;
                 dragY = Phaser.Math.Clamp(dragY, -100, 600);
                 gameObject.y = dragY;
                 flag1 = true;
             }
-            else alert('Not enough credits!');
+            else if (flag2) {
+                alert('Not enough credits!');
+                flag2 = false;
+            }
         });
         this.input.on('dragend', (pointer, gameObject, dragX, dragY) => {
             if (flag1) {
@@ -97,20 +103,7 @@ class MapCreator extends Phaser.Scene {
         });
         function addCredits(sum) {
             Credits += sum;
-            L2.value = "Credits left: " + Credits;
-            $.ajax({
-                type: "POST",
-                url: "Create.aspx/ChangeCredits",
-                data: JSON.stringify({ creditsLeft: Credits }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    console.log(response.d);
-                },
-                error: function (error) {
-                    console.log("Error: " + error.responseText);
-                }
-            });
+            creditsLabel.setText("Credits left: " + Credits)
         }
     }
     changeMapType() {

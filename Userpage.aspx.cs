@@ -33,6 +33,7 @@ namespace DungeonMaker
                 Avatar.ImageUrl = user.profilePicture;
                 UsernameLabel.Text = user.username;
                 AvatarUploader.Attributes.Add("accept", ".jpg,.png");
+                PlayService PS = new PlayService();
                 if ((User)Session["user"] == user || ((User)Session["user"]).elevation == 2)
                 {
                     DataTable dataTable = new DataTable();

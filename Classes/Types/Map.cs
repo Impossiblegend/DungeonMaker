@@ -43,13 +43,15 @@ namespace DungeonMaker.classes.Types
             this.mapID = mapID;
             string query = "SELECT * FROM Maps WHERE mapID = " + mapID;
             DataTable Maps = ProductService.GetProductsByQuery(query, "Maps").Tables[0];
-            this.creator = new User(Maps.Rows[0]["creator"].ToString());
-            this.mapType = Maps.Rows[0]["mapType"].ToString();
-            this.creationDate = (DateTime)Maps.Rows[0]["creationDate"];
-            this.isPublic = (bool)Maps.Rows[0]["isPublic"];
-            this.estTime = (int)Maps.Rows[0]["estTime"];
-            this.thumbnail = Maps.Rows[0]["thumbnail"].ToString();
-            this.isValid = (bool)Maps.Rows[0]["isValid"];
+            DataRow map = Maps.Rows[0];
+            this.creator = new User(map["creator"].ToString());
+            this.mapType = map["mapType"].ToString();
+            this.creationDate = (DateTime)map["creationDate"];
+            this.mapName = map["mapName"].ToString();
+            this.isPublic = (bool)map["isPublic"];
+            this.estTime = (int)map["estTime"];
+            this.thumbnail = map["thumbnail"].ToString();
+            this.isValid = (bool)map["isValid"];
             this.stars = needLists ? MapService.GetStarsByMapID(mapID) : new List<GameObject>();
             this.traps = needLists ? MapService.GetTrapsByMapID(mapID) : new List<Trap>();
         }

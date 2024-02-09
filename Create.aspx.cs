@@ -31,7 +31,6 @@ namespace DungeonMaker
                 case "blank": TB2.Text = "20"; break;
                 case "classic": TB2.Text = "25"; break;
             }
-            L2.Text = "Credits left: " + TB2.Text;
         }
         protected void Submit_Click(object sender, EventArgs e)
         { //Saves everything and finishes map creation
@@ -73,11 +72,5 @@ namespace DungeonMaker
                 Response.Redirect("Userpage.aspx");
             }
         }
-        public static void ChangeCredits(string creditsLeft) 
-        {
-            Create createPage = new Create();
-            createPage.UpdateLabel(int.Parse(creditsLeft));
-        }
-        private void UpdateLabel(int credits) { L2.Text = "Credits left: " + credits;}
     }
 }

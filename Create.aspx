@@ -27,7 +27,6 @@
                 <asp:ListItem Value="classic"> classic </asp:ListItem>
             </asp:DropDownList>
             <asp:TextBox ID="mapName_TextBox" runat="server" placeholder="Name your map"></asp:TextBox>
-            <asp:Label ID="L2" runat="server" Text="Credits left: 20"></asp:Label>
             <asp:Button ID="Discard" runat="server" Text="QUIT & DISCARD" OnClientClick="confirmDiscard(); return false;" BackColor="Red"/>
         </div>
     </form>
