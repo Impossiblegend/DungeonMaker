@@ -57,28 +57,27 @@ namespace DungeonMaker
         }
         protected void MapsDataList_ItemCommand(object sender, DataListCommandEventArgs e)
         {
-            Session["mapID"] = ((Label)MapsDataList.Items[e.Item.ItemIndex].FindControl("mapID")).Text;
+            Session["mapID"] = ((Label)e.Item.FindControl("mapID")).Text;
             DataTable dt = ((DataSet)Session["ds"]).Tables[0];
             if (e.CommandName == "PlayButton")
             {
-                PlayService PS = new PlayService();
-                Session["map"] = new Map(int.Parse(((Label)MapsDataList.Items[e.Item.ItemIndex].FindControl("mapID")).Text));
+                Session["map"] = new Map(int.Parse(((Label)e.Item.FindControl("mapID")).Text));
                 Response.Redirect("Play.aspx");
             }
             if (e.CommandName == "PrivacyButton")
             {
-                Button btn = (Button)MapsDataList.Items[e.Item.ItemIndex].FindControl("PrivacyButton");
+                Button btn = (Button)e.Item.FindControl("PrivacyButton");
                 btn.Text = (btn.Text == "Public") ? "Private" : "Public";
                 btn.BackColor = (btn.Text == "Public") ? ColorTranslator.FromHtml("#009900") : ColorTranslator.FromHtml("#990000");
                 UserService.ChangePrivacy(Convert.ToInt32(Session["mapID"]));
             }
             if (e.CommandName == "DeleteButton")
             {
-                int mapID = Convert.ToInt32(Session["mapID"]);
-                if (!PlayService.wasMapPlayed(mapID))
+                Map map = new Map(Convert.ToInt32(Session["mapID"]));
+                if (!PlayService.wasMapPlayed(map.mapID))
                 {
-                    MapService.DeleteMap(mapID);
-                    DataRow rowToDelete = dt.Select("mapID = " + mapID).FirstOrDefault();
+                    map.Delete();
+                    DataRow rowToDelete = dt.Select("mapID = " + map.mapID).FirstOrDefault();
                     if (rowToDelete != null) dt.Rows.Remove(rowToDelete);
                     MapsDataList.DataSource = dt;
                     MapsDataList.DataBind();
@@ -96,7 +95,7 @@ namespace DungeonMaker
                         ((Button)e.Item.FindControl("PlayButton")).Enabled = true;
                         bt.Text = "Disable";
                     }
-                    MapService.ChangeValid(mapID);
+                    MapService.ChangeValid(map.mapID);
                 }
             }
             if(e.CommandName == "RenameButton") 

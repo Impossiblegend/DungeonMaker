@@ -4,7 +4,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
         <link rel="stylesheet" href="assets/styles/Adminpage.css" />
         <asp:Panel ID="Feedback" runat="server" CssClass="datalist-container">
-        <asp:DataList ID="FeedbackDataList" runat="server" RepeatColumns="4" CellPadding="4" RepeatDirection="Horizontal" OnItemDataBound="FeedbackDataList_ItemDataBound" OnItemCommand="FeedbackDataList_ItemCommand">
+        <asp:DataList ID="FeedbackDataList" runat="server" RepeatColumns="4" CellPadding="4" RepeatDirection="Horizontal" OnItemDataBound="FeedbackDataList_ItemDataBound" OnItemCommand="FeedbackDataList_ItemCommand" >
             <ItemTemplate>
                 <div class="item-template">
                     <asp:Label ID="Sender" runat="server" CssClass="item-label" Text='<%# Bind("username") %>'></asp:Label> <br />

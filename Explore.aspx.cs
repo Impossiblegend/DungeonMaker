@@ -104,19 +104,19 @@ namespace DungeonMaker
         }
         protected void MapsDataList_ItemCommand(object source, DataListCommandEventArgs e)
         {
-            int mapID = int.Parse(((Label)e.Item.FindControl("mapID")).Text);
+            Map map = new Map(int.Parse(((Label)e.Item.FindControl("mapID")).Text));
             if (e.CommandName == "PlayButton")
             { //Opens selected map
-                Session["map"] = new Map(mapID);
+                Session["map"] = map;
                 Response.Redirect("Play.aspx");
             }
             if (e.CommandName == "DeleteButton")
             { //Deletes unplayed map from DB, and updates datalist accordingly
-                if (!PlayService.wasMapPlayed(mapID))
+                if (!PlayService.wasMapPlayed(map.mapID))
                 {
-                    MapService.DeleteMap(mapID);
+                    map.Delete();
                     DataTable dt = ((DataSet)Session["ds"]).Tables[0];
-                    DataRow rowToDelete = dt.Select("mapID = " + mapID).FirstOrDefault();
+                    DataRow rowToDelete = dt.Select("mapID = " + map.mapID).FirstOrDefault();
                     if (rowToDelete != null) dt.Rows.Remove(rowToDelete);
                     MapsDataList.DataSource = dt;
                     MapsDataList.DataBind();
@@ -134,7 +134,7 @@ namespace DungeonMaker
                         ((Button)e.Item.FindControl("PlayButton")).Enabled = true;
                         bt.Text = "Disable";
                     }
-                    MapService.ChangeValid(mapID);
+                    MapService.ChangeValid(map.mapID);
                 }
             }
         }

@@ -8,12 +8,13 @@ using System.Data.OleDb;
 using System.Data;
 using System.Collections;
 using DungeonMaker.classes.Types;
+using System.IO;
 
 namespace DungeonMaker
 {
     public class MapService
     {
-        private static int MapID { get; set; }
+        public static int MapID { get; set; }
         
         public MapService() { }
         public static void InsertStars(int xpos, int ypos) 
@@ -87,14 +88,7 @@ namespace DungeonMaker
             MapService.MapID = int.Parse(command.ExecuteScalar().ToString());
             Conn.Close();
         }
-        public static void DeleteMap(int mapID) 
-        {
-            MapService.MapID = mapID;
-            DeleteByMapID("Maps");
-            DeleteByMapID("Traps");
-            DeleteByMapID("Stars");
-        }
-        private static void DeleteByMapID(string table)
+        public static void DeleteByMapID(string table)
         {
             OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
             OleDbCommand command = new OleDbCommand();

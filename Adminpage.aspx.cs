@@ -14,12 +14,13 @@ namespace DungeonMaker
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            if(!IsPostBack)
             {
                 string query = "SELECT Feedback.*, Users.username, Users.profilePicture FROM Users INNER JOIN Feedback ON Feedback.sender = Users.email";
                 FeedbackDataList.DataSource = ProductService.GetProductsByQuery(query, "Feedback");
                 FeedbackDataList.DataBind();
-                //Cache["featured"] = new ArrayList();
+                CommentService CS = new CommentService();
+                Cache["featured"] = new List<Comment>(); //?
             }
             foreach (DataListItem item in FeedbackDataList.Items)
             {
@@ -42,28 +43,23 @@ namespace DungeonMaker
                 Label body = (Label)e.Item.FindControl("Feedback");
                 Comment comment = new Comment(int.Parse(((Label)e.Item.FindControl("feedbackID")).Text));
                 if (body.Text.Length > 100) body.Text = body.Text.Remove(100).Insert(100, "...");
-                if (comment.isFeatured)
-                {
-                    //((ArrayList)Cache["featured"]).Add(comment);
-                    e.Item.BackColor = System.Drawing.Color.LightGreen;
-                }
+                if (comment.isFeatured) e.Item.BackColor = System.Drawing.Color.LightGreen;
             }
         }
-
         protected void FeedbackDataList_ItemCommand(object source, DataListCommandEventArgs e)
         {
             Comment comment = new Comment(int.Parse(((Label)e.Item.FindControl("feedbackID")).Text));
             if (e.CommandName == "Checkmark_Click") 
             {
-                //((ArrayList)Cache["featured"]).Add(comment);
+                comment.isFeatured = true;
                 e.Item.BackColor = System.Drawing.Color.LightGreen;
             }
             if (e.CommandName == "Cross_Click")
             {
-                //((ArrayList)Cache["featured"]).Remove(comment);
+                comment.isFeatured = false;
                 e.Item.BackColor = System.Drawing.Color.Transparent;
             }
-            CommentService.ChangeFeatured(comment.feedbackID);
+            CommentService.ChangeFeatured(comment);
         }
     }
 }

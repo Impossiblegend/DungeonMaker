@@ -25,7 +25,7 @@ namespace DungeonMaker.Classes.Types
             DataSet ds = ProductService.GetProductsByQuery("SELECT * FROM Games WHERE gameID = " + gameID, "Games");
             DataRow game = ds.Tables[0].Rows[0];
             this.player = new User(game["player"].ToString());
-            this.map = new Map(Convert.ToInt32(game["mapID"]));
+            this.map = new Map(Convert.ToInt32(game["mapID"]), false);
             this.datePlayed = (DateTime)game["datePlayed"];
             this.time = Convert.ToInt32(game["timeElapsed"]);
             this.stars = Convert.ToInt32(game["starsCollected"]);

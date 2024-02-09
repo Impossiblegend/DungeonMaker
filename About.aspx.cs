@@ -18,6 +18,7 @@ namespace DungeonMaker
             if (!IsPostBack)
             {
                 Session["starsRating"] = 0;
+                CommentService CS = new CommentService();
             }
         }
         protected void SendButton_Click(object sender, EventArgs e)
