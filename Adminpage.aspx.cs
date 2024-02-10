@@ -20,7 +20,7 @@ namespace DungeonMaker
                 FeedbackDataList.DataSource = ProductService.GetProductsByQuery(query, "Feedback");
                 FeedbackDataList.DataBind();
                 CommentService CS = new CommentService();
-                Cache["featured"] = new List<Comment>(); //?
+                //Cache["featured"] = new List<Comment>();
             }
             foreach (DataListItem item in FeedbackDataList.Items)
             {
@@ -34,6 +34,8 @@ namespace DungeonMaker
                     imgStar.Height = 20;
                     starsPlaceHolder.Controls.Add(imgStar);
                 }
+                if (comment.isFeatured) item.BackColor = System.Drawing.Color.LightGreen;
+                else item.BackColor = System.Drawing.Color.Transparent;
             }
         }
         protected void FeedbackDataList_ItemDataBound(object sender, DataListItemEventArgs e)
@@ -41,9 +43,7 @@ namespace DungeonMaker
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 Label body = (Label)e.Item.FindControl("Feedback");
-                Comment comment = new Comment(int.Parse(((Label)e.Item.FindControl("feedbackID")).Text));
                 if (body.Text.Length > 100) body.Text = body.Text.Remove(100).Insert(100, "...");
-                if (comment.isFeatured) e.Item.BackColor = System.Drawing.Color.LightGreen;
             }
         }
         protected void FeedbackDataList_ItemCommand(object source, DataListCommandEventArgs e)
@@ -60,6 +60,7 @@ namespace DungeonMaker
                 e.Item.BackColor = System.Drawing.Color.Transparent;
             }
             CommentService.ChangeFeatured(comment);
+            //ScriptManager.RegisterStartupScript(this, GetType(), "TriggerPostBack", "__doPostBack('', '');", true);
         }
     }
 }

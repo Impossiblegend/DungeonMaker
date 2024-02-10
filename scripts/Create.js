@@ -7,6 +7,7 @@ var maxCredits = 20;
 var creditsLabel;
 var Credits = maxCredits;
 var platforms;
+var cost;
 const self = this;
 var TB1 = document.getElementById("TB1");
 var TB2 = document.getElementById("TB2");
@@ -59,12 +60,12 @@ class MapCreator extends Phaser.Scene {
             sprite.setInteractive({ draggable: true });
         }
         this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-            var cost;
             switch (gameObject.texture.key) {
-                case "saw": cost = 5;
-                default: cost = 0;
+                case "saw": cost = 5; break;
+                default: cost = 0; break;
             }
-            if (Credits >= cost + 5|| gameObject.texture.key != "saw") {
+            if (gameObject.x < 1150 && dragX < 1150) cost = 0;
+            if (Credits >= cost) {
                 dragX = Phaser.Math.Clamp(dragX, 0, 1250);
                 gameObject.x = dragX;
                 dragY = Phaser.Math.Clamp(dragY, -100, 600);
@@ -81,6 +82,8 @@ class MapCreator extends Phaser.Scene {
                 if (gameObject.x > 1150) {
                     addCredits(cost);
                     gameObject.destroy();
+                    if (gameObject.texture.key === "portalEmpty") emptyPortal = this.add.sprite(1180, 50, 'portalEmpty').setScale(2); emptyPortal.setInteractive({ draggable: true }); traps.push(emptyPortal);
+                    if (gameObject.texture.key === "portalFull") fullPortal = this.add.sprite(1260, 50, 'portalFull').setScale(2); fullPortal.setInteractive({ draggable: true }); traps.push(fullPortal);
                 }
                 else {
                     var oldY = 0;
@@ -145,6 +148,7 @@ document.getElementById('MapTypesDDL').addEventListener('change', function () {
     mapCreatorInstance.changeMapType();
 });
 function saveMap() {
+    creditsLabel.setText("");
     TB1.value = ""; TB2.value = ""; TB3.value = ""; TB4.value = ""; TB5.value = "";
     mergeArr(stars, TB1, TB2, null);
     mergeArr(traps, TB3, TB4, TB5);

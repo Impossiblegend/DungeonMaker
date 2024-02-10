@@ -30,6 +30,7 @@ namespace DungeonMaker
             {
                 case "blank": TB2.Text = "20"; break;
                 case "classic": TB2.Text = "25"; break;
+                default: throw new Exception("Map type does not exist.");
             }
         }
         protected void Submit_Click(object sender, EventArgs e)
@@ -40,7 +41,7 @@ namespace DungeonMaker
                 //If (a) map(s) with the same name exist(s), adds count to name [0,1,2...], circumventing naming override problem. Analogous to the ticks solution.
                 imagePath = "~/assets/screenshots/" + mapName + MapService.CountMapsWithName(mapName_TextBox.Text) + ".jpg",
                 filePath = Server.MapPath(imagePath);
-            if (string.IsNullOrEmpty(mapName)) L2.Text = "You must name your map.";
+            if (string.IsNullOrEmpty(mapName)) ScriptManager.RegisterStartupScript(this, GetType(), "AlertScript", "alert('You must name your map!');", true);
             else
             {
                 Point SourcePoint = new Point(0, 100);
@@ -51,23 +52,37 @@ namespace DungeonMaker
                 gr.CopyFromScreen(SourcePoint, DestinationPoint, new Size(1150, 600));
                 bt.Save(filePath, ImageFormat.Jpeg);
                 gr.Dispose(); bt.Dispose();
-                MapService.UploadMap(((User)Session["user"]).email, mapName + MapService.CountMapsWithName(mapName), Session["mapType"].ToString());
+                string[] types = TB5.Text.Split('_');
+                ArrayList types2 = new ArrayList();
+                bool portalFull = false, portalEmpty = false;
+                foreach (string type in types)
+                {
+                    if (type != "") types2.Add(type);
+                    if (type == "portalFull") portalFull = true;
+                    if (type == "portalEmpty") portalEmpty = true;
+                }
+                if (portalFull && portalEmpty) MapService.UploadMap(((User)Session["user"]).email, mapName + MapService.CountMapsWithName(mapName), Session["mapType"].ToString());
+                else 
+                { 
+                    ScriptManager.RegisterStartupScript(this, GetType(), "AlertScript", "alert('You must have both the full and empty portals placed!');", true);
+                    FileInfo thumbnail = new FileInfo(filePath);
+                    try { thumbnail.Delete(); }
+                    catch { Console.WriteLine("Deletion error, likely due to physical path."); }
+                    return;
+                }
                 Thread.Sleep(5);
                 string[] xpos = TB1.Text.Split('_');
                 string[] ypos = TB2.Text.Split('_');
-                if (xpos[0] != "" && ypos[0] != "")
+                if (xpos[0] != "" && ypos[0] != "") //If stars have been placed (otherwise there will be a parsing error inserting)
                     for (int i = 0; i < xpos.Length; i++)
                         MapService.InsertStars(int.Parse(xpos[i]), int.Parse(ypos[i]));
                 xpos = TB3.Text.Split('_');
                 ypos = TB4.Text.Split('_');
-                string[] types = TB5.Text.Split('_');
-                ArrayList types2 = new ArrayList();
-                foreach (string type in types) if (type != "") types2.Add(type);
-                if (xpos[0] != "" && ypos[0] != "")
+                if (xpos[0] != "" && ypos[0] != "") //If traps have been placed (otherwise there will be a parsing error inserting)
                     for (int i = 0; i < xpos.Length; i++)
                         MapService.InsertTraps((int)double.Parse(xpos[i]), (int)double.Parse(ypos[i]), types2[i].ToString());
-                MapService.DeleteAllButNewestByTrapType("portalFull");
-                MapService.DeleteAllButNewestByTrapType("portalEmpty");
+                MapService.DeleteAllButNewestByTrapType("portalFull"); //In case of a duplicates bug
+                MapService.DeleteAllButNewestByTrapType("portalEmpty"); // -||-
                 Session["userPage"] = (User)Session["user"];
                 Response.Redirect("Userpage.aspx");
             }

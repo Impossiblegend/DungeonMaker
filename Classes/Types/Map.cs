@@ -62,7 +62,8 @@ namespace DungeonMaker.classes.Types
             MapService.DeleteByMapID("Traps");
             MapService.DeleteByMapID("Stars");
             FileInfo thumbnail = new FileInfo(this.thumbnail);
-            thumbnail.Delete();
+            try { thumbnail.Delete(); }
+            catch { Console.WriteLine("Could not delete image. Likely virtual/physical path issue."); }
         }
     }
 }

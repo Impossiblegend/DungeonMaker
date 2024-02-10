@@ -128,7 +128,6 @@
     <Content Include="Create.aspx" />
     <Content Include="Play.aspx" />
     <Content Include="Register.aspx" />
-    <Content Include="scripts\jquery-3.7.1.js" />
     <Content Include="scripts\Play.js" />
     <Content Include="scripts\Create.js" />
     <Content Include="scripts\Userpage.js" />
