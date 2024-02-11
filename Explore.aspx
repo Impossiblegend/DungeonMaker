@@ -47,6 +47,7 @@
                 <asp:Image ID="ProfilePicture" runat="server" Width="110px" Height="110px" CssClass="profilePicture" ImageUrl='<%# Bind("profilePicture") %>' /><br />
                 <asp:Button ID="Visit" runat="server" Text="Visit Page" Height="25px" Width="110px" CssClass="item-button" CommandName="Visit_Click" />
                 <asp:Button ID="Block" runat="server" Text="Block" Height="25px" Width="110px" CssClass="item-button" Visible="false" CommandName="Block_Click"/>
+                <asp:Button ID="Logs" runat="server" Text="View Logs" Height="25px" Width="110px" CssClass="item-button" Visible="false" CommandName="Logs_Click"/>
             </div>
             </ItemTemplate>
         </asp:DataList>
@@ -55,7 +56,7 @@
     </div>
     <asp:Panel ID="BlankSpace1" runat="server" Height="30px"></asp:Panel>
     <div class="container">        
-        <asp:Label ID="PopularMapsLabel" runat="server" Text="POPULAR MAPS" CssClass="Title"></asp:Label>
+        <asp:Label ID="PopularMapsLabel" runat="server" Text="POPULAR DUNGEONS" CssClass="Title"></asp:Label>
         <asp:Panel ID="PopularMapsPanel" runat="server" CssClass="newest-datalist-container">
             <asp:DataList ID="PopularMapsDataList" runat="server" CellPadding="4" RepeatDirection="Horizontal" OnItemDataBound="MapsDataList_ItemDataBound" OnItemCommand="MapsDataList_ItemCommand">
                 <ItemTemplate>
@@ -73,7 +74,7 @@
     </div>
     <asp:Panel ID="BlankSpace2" runat="server" Height="30px"></asp:Panel>
     <div class="container">
-        <asp:Label ID="NewestMapsLabel" runat="server" Text="NEWEST MAPS" CssClass="Title"></asp:Label>
+        <asp:Label ID="NewestMapsLabel" runat="server" Text="NEWEST DUNGEONS" CssClass="Title"></asp:Label>
         <asp:Panel ID="NewestMapsPanel" runat="server" CssClass="newest-datalist-container">
             <asp:DataList ID="NewestMapsDataList" runat="server" CellPadding="4" RepeatDirection="Horizontal" OnItemDataBound="MapsDataList_ItemDataBound" OnItemCommand="MapsDataList_ItemCommand">
                 <ItemTemplate>
@@ -93,10 +94,10 @@
         <h2>Statistics</h2>
         <ul id="statsList" runat="server">
             <li>Total games played this month: <asp:Literal ID="totalGamesPlayed" runat="server"></asp:Literal></li>
-            <li>Total maps created: <asp:Literal ID="totalMapsCreated" runat="server"></asp:Literal></li>
+            <li>Total dungeons created: <asp:Literal ID="totalMapsCreated" runat="server"></asp:Literal></li>
             <li>Total registered users: <asp:Literal ID="numberOfUsers" runat="server"></asp:Literal></li>
             <li><asp:Literal ID="prevGame" runat="server"></asp:Literal></li>
-            <li>User with most popular maps: <asp:Literal ID="mostPlayedUserMaps" runat="server"></asp:Literal></li>
+            <li>User with most popular dungeons: <asp:Literal ID="mostPlayedUserMaps" runat="server"></asp:Literal></li>
             <li>Most active user: <asp:Literal ID="mostActiveUser" runat="server"></asp:Literal></li>
             <!-- Add more statistics as needed -->
         </ul>

@@ -23,6 +23,7 @@
     </div>
     <script src="scripts/Userpage.js"></script>
     <div class="datalist-container">
+        <asp:Label ID="EmptyLabel" runat="server" CssClass="label"></asp:Label>
         <asp:DataList ID="MapsDataList" runat="server" RepeatColumns="4" CellPadding="4" OnItemCommand="MapsDataList_ItemCommand" RepeatDirection="Horizontal" OnItemDataBound="MapsDataList_ItemDataBound" CssClass="centered-datalist">
             <ItemTemplate>
             <div class="maps-template">

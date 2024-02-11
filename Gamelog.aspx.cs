@@ -20,6 +20,8 @@ namespace DungeonMaker
                         "ON Games.mapID = Maps.mapID WHERE Games.player = '" + user.email + "'";
                 GamesDataList.DataSource = ProductService.GetProductsByQuery(query, "Games");
                 GamesDataList.DataBind();
+                if (GamesDataList.Items.Count == 0)
+                    EmptyLabel.Text = ((User)Session["user"]).elevation == 2 ?  "This user has not played any games yet." : "Play some games for them appear here!";
             }
         }
 

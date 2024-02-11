@@ -57,7 +57,7 @@ namespace DungeonMaker
             Conn.Close();
         }
         public static void DeleteAllButNewestByTrapType(string type)
-        {
+        { //Deletes all but the nrewest trap, by type and map. Useful for edge cases.
             OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
             OleDbCommand command = new OleDbCommand();
             command.Connection = Conn;
@@ -89,7 +89,7 @@ namespace DungeonMaker
             Conn.Close();
         }
         public static void DeleteByMapID(string table)
-        {
+        { //Deletes all records related to the map by table
             OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
             OleDbCommand command = new OleDbCommand();
             command.Connection = Conn;
@@ -100,7 +100,7 @@ namespace DungeonMaker
             Conn.Close();
         }
         public static int CountMapsWithName(string mapName) 
-        {
+        { //Returns number of maps with a given name
             OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
             OleDbCommand command = new OleDbCommand();
             command.Connection = Conn;
@@ -111,7 +111,7 @@ namespace DungeonMaker
             return count;
         }
         public static void ChangeValid(int mapID) 
-        {
+        { //Negates the validity of a map
             OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
             OleDbCommand command = new OleDbCommand();
             command.Connection = Conn;
@@ -120,15 +120,15 @@ namespace DungeonMaker
             command.ExecuteNonQuery();
             Conn.Close();
         }
-        public static void ChangeMapName(int mapID, string mapName) 
-        {
+        public static void ChangeMapName(int mapID, string mapName) //mapName must include serial autonumber --- CountMapsWithName()
+        { //Changes map name and thumbnail accordingly
             OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
             OleDbCommand command = new OleDbCommand(), command2 = new OleDbCommand();
             command.Connection = Conn; command2.Connection = Conn;
             command.CommandText = "UPDATE Maps SET mapName = @mapName WHERE mapID = " + mapID;
             command2.CommandText = "UPDATE Maps SET thumbnail = @thumbnail WHERE mapID = " + mapID;
-            command.Parameters.AddWithValue("@mapName", mapName + MapService.CountMapsWithName(mapName));
-            command2.Parameters.AddWithValue("@thumbnail", "assets/screenshots/" + mapName + MapService.CountMapsWithName(mapName));
+            command.Parameters.AddWithValue("@mapName", mapName);
+            command2.Parameters.AddWithValue("@thumbnail", "assets/screenshots/" + mapName + ".jpg");
             Conn.Open();
             command.ExecuteNonQuery();
             command2.ExecuteNonQuery();

@@ -29,6 +29,8 @@ namespace DungeonMaker
                 MapsDataList.DataSource = (DataSet)Session["ds"];
                 Session["edit"] = false;
                 MapsDataList.DataBind();
+                if (MapsDataList.Items.Count == 0)
+                    EmptyLabel.Text = (User)Session["user"] == user ? "Create dungeons for them to appear here!" : "This user has not created any dungeons yet.";
                 UserService US = new UserService();
                 Avatar.ImageUrl = user.profilePicture;
                 UsernameLabel.Text = user.username;
@@ -60,6 +62,7 @@ namespace DungeonMaker
         {
             Session["mapID"] = ((Label)e.Item.FindControl("mapID")).Text;
             DataTable dt = ((DataSet)Session["ds"]).Tables[0];
+            Map map = new Map(Convert.ToInt32(Session["mapID"]));
             if (e.CommandName == "PlayButton")
             {
                 Session["map"] = new Map(int.Parse(((Label)e.Item.FindControl("mapID")).Text));
@@ -70,11 +73,10 @@ namespace DungeonMaker
                 Button btn = (Button)e.Item.FindControl("PrivacyButton");
                 btn.Text = (btn.Text == "Public") ? "Private" : "Public";
                 btn.BackColor = (btn.Text == "Public") ? ColorTranslator.FromHtml("#009900") : ColorTranslator.FromHtml("#990000");
-                UserService.ChangePrivacy(Convert.ToInt32(Session["mapID"]));
+                UserService.ChangePrivacy(map.mapID);
             }
             if (e.CommandName == "DeleteButton")
             {
-                Map map = new Map(Convert.ToInt32(Session["mapID"]));
                 if (!PlayService.wasMapPlayed(map.mapID))
                 {
                     map.Delete();
@@ -112,7 +114,9 @@ namespace DungeonMaker
                 {
                     tb.Visible = false;
                     title.Text = tb.Text;
-                    MapService.ChangeMapName(Convert.ToInt32(Session["mapID"]), tb.Text);
+                    int countMaps = MapService.CountMapsWithName(tb.Text);
+                    MapService.ChangeMapName(map.mapID, tb.Text + countMaps);
+                    File.Move(Server.MapPath(map.thumbnail), Server.MapPath("assets/screenshots/" + tb.Text + countMaps + ".jpg"));
                     title.Visible = true;
                 }
             }
@@ -153,13 +157,14 @@ namespace DungeonMaker
                 ((Label)e.Item.FindControl("Title")).Text = title.Remove(title.Length - 1);
             }
         }
+        [WebMethod]
         public static void AvatarUpload() 
-        {
+        { //AJAX call
             Userpage userpageInstance = new Userpage();
             userpageInstance.Avatar_Click();
         }
         private void Avatar_Click()
-        {
+        { //Updates user avatar in database and current sessions
             User userpage = (User)Session["userPage"];
             FileInfo prev = new FileInfo(userpage.profilePicture);
             prev.Delete();
@@ -177,12 +182,12 @@ namespace DungeonMaker
         }
         [WebMethod]
         public static void TextChanged(string column, string newValue)
-        {
+        { //AJAX call
             Userpage userpageInstance = new Userpage();
             userpageInstance.ChangeField(int.Parse(column), newValue);
         }
         private void ChangeField(int column, string value)
-        {
+        { //Reflects GridView changes to database
             string email = ((User)Session["userPage"]).email;
             if (column == 0 && Regex.IsMatch(value, "^[a-zA-Z0-9]*$") && !UserService.FieldExists("username", value)) UserService.UpdateFieldByEmail("username", value, email);
             if (column == 1 && value.Length > 3 && value.Length < 13) UserService.UpdateFieldByEmail("userPassword", value, email);

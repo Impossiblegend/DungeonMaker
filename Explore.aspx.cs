@@ -56,7 +56,11 @@ namespace DungeonMaker
                 FeedbackDataList.DataSource = ProductService.GetProductsByQuery(query, "Feedback");
                 FeedbackDataList.DataBind();
             }
-            if (((User)Session["user"]).elevation == 2) MapsDataList.ItemStyle.CssClass = "admin-maps-template";
+            if (((User)Session["user"]).elevation == 2)
+            {
+                MapsDataList.ItemStyle.CssClass = "admin-maps-template";
+                UsersDataList.ItemStyle.CssClass = "admin-users-template";
+            }
             ((Literal)statsList.FindControl("totalGamesPlayed")).Text = "[X]";
             ((Literal)statsList.FindControl("totalMapsCreated")).Text = "[X]";
             ((Literal)statsList.FindControl("numberOfUsers")).Text = "[X]";
@@ -182,21 +186,30 @@ namespace DungeonMaker
         { 
             if (e.CommandName == "Visit_Click")
             { //Opens selected userpage
-                Session["userPage"] = new User(((Label)UsersDataList.Items[e.Item.ItemIndex].FindControl("Email")).Text);
+                Session["userPage"] = new User(((Label)e.Item.FindControl("Email")).Text);
                 Response.Redirect("Userpage.aspx");
             }
             if (e.CommandName == "Block_Click")
             { /* Un/blocks selected user */
-                UserService.ChangeBlockState(((Label)UsersDataList.Items[e.Item.ItemIndex].FindControl("Email")).Text);
-                string isBlocked = ((Button)UsersDataList.Items[e.Item.ItemIndex].FindControl("Block")).Text;
-                ((Button)UsersDataList.Items[e.Item.ItemIndex].FindControl("Block")).Text = isBlocked == "Block" ? "Unblock" : "Block";
+                UserService.ChangeBlockState(((Label)e.Item.FindControl("Email")).Text);
+                string isBlocked = ((Button)e.Item.FindControl("Block")).Text;
+                ((Button)e.Item.FindControl("Block")).Text = isBlocked == "Block" ? "Unblock" : "Block";
+            }
+            if (e.CommandName == "Logs_Click") 
+            {
+                Session["userPage"] = new User(((Label)e.Item.FindControl("Email")).Text);
+                Response.Redirect("Gamelog.aspx");
             }
         }
         protected void UsersDataList_ItemDataBound(object sender, DataListItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                if (((User)Session["user"]).elevation == 2) ((Button)e.Item.FindControl("Block")).Visible = true;
+                if (((User)Session["user"]).elevation == 2)
+                {
+                    ((Button)e.Item.FindControl("Block")).Visible = true;
+                    ((Button)e.Item.FindControl("Logs")).Visible = true;
+                }
                 User user = new User(((Label)e.Item.FindControl("Email")).Text);
                 if (user.elevation == -1) ((Button)e.Item.FindControl("Block")).Text = "Unblock";
                 if (user.email == ((User)Session["user"]).email) e.Item.Enabled = false;

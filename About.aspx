@@ -18,8 +18,8 @@
             <asp:Label ID="About_Body" runat="server" Text="Dungeon Maker is a dungeon map creation platform where you can create
                 your own dungeons for you and your friends' enjoyment, or play others' maps as well.
                 It's a solo project created for school by Ofer Bar - a HS senior - as his first big programming endeavour 
-                over the 2023-24 school year. The social aspects of the website were mostly coded in C#, ASP.NET (/HTML) 
-                and CSS, while the game itself was mostly made in Javascript.">
+                over the 2023-24 school year. The website was mostly coded in C# and ASP.NET. Other languages used include SQL, XML, HTML, jQuery, AJAX, and styled with CSS.
+                The game itself was made in Javascript with the Phaser 3 open source framework.">
             </asp:Label> <br /> <br /> <br />
             <asp:Label ID="Thanks_Title" runat="server" Text="SPECIAL THANKS"></asp:Label> <br /> <br />
             <asp:Label ID="Thanks_Body" runat="server" Text="I'd like to thank Orit, my software engineering and computer 

@@ -1,12 +1,14 @@
 ﻿.maps-template {
-    margin: 5px;
-    width: auto;
-    height: auto;
+    width: 750px;
+    height: 60px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 15px;
     display: flex;
     align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.label {
+    text-align: center;
 }
 
 .other-labels {

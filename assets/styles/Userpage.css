@@ -16,6 +16,10 @@
     margin-bottom: 40px;
 }
 
+.label {
+    text-align: center;
+}
+
 .item-image,
 .item-button {
     margin: 8px;
@@ -39,7 +43,7 @@
 }
 
 .panel {
-    height: 750px;
+    height: 400px;
     overflow: auto;
     text-align: center;
     display: flex;
