@@ -117,6 +117,7 @@
     <Content Include="assets\styles\Explore.css" />
     <Content Include="assets\styles\ForgotPassword.css" />
     <Content Include="assets\styles\Create.css" />
+    <Content Include="assets\styles\Gamelog.css" />
     <Content Include="assets\styles\Login.css" />
     <Content Include="assets\styles\Master.css" />
     <Content Include="assets\styles\Register.css" />
@@ -126,6 +127,7 @@
     <Content Include="Explore.aspx" />
     <Content Include="ForgotPassword.aspx" />
     <Content Include="Create.aspx" />
+    <Content Include="Gamelog.aspx" />
     <Content Include="Play.aspx" />
     <Content Include="Register.aspx" />
     <Content Include="scripts\Play.js" />
@@ -188,6 +190,13 @@
       <DependentUpon>Create.aspx</DependentUpon>
     </Compile>
     <Compile Include="Classes\Services\MapService.cs" />
+    <Compile Include="Gamelog.aspx.cs">
+      <DependentUpon>Gamelog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Gamelog.aspx.designer.cs">
+      <DependentUpon>Gamelog.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Play.aspx.cs">
       <DependentUpon>Play.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

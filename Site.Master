@@ -15,7 +15,7 @@
             <asp:ImageButton ID="Logo" runat="server" ImageUrl="assets/Logo.jpg" OnClick="Explore_Click" Width="55px" Height="55px"/>
             <asp:LinkButton ID="About" runat="server" CssClass="nav-label" Text="About" OnClick="About_Click" Font-Bold="true" ></asp:LinkButton>
             <asp:LinkButton ID="Achievements" runat="server" CssClass="nav-label" Text="Achievements" OnClick="Achievements_Click" Font-Bold="true" ></asp:LinkButton>
-            <asp:LinkButton ID="Explore" runat="server" CssClass="nav-label" Text="Explore" OnClick="Explore_Click" Font-Bold="true" >Explore</asp:LinkButton>
+            <asp:LinkButton ID="Gamelog" runat="server" CssClass="nav-label" Text="Gamelog" OnClick="Gamelog_Click" Font-Bold="true" >Gamelog</asp:LinkButton>
             <asp:LinkButton ID="Create" runat="server"  CssClass="nav-label"  OnClick="Create_Click" Font-Bold="true" >Create</asp:LinkButton>
             <asp:LinkButton ID="Admin" runat="server"  CssClass="nav-label"  OnClick="Admin_Click" ForeColor="Black" Font-Bold="true" Visible="false">Admin</asp:LinkButton>
             <asp:LinkButton ID="Logout" runat="server" CssClass="nav-label" Text="Logout" OnClick="Logout_Click" Font-Bold="true" ></asp:LinkButton>

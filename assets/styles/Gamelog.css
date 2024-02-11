@@ -1,0 +1,38 @@
+﻿.maps-template {
+    margin: 5px;
+    width: auto;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.other-labels {
+    margin-right: 10px;
+}
+
+.datalist-container {
+    display: flex;
+    margin-top: 50px;
+    justify-content: center;
+    text-align: center;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animated-item {
+    animation: slideIn 1s ease forwards;
+    opacity: 0;
+}

@@ -25,6 +25,7 @@ namespace DungeonMaker
                 {
                     Create.Visible = false;
                     Achievements.Visible = false;
+                    Gamelog.Visible = false;
                     Logout.Text = "Login";
                 }
                 ProfilePic.ImageUrl = user.profilePicture;
@@ -40,6 +41,11 @@ namespace DungeonMaker
             Response.Redirect("Userpage.aspx");
         }
         protected void Explore_Click(object sender, EventArgs e) { Response.Redirect("Explore.aspx"); }
+        protected void Gamelog_Click(object sender, EventArgs e) 
+        {
+            Session["userPage"] = (User)Session["user"];
+            Response.Redirect("Gamelog.aspx"); 
+        }
         protected void Achievements_Click(object sender, EventArgs e) { /*Response.Redirect("Achievements.aspx");*/ }
         protected void Logout_Click(object sender, EventArgs e)
         {
