@@ -22,7 +22,7 @@ namespace DungeonMaker.Classes.Types
         public Game(int gameID)
         {
             this.gameID = gameID;
-            DataSet ds = ProductService.GetProductsByQuery("SELECT * FROM Games WHERE gameID = " + gameID, "Games");
+            DataSet ds = ProductService.GetDataSetByQuery("SELECT * FROM Games WHERE gameID = " + gameID, "Games");
             DataRow game = ds.Tables[0].Rows[0];
             this.player = new User(game["player"].ToString());
             this.map = new Map(Convert.ToInt32(game["mapID"]), false);

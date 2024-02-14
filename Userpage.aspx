@@ -19,9 +19,10 @@
                 </asp:GridView>
             </div>
         </asp:Panel>
-        <hr />
     </div>
     <script src="scripts/Userpage.js"></script>
+    <hr />
+    <asp:Label ID="DungeonsLabel" runat="server" Text="DUNGEONS" CssClass="title"></asp:Label> <br/>
     <div class="datalist-container">
         <asp:Label ID="EmptyLabel" runat="server" CssClass="label"></asp:Label>
         <asp:DataList ID="MapsDataList" runat="server" RepeatColumns="4" CellPadding="4" OnItemCommand="MapsDataList_ItemCommand" RepeatDirection="Horizontal" OnItemDataBound="MapsDataList_ItemDataBound" CssClass="centered-datalist">

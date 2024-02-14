@@ -67,7 +67,7 @@ namespace DungeonMaker
                     ScriptManager.RegisterStartupScript(this, GetType(), "AlertScript", "alert('You must have both the full and empty portals placed!');", true);
                     FileInfo thumbnail = new FileInfo(filePath);
                     try { thumbnail.Delete(); }
-                    catch { Console.WriteLine("Deletion error, likely due to physical path."); }
+                    catch { ScriptManager.RegisterStartupScript(this, GetType(), "AlertScript", "console.log('Deletion error, likely due to physical path.');", true);  }
                     return;
                 }
                 Thread.Sleep(5);

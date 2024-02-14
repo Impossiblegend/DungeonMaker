@@ -25,7 +25,7 @@ namespace DungeonMaker
                 User user = (User)Session["userPage"];
                 //if (Session["userPage"] == null) user = new User(); user.email = "admin@gmail.com";
                 string query = "SELECT mapID, mapName, Maps.creationDate, thumbnail, isPublic FROM Maps WHERE creator = '" + user.email + "' ORDER BY mapID DESC";
-                Session["ds"] = ProductService.GetProductsByQuery(query, "Maps");
+                Session["ds"] = ProductService.GetDataSetByQuery(query, "Maps");
                 MapsDataList.DataSource = (DataSet)Session["ds"];
                 Session["edit"] = false;
                 MapsDataList.DataBind();
@@ -164,10 +164,11 @@ namespace DungeonMaker
             userpageInstance.Avatar_Click();
         }
         private void Avatar_Click()
-        { //Updates user avatar in database and current sessions
+        { //Updates user avatar in database, current userpage and masterpage (if applicable)
             User userpage = (User)Session["userPage"];
-            FileInfo prev = new FileInfo(userpage.profilePicture);
-            prev.Delete();
+            FileInfo prev = new FileInfo(Server.MapPath(userpage.profilePicture));
+            try { prev.Delete(); }
+            catch { ScriptManager.RegisterStartupScript(this, GetType(), "AlertScript", "console.log('Deletion error, likely due to physical path.');", true); }
             string fileName = Path.GetFileName(AvatarUploader.PostedFile.FileName),
                 fileType = AvatarUploader.PostedFile.ContentType,
                 filePath = Server.MapPath("~/assets/profiles/") + fileName;

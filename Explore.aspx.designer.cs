@@ -60,24 +60,6 @@ namespace DungeonMaker
         protected global::System.Web.UI.WebControls.MultiView DataListMultiView;
 
         /// <summary>
-        /// Maps control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.View Maps;
-
-        /// <summary>
-        /// MapsDataList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DataList MapsDataList;
-
-        /// <summary>
         /// Users control.
         /// </summary>
         /// <remarks>
@@ -94,6 +76,24 @@ namespace DungeonMaker
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DataList UsersDataList;
+
+        /// <summary>
+        /// Dungeons control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View Dungeons;
+
+        /// <summary>
+        /// MapsDataList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DataList MapsDataList;
 
         /// <summary>
         /// BlankSpace1 control.

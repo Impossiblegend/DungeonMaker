@@ -27,7 +27,7 @@ namespace DungeonMaker.Classes.Types
         {
             this.username = username;
             this.userPassword = userPassword;
-            DataSet ds = ProductService.GetProductsByQuery("SELECT * FROM Users WHERE username = '" + username + "' AND userPassword = '" + userPassword + "'", "Users");
+            DataSet ds = ProductService.GetDataSetByQuery("SELECT * FROM Users WHERE username = '" + username + "' AND userPassword = '" + userPassword + "'", "Users");
             DataRow user = ds.Tables[0].Rows[0];
             this.email = user["email"].ToString();
             this.creationDate = (DateTime)user["creationDate"];
@@ -37,7 +37,7 @@ namespace DungeonMaker.Classes.Types
         public User(string email)
         {
             this.email = email;
-            DataSet ds = ProductService.GetProductsByQuery("SELECT * FROM Users WHERE email = '" + email + "'", "Users");
+            DataSet ds = ProductService.GetDataSetByQuery("SELECT * FROM Users WHERE email = '" + email + "'", "Users");
             DataRow user = ds.Tables[0].Rows[0];
             this.username = user["username"].ToString();
             this.userPassword = user["userPassword"].ToString();

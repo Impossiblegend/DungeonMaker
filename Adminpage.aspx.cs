@@ -17,7 +17,7 @@ namespace DungeonMaker
             if(!IsPostBack)
             {
                 string query = "SELECT Feedback.*, Users.username, Users.profilePicture FROM Users INNER JOIN Feedback ON Feedback.sender = Users.email";
-                FeedbackDataList.DataSource = ProductService.GetProductsByQuery(query, "Feedback");
+                FeedbackDataList.DataSource = ProductService.GetDataSetByQuery(query, "Feedback");
                 FeedbackDataList.DataBind();
                 CommentService CS = new CommentService();
                 //Cache["featured"] = new List<Comment>();

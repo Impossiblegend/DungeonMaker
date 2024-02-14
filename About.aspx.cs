@@ -52,14 +52,10 @@ namespace DungeonMaker
                     case "FiveStars": numStars = 5; break;
                 }
                 if (numStars >= 1) OneStar.ImageUrl = "assets/ui/fullStar.png";
-                if (numStars >= 2) TwoStars.ImageUrl = "assets/ui/fullStar.png";
-                else TwoStars.ImageUrl = "assets/ui/emptyStar.png";
-                if (numStars >= 3) ThreeStars.ImageUrl = "assets/ui/fullStar.png";
-                else ThreeStars.ImageUrl = "assets/ui/emptyStar.png";
-                if (numStars >= 4) FourStars.ImageUrl = "assets/ui/fullStar.png";
-                else FourStars.ImageUrl = "assets/ui/emptyStar.png";
-                if (numStars == 5) FiveStars.ImageUrl = "assets/ui/fullStar.png";
-                else FiveStars.ImageUrl = "assets/ui/emptyStar.png";
+                TwoStars.ImageUrl = "assets/ui/" + (numStars >= 2 ? "fullStar.png" : "emptyStar.png");
+                ThreeStars.ImageUrl = "assets/ui/" + (numStars >= 3 ? "fullStar.png" : "emptyStar.png");
+                FourStars.ImageUrl = "assets/ui/" + (numStars >= 4 ? "fullStar.png" : "emptyStar.png");
+                FiveStars.ImageUrl = "assets/ui/" + (numStars == 5 ? "fullStar.png" : "emptyStar.png");
                 Session["starsRating"] = numStars;
             }
         }
