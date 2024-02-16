@@ -26,6 +26,18 @@
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
         </div>
+        <div class="wrapper">
+            <footer class="footer-section">
+                <asp:ContentPlaceHolder ID="FooterContent" runat="server">
+                    <div class="copyright">
+                        &copy; <%: DateTime.Now.Year %> Dungeon Maker. All rights reserved.
+                    </div>
+                    <div class="additional-links">
+                        <!-- Add additional links or content here -->
+                    </div>
+                </asp:ContentPlaceHolder>
+            </footer>
+        </div>
     </form>
 </body>
 </html>

@@ -2,12 +2,14 @@
     margin: 0;
     font-family: Arial, sans-serif;
 }
+
 .datalist-container {
     display: flex;
     margin-top: 50px;
     justify-content: center;
     text-align: center;
 }
+
 .item-label {
     margin-right: 10px;
     place-content: center;
@@ -27,6 +29,7 @@
     margin-left: auto;
     margin-right: auto;
 }
+
 .item-template {
     width: 200px;
     height: 225px;
@@ -36,7 +39,19 @@
     padding: 3px;
     margin: 5px;
 }
+
 .profilePicture {
     border-radius: 100%;
     padding-top: 5px;
+}
+
+footer.footer-section {
+    width: 100%;
+    background-color: #aaaaaa;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
 }
