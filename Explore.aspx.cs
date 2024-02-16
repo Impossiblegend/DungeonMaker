@@ -16,6 +16,8 @@ namespace DungeonMaker
 {
     public partial class Explore : System.Web.UI.Page
     {
+        private DataSet ds;
+        private string mapQuery, userQuery;
         protected void Page_Load(object sender, EventArgs e)
         {
             Game game = null;
@@ -79,9 +81,9 @@ namespace DungeonMaker
                 ((Literal)statsList.FindControl("mostActiveUser")).Text = ProductService.GetStringByQuery(query); //Counts maps created and games played equally
             }
             //Default sort: newest
-            Session["mapQuery"] = "SELECT Maps.mapID, Maps.mapName, Users.username, Maps.thumbnail FROM (Users INNER JOIN Maps ON " +
+            mapQuery = "SELECT Maps.mapID, Maps.mapName, Users.username, Maps.thumbnail FROM (Users INNER JOIN Maps ON " +
                 "Users.email = Maps.creator) WHERE mapName LIKE '%%' AND isPublic ORDER BY mapID DESC";
-            Session["userQuery"] = "SELECT email, username, profilePicture FROM Users WHERE username " +
+            userQuery = "SELECT email, username, profilePicture FROM Users WHERE username " +
                 "LIKE '%%' ORDER BY Users.creationDate";
             foreach (DataListItem item in FeedbackDataList.Items)
             { //Stars are generated in runtime so must be recreated with each postback
@@ -102,41 +104,42 @@ namespace DungeonMaker
         }
         protected void SearchButton_Click(object sender, ImageClickEventArgs e)
         { //Searches the database based on selected parameters
-            string tempQuery = Session["mapQuery"].ToString();
-            int index = tempQuery.IndexOf("LEFT JOIN");
-            if (index != -1) Session["mapQuery"] = tempQuery.Remove(index, tempQuery.IndexOf("WHERE") - index); //Remove specific map ordering
+            int index = mapQuery.IndexOf("LEFT JOIN");
+            if (index != -1) mapQuery = mapQuery.Remove(index, mapQuery.IndexOf("WHERE") - index); //Remove specific map ordering
             bool isDungeons = TableSelect.SelectedValue == "Dungeons";
-            string query = isDungeons ? "mapQuery" : "userQuery";
-            Session[query] = Session[query].ToString().Remove(Session[query].ToString().LastIndexOf("BY") + 3); //Remove all ordering
+            string query = isDungeons ? mapQuery : userQuery;
+            query = query.Remove(query.LastIndexOf("BY") + 3); //Remove all ordering
             switch (SortBy.SelectedValue)
             { //Difficulty definition: average death count and stars collected per map
-                case "Newest": Session[query] += (isDungeons ? "mapID DESC" : "Users.creationDate"); break;
-                case "Oldest": Session[query] += (isDungeons ? "mapID" : "Users.creationDate DESC"); break;
-                case "A-Z": Session[query] += (isDungeons ? "mapName" : "username"); break;
-                case "Z-A": Session[query] += (isDungeons ? "mapName DESC" : "username DESC"); break;
+                case "Newest": query += (isDungeons ? "mapID DESC" : "Users.creationDate"); break;
+                case "Oldest": query += (isDungeons ? "mapID" : "Users.creationDate DESC"); break;
+                case "A-Z": query += (isDungeons ? "mapName" : "username"); break;
+                case "Z-A": query += (isDungeons ? "mapName DESC" : "username DESC"); break;
                 default: //Only possible if (isDungeons)
-                    Session["mapQuery"] += "IIF(ISNULL(MapPopularity.play_count), 0, MapPopularity.play_count) ";
-                    if (SortBy.SelectedValue == "Most popular") Session["mapQuery"] += "DESC";
-                    Session["mapQuery"] = Session["mapQuery"].ToString().Insert(Session["mapQuery"].ToString().IndexOf("WHERE") - 1,
+                    mapQuery += "IIF(ISNULL(MapPopularity.play_count), 0, MapPopularity.play_count) ";
+                    if (SortBy.SelectedValue == "Most popular") mapQuery += "DESC";
+                    mapQuery = mapQuery.Insert(mapQuery.IndexOf("WHERE") - 1,
                         " LEFT JOIN ( SELECT mapID, COUNT(*) AS play_count FROM Games GROUP BY mapID ) AS MapPopularity ON Maps.mapID = MapPopularity.mapID ");
                     break;
             }
-            Session[query] = Session[query].ToString().Insert(Session[query].ToString().IndexOf('%') + 1, SearchBar.Text); //Add user search input
+            query = query.Insert(query.IndexOf('%') + 1, SearchBar.Text); //Add user search input
             //SQL injection is not possible because the first '%' occurs before the search text and IndexOf() returns the index of the first occurrence
-            Session["ds"] = ProductService.GetDataSetByQuery(Session[query].ToString(), TableSelect.SelectedValue);
+            ds = ProductService.GetDataSetByQuery(query, TableSelect.SelectedValue);
+            query = query.Remove(query.IndexOf('%') + 1, SearchBar.Text.Length); //Remove user search input
             if (isDungeons) 
             {
-                MapsDataList.DataSource = (DataSet)Session["ds"];
+                mapQuery = query;
+                MapsDataList.DataSource = ds;
                 MapsDataList.DataBind();
                 BindDLCheck(MapsDataList);
             }
             else
             {
-                UsersDataList.DataSource = (DataSet)Session["ds"];
+                userQuery = query;
+                UsersDataList.DataSource = ds;
                 UsersDataList.DataBind();
                 BindDLCheck(UsersDataList);
             }
-            Session[query] = Session[query].ToString().Remove(Session[query].ToString().IndexOf('%') + 1, SearchBar.Text.Length); //Remove user search input
         }
         private void BindDLCheck(DataList dl)
         {
@@ -171,7 +174,7 @@ namespace DungeonMaker
                     FileInfo thumbnail = new FileInfo(Server.MapPath(map.thumbnail));
                     try { thumbnail.Delete(); }
                     catch { ScriptManager.RegisterStartupScript(this, GetType(), "Log", "console.log('Deletion error, likely due to physical path.');", true); }
-                    DataTable dt = ((DataSet)Session["ds"]).Tables[0];
+                    DataTable dt = ds.Tables[0];
                     DataRow rowToDelete = dt.Select("mapID = " + map.mapID).FirstOrDefault();
                     if (rowToDelete != null) dt.Rows.Remove(rowToDelete);
                     MapsDataList.DataSource = dt;

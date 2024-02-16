@@ -17,15 +17,17 @@ namespace DungeonMaker
 {
     public partial class Create : System.Web.UI.Page
     {
+        private string mapType = "blank";
+        private User user;
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(!IsPostBack) Session["mapType"] = "blank";
-            if (((User)Session["user"]).email == null) Response.Redirect("Register.aspx");
+            if (!IsPostBack) user = (User)Session["user"];
+            if (user.email == null || user.elevation < 1) Response.Redirect("Register.aspx");
         }
         protected void Selection_Change(object sender, EventArgs e)
         { //Sends data to javascript on map type change
             TB1.Text = MapTypesDDL.SelectedValue;
-            Session["mapType"] = TB1.Text;
+            mapType = TB1.Text;
             switch (TB1.Text)
             {
                 case "blank": TB2.Text = "20"; break;
@@ -61,7 +63,7 @@ namespace DungeonMaker
                     if (type == "portalFull") portalFull = true;
                     if (type == "portalEmpty") portalEmpty = true;
                 }
-                if (portalFull && portalEmpty) MapService.UploadMap(((User)Session["user"]).email, mapName + MapService.CountMapsWithName(mapName), Session["mapType"].ToString());
+                if (portalFull && portalEmpty) MapService.UploadMap(user.email, mapName + MapService.CountMapsWithName(mapName), mapType);
                 else 
                 { 
                     ScriptManager.RegisterStartupScript(this, GetType(), "AlertScript", "alert('You must have both the full and empty portals placed!');", true);
@@ -83,7 +85,7 @@ namespace DungeonMaker
                         MapService.InsertTraps((int)double.Parse(xpos[i]), (int)double.Parse(ypos[i]), types2[i].ToString());
                 MapService.DeleteAllButNewestByTrapType("portalFull"); //In case of a duplicates bug
                 MapService.DeleteAllButNewestByTrapType("portalEmpty"); // -||-
-                Session["userPage"] = (User)Session["user"];
+                Session["userPage"] = user;
                 Response.Redirect("Userpage.aspx");
             }
         }

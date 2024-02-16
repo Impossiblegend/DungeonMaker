@@ -92,7 +92,7 @@
         </asp:Panel>
     </div>
     <asp:Panel ID="statisticsPanel" runat="server" CssClass="statistics-panel" ScrollBars="Horizontal">
-        <h2>This Month's Stats</h2>
+        <h2>Monthly Stats</h2>
         <ul id="statsList" runat="server">
             <li>Total games played: <asp:Literal ID="totalGamesPlayed" runat="server" Text=""></asp:Literal></li>
             <li>New dungeons created: <asp:Literal ID="totalMapsCreated" runat="server" Text=""></asp:Literal></li>

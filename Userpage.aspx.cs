@@ -18,25 +18,26 @@ namespace DungeonMaker
 {
     public partial class Userpage : System.Web.UI.Page
     {
+        private DataSet ds;
+        private User userpage, user;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                User user = (User)Session["userPage"];
-                //if (Session["userPage"] == null) user = new User(); user.email = "admin@gmail.com";
-                string query = "SELECT mapID, mapName, Maps.creationDate, thumbnail, isPublic FROM Maps WHERE creator = '" + user.email + "' ORDER BY mapID DESC";
-                Session["ds"] = ProductService.GetDataSetByQuery(query, "Maps");
-                MapsDataList.DataSource = (DataSet)Session["ds"];
-                Session["edit"] = false;
+                userpage = (User)Session["userPage"];
+                user = (User)Session["user"];
+                string query = "SELECT mapID, mapName, Maps.creationDate, thumbnail, isPublic FROM Maps WHERE creator = '" + userpage.email + "' ORDER BY mapID DESC";
+                ds = ProductService.GetDataSetByQuery(query, "Maps");
+                MapsDataList.DataSource = ds;
                 MapsDataList.DataBind();
-                if (MapsDataList.Items.Count == 0)
-                    EmptyLabel.Text = (User)Session["user"] == user ? "Create dungeons for them to appear here!" : "This user has not created any dungeons yet.";
+                if (MapsDataList.Items.Count == 0) 
+                    EmptyLabel.Text = user == userpage ? "Create dungeons for them to appear here!" : "This user has not created any dungeons yet.";
                 UserService US = new UserService();
-                Avatar.ImageUrl = user.profilePicture;
-                UsernameLabel.Text = user.username;
+                Avatar.ImageUrl = userpage.profilePicture;
+                UsernameLabel.Text = userpage.username;
                 AvatarUploader.Attributes.Add("accept", ".jpg,.png");
                 PlayService PS = new PlayService();
-                if ((User)Session["user"] == user || ((User)Session["user"]).elevation == 2)
+                if (user == userpage || user.elevation == 2)
                 {
                     DataTable dataTable = new DataTable();
                     dataTable.Columns.Add("Username");
@@ -44,28 +45,24 @@ namespace DungeonMaker
                     dataTable.Columns.Add("Email");
                     dataTable.Columns.Add("Date");
                     DataRow row = dataTable.NewRow();
-                    row["Username"] = user.username;
-                    row["Password"] = user.GetRedactedPassword();
-                    row["Email"] = user.email;
-                    row["Date"] = user.creationDate.ToShortDateString();
+                    row["Username"] = userpage.username;
+                    row["Password"] = userpage.GetRedactedPassword();
+                    row["Email"] = userpage.email;
+                    row["Date"] = userpage.creationDate.ToShortDateString();
                     dataTable.Rows.Add(row);
                     UserGridView.DataSource = dataTable;
-                    Session["gridTable"] = dataTable;
                     UserGridView.DataBind();
                     UserGridView.Visible = true;
                 }
+                if (user.email == null && userpage.email == null) Response.Redirect("Register.aspx");
             }
-            if (((User)Session["user"]).email == null && ((User)Session["userPage"]).email == null)
-                Response.Redirect("Register.aspx");
         }
         protected void MapsDataList_ItemCommand(object sender, DataListCommandEventArgs e)
         {
-            Session["mapID"] = ((Label)e.Item.FindControl("mapID")).Text;
-            DataTable dt = ((DataSet)Session["ds"]).Tables[0];
-            Map map = new Map(Convert.ToInt32(Session["mapID"]));
+            Map map = new Map(int.Parse(((Label)e.Item.FindControl("mapID")).Text));
             if (e.CommandName == "PlayButton")
             {
-                Session["map"] = new Map(int.Parse(((Label)e.Item.FindControl("mapID")).Text));
+                Session["map"] = map;
                 Response.Redirect("Play.aspx");
             }
             if (e.CommandName == "PrivacyButton")
@@ -80,6 +77,7 @@ namespace DungeonMaker
                 if (!PlayService.wasMapPlayed(map.mapID))
                 {
                     map.Delete();
+                    DataTable dt = ds.Tables[0];
                     DataRow rowToDelete = dt.Select("mapID = " + map.mapID).FirstOrDefault();
                     if (rowToDelete != null) dt.Rows.Remove(rowToDelete);
                     MapsDataList.DataSource = dt;
@@ -128,7 +126,7 @@ namespace DungeonMaker
                 Label date = (Label)e.Item.FindControl("CreationDate");
                 date.Text = date.Text.Remove(date.Text.IndexOf(' '));
                 bool isPublic = (bool)DataBinder.Eval(e.Item.DataItem, "isPublic");
-                if (((User)Session["user"]).email == ((User)Session["userPage"]).email || ((User)Session["user"]).elevation == 2)
+                if (user.email == userpage.email || user.elevation == 2)
                 { //Initializes privacyButton if this is the user's userpage
                     Button btn = (Button)e.Item.FindControl("PrivacyButton");
                     btn.Text = isPublic ? "Public" : "Private";
@@ -165,7 +163,6 @@ namespace DungeonMaker
         }
         private void Avatar_Click()
         { //Updates user avatar in database, current userpage and masterpage (if applicable)
-            User userpage = (User)Session["userPage"];
             FileInfo prev = new FileInfo(Server.MapPath(userpage.profilePicture));
             try { prev.Delete(); }
             catch { ScriptManager.RegisterStartupScript(this, GetType(), "AlertScript", "console.log('Deletion error, likely due to physical path.');", true); }
@@ -178,7 +175,7 @@ namespace DungeonMaker
                 UserService.ChangeProfilePic(userpage.email, "assets/profiles/" + fileName);
             }
             Avatar.ImageUrl = filePath;
-            if (Master is Site && ((User)Session["user"]).email == userpage.email) 
+            if (Master is Site && user.email == userpage.email) 
                 ((Site)Master).ImageUrl = filePath;
         }
         [WebMethod]
@@ -189,7 +186,7 @@ namespace DungeonMaker
         }
         private void ChangeField(int column, string value)
         { //Reflects GridView changes to database
-            string email = ((User)Session["userPage"]).email;
+            string email = userpage.email;
             if (column == 0 && Regex.IsMatch(value, "^[a-zA-Z0-9]*$") && !UserService.FieldExists("username", value)) UserService.UpdateFieldByEmail("username", value, email);
             if (column == 1 && value.Length > 3 && value.Length < 13) UserService.UpdateFieldByEmail("userPassword", value, email);
         }

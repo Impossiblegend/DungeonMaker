@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="About.aspx.cs" Inherits="DungeonMaker.About" %>
+﻿﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="About.aspx.cs" Inherits="DungeonMaker.About" %>
 
 <!DOCTYPE html>
 
@@ -28,7 +28,7 @@
             </asp:Label> <br /> <br /> <br />
             <asp:Label ID="Contact_Title" runat="server" Text="CONTACT & FEEDBACK"></asp:Label> <br />
             <asp:TextBox ID="Contact_Textbox" runat="server" placeholder="Or mail us at dungeonmakergame@gmail.com" TextMode="MultiLine" Rows="5" Columns="50"></asp:TextBox>
-            <asp:Label ID="Rating" runat="server" Text="Rate your overall experience"></asp:Label> <br />
+            <asp:Label ID="RatingLabel" runat="server" Text="Rate your overall experience"></asp:Label> <br />
             <asp:ImageButton ID="OneStar" runat="server" ImageUrl="assets/ui/emptyStar.png" Height="32px" Width="32px" OnClick="Rating_Click"/>
             <asp:ImageButton ID="TwoStars" runat="server" ImageUrl="assets/ui/emptyStar.png" Height="32px" Width="32px" OnClick="Rating_Click"/>
             <asp:ImageButton ID="ThreeStars" runat="server" ImageUrl="assets/ui/emptyStar.png" Height="32px" Width="32px" OnClick="Rating_Click"/>

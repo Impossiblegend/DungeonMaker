@@ -17,6 +17,7 @@ namespace DungeonMaker
 {
     public partial class ForgotPassword : System.Web.UI.Page
     {
+        private string token;
         protected void Page_Load(object sender, EventArgs e)
         {
             UserService US = new UserService();
@@ -71,7 +72,7 @@ namespace DungeonMaker
                         }
                         finally { smtp.Disconnect(true); }
                     }
-                    Session["token"] = token;
+                    this.token = token;
                 }
                 else IsPasswordChanged.Text = "Invalid username or email.";
             }
@@ -81,7 +82,7 @@ namespace DungeonMaker
             if (string.IsNullOrEmpty(ChangePassword_TextBox.Text)) IsPasswordChanged.Text = "Please enter a new password.";
             else
             {
-                if(Email_TextBox.Text != Session["token"].ToString()) IsPasswordChanged.Text = "Incorrect code - token invalid.";
+                if(Email_TextBox.Text != token) IsPasswordChanged.Text = "Incorrect code - token invalid.";
                 else
                 {
                     UserService.ChangePassword(ChangePassword_TextBox.Text, ((User)Session["user"]).username);
