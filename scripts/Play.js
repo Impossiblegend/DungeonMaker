@@ -49,8 +49,7 @@ var canJump = true;
 var gameRuntime;
 
 function preload() {
-    this.load.image('bg', 'assets/skies/space3stretch.png');
-    this.load.image('bg2', 'assets/pics/platformer-backdrop.png');
+    this.load.image('bg2', 'assets/sets/west.jpg');
     //this.load.image('bg3', 'assets/pics/backscroller.png');
     this.load.spritesheet('saw', 'assets/sprites/saws.png', { frameWidth: 548, frameHeight: 548 });
     this.load.image('star', 'assets/sprites/star.png');
@@ -65,7 +64,7 @@ function preload() {
 }
 
 function create() {
-    this.add.image(375, 300, 'bg2').setScale(2.34);
+    this.add.image(375, 250, 'bg2').setScale(0.52);
     platforms = this.physics.add.staticGroup();
     if (MAPTYPE.value === "blank") {
         platforms.create(150, 250, 'ground2');
@@ -215,7 +214,7 @@ function update(time) {
         player.anims.play('turn');
     }
     if (cursors.up.isDown && player.body.touching.down && canJump)
-        player.setVelocityY(-220);
+        player.setVelocityY(-250);
     if (entrance) {
         portalEmpty.anims.play('entry', true);
         entrance = false;

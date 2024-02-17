@@ -116,9 +116,9 @@ namespace DungeonMaker
                 case "A-Z": query += (isDungeons ? "mapName" : "username"); break;
                 case "Z-A": query += (isDungeons ? "mapName DESC" : "username DESC"); break;
                 default: //Only possible if (isDungeons)
-                    mapQuery += "IIF(ISNULL(MapPopularity.play_count), 0, MapPopularity.play_count) ";
-                    if (SortBy.SelectedValue == "Most popular") mapQuery += "DESC";
-                    mapQuery = mapQuery.Insert(mapQuery.IndexOf("WHERE") - 1,
+                    query += "IIF(ISNULL(MapPopularity.play_count), 0, MapPopularity.play_count) ";
+                    if (SortBy.SelectedValue == "Most popular") query += "DESC";
+                    query = query.Insert(mapQuery.IndexOf("WHERE") - 1,
                         " LEFT JOIN ( SELECT mapID, COUNT(*) AS play_count FROM Games GROUP BY mapID ) AS MapPopularity ON Maps.mapID = MapPopularity.mapID ");
                     break;
             }
