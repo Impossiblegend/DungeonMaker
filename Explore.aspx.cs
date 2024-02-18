@@ -27,7 +27,7 @@ namespace DungeonMaker
             {
                 if (user.elevation > 0)
                 {
-                    game = PlayService.GetLastGame(user.email);
+                    game = PlayService.GetUserGames(user)[0];
                     if (game != null)
                     {
                         string nbsp = "<br />&nbsp;&nbsp;&nbsp;";
@@ -53,32 +53,32 @@ namespace DungeonMaker
                 string query = "SELECT Maps.mapID, Maps.mapName, Maps.thumbnail, COUNT(Games.mapID) AS playCount, Users.username AS creatorUsername " +
                     "FROM (Maps LEFT JOIN Games ON Maps.mapID = Games.mapID) LEFT JOIN Users ON Maps.creator = Users.email WHERE isPublic " +
                     "GROUP BY Maps.mapID, Maps.mapName, Maps.thumbnail, Users.username ORDER BY COUNT(Games.mapID) DESC";
-                PopularMapsDataList.DataSource = ProductService.GetDataSetByQuery(query, "Maps").Tables[0].AsEnumerable().Take(5).CopyToDataTable();
+                PopularMapsDataList.DataSource = GeneralService.GetDataSetByQuery(query, "Maps").Tables[0].AsEnumerable().Take(5).CopyToDataTable();
                 // ↑ Equivalent to SQL "TOP 5" which didn't work for me in this query ↑
                 PopularMapsDataList.DataBind();
                 query = "SELECT TOP 5 mapID, mapName, username, thumbnail FROM Users INNER JOIN Maps " +
                     "ON Users.email = Maps.creator WHERE isPublic ORDER BY mapID DESC";
-                NewestMapsDataList.DataSource = ProductService.GetDataSetByQuery(query, "Maps");
+                NewestMapsDataList.DataSource = GeneralService.GetDataSetByQuery(query, "Maps");
                 NewestMapsDataList.DataBind();
                 query = "SELECT Feedback.*, Users.username, Users.profilePicture FROM Users INNER JOIN Feedback " +
                     "ON Feedback.sender = Users.email WHERE Feedback.isFeatured";
-                FeedbackDataList.DataSource = ProductService.GetDataSetByQuery(query, "Feedback");
+                FeedbackDataList.DataSource = GeneralService.GetDataSetByQuery(query, "Feedback");
                 FeedbackDataList.DataBind();
                 if (user.elevation == 2)
                 { //Enlarges datalist item styles to fit all admin buttons
                     MapsDataList.ItemStyle.CssClass = "admin-maps-template";
                     UsersDataList.ItemStyle.CssClass = "admin-users-template";
                 }
-                ((Literal)statsList.FindControl("totalGamesPlayed")).Text += ProductService.LastMonthCompute("Games", "gameID", "datePlayed");
-                ((Literal)statsList.FindControl("totalMapsCreated")).Text += ProductService.LastMonthCompute("Maps", "mapID", "creationDate");
-                ((Literal)statsList.FindControl("numberOfUsers")).Text += ProductService.LastMonthCompute("Users", "email", "creationDate");
+                ((Literal)statsList.FindControl("totalGamesPlayed")).Text += GeneralService.LastMonthCompute("Games", "gameID", "datePlayed");
+                ((Literal)statsList.FindControl("totalMapsCreated")).Text += GeneralService.LastMonthCompute("Maps", "mapID", "creationDate");
+                ((Literal)statsList.FindControl("numberOfUsers")).Text += GeneralService.LastMonthCompute("Users", "email", "creationDate");
                 query = "SELECT TOP 1 Users.username, Users.email FROM (Users INNER JOIN Maps ON Users.email = Maps.creator) INNER JOIN Games " +
                     "ON Maps.mapID = Games.mapID GROUP BY Users.username, Users.email ORDER BY COUNT(Games.gameID) DESC";
-                ((Literal)statsList.FindControl("mostPlayedUserMaps")).Text = ProductService.GetStringByQuery(query);
+                ((Literal)statsList.FindControl("mostPlayedUserMaps")).Text = GeneralService.GetStringByQuery(query);
                 query = "SELECT TOP 1 Users.username, Users.email FROM(SELECT creator AS email, COUNT(*) AS activity_count FROM Maps " +
                     "GROUP BY creator UNION ALL SELECT player AS email, COUNT(*) AS activity_count FROM Games GROUP BY player) AS CombinedActivities " +
                     "INNER JOIN Users ON Users.email = CombinedActivities.email GROUP BY Users.username, Users.email ORDER BY SUM(CombinedActivities.activity_count) DESC";
-                ((Literal)statsList.FindControl("mostActiveUser")).Text = ProductService.GetStringByQuery(query); //Counts maps created and games played equally
+                ((Literal)statsList.FindControl("mostActiveUser")).Text = GeneralService.GetStringByQuery(query); //Counts maps created and games played equally
             }
             //Default sort: newest
             mapQuery = "SELECT Maps.mapID, Maps.mapName, Users.username, Maps.thumbnail FROM (Users INNER JOIN Maps ON " +
@@ -124,7 +124,7 @@ namespace DungeonMaker
             }
             query = query.Insert(query.IndexOf('%') + 1, SearchBar.Text); //Add user search input
             //SQL injection is not possible because the first '%' occurs before the search text and IndexOf() returns the index of the first occurrence
-            ds = ProductService.GetDataSetByQuery(query, TableSelect.SelectedValue);
+            ds = GeneralService.GetDataSetByQuery(query, TableSelect.SelectedValue);
             query = query.Remove(query.IndexOf('%') + 1, SearchBar.Text.Length); //Remove user search input
             if (isDungeons) 
             {
@@ -168,7 +168,7 @@ namespace DungeonMaker
             }
             if (e.CommandName == "DeleteButton")
             { //Deletes unplayed map from DB, and updates datalist accordingly
-                if (!PlayService.wasMapPlayed(map.mapID))
+                if (PlayService.countGames(map.mapID) == 0)
                 {
                     map.Delete();
                     FileInfo thumbnail = new FileInfo(Server.MapPath(map.thumbnail));
@@ -229,7 +229,7 @@ namespace DungeonMaker
             {
                 Map map = new Map(int.Parse(((Label)e.Item.FindControl("mapID")).Text));
                 Button bt = (Button)e.Item.FindControl("DeleteButton");
-                if (PlayService.wasMapPlayed(map.mapID))
+                if (PlayService.countGames(map.mapID) > 0)
                 { //If map exists in Games table, changes to enable/disable button instead of delete button
                     if (map.isValid)
                     {

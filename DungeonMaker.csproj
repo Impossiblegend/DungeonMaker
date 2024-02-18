@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="Achievements.aspx" />
     <Content Include="Adminpage.aspx" />
     <Content Include="assets\loremipsum.txt" />
     <Content Include="assets\styles\About.css" />
@@ -145,6 +146,13 @@
     <Compile Include="About.aspx.designer.cs">
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Achievements.aspx.cs">
+      <DependentUpon>Achievements.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Achievements.aspx.designer.cs">
+      <DependentUpon>Achievements.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Adminpage.aspx.cs">
       <DependentUpon>Adminpage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -153,6 +161,7 @@
       <DependentUpon>Adminpage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Classes\Connect.cs" />
+    <Compile Include="Classes\Services\AchievementService.cs" />
     <Compile Include="Classes\Services\CommentService.cs" />
     <Compile Include="Classes\Services\PlayService.cs" />
     <Compile Include="Classes\Types\Comment.cs" />
@@ -219,7 +228,7 @@
     <Compile Include="Register.aspx.designer.cs">
       <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Classes\Services\ProductService.cs" />
+    <Compile Include="Classes\Services\GeneralService.cs" />
     <Compile Include="Classes\Services\UserService.cs" />
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>

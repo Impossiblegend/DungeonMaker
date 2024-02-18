@@ -4,14 +4,6 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <link rel="stylesheet" href="assets/styles/Gamelog.css" />
     <script src="scripts/jquery-3.7.1.js"></script>
-    <script>
-        $(document).ready(function () {
-            $(".maps-template").css("opacity", "0");
-            $(".maps-template").each(function (index) {
-                $(this).delay(250 * index).animate({ opacity: 1 }, 1000);
-            });
-        });
-    </script>
     <div class="datalist-container">
         <asp:Label ID="EmptyLabel" runat="server" CssClass="label"></asp:Label>
         <asp:DataList ID="GamesDataList" runat="server" OnItemDataBound="GamesDataList_ItemDataBound" >
@@ -35,4 +27,13 @@
             </ItemTemplate>
         </asp:DataList>
     </div>
+    <script>
+        $(document).ready(function () {
+            $(".maps-template").css("opacity", "0");
+            $(".maps-template").each(function (index) {
+                $(this).css("animation", "slideIn 1s ease " + (index * 0.15) + "s forwards");
+                /*$(this).delay(250 * index).animate({ opacity: 1 }, 1000);*/
+            });
+        });
+    </script>
 </asp:Content>

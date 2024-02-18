@@ -46,7 +46,11 @@ namespace DungeonMaker
             Session["userPage"] = user;
             Response.Redirect("Gamelog.aspx"); 
         }
-        protected void Achievements_Click(object sender, EventArgs e) { /*Response.Redirect("Achievements.aspx");*/ }
+        protected void Achievements_Click(object sender, EventArgs e) 
+        {
+            Session["userPage"] = user;
+            Response.Redirect("Achievements.aspx"); 
+        }
         protected void Logout_Click(object sender, EventArgs e)
         {
             Session.Clear();

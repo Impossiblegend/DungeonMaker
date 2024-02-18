@@ -48,7 +48,6 @@ namespace DungeonMaker.classes.Services
             command.Parameters.AddWithValue("@victory", victory);
             SafeExecute();
         }
-        public static bool wasMapPlayed(int mapID) { return countGames(mapID) > 0; }
         public static int countGames(int mapID) 
         {
             command.CommandText = "SELECT Count(gameID) FROM Games WHERE mapID = " + mapID;
@@ -57,14 +56,16 @@ namespace DungeonMaker.classes.Services
             Conn.Close();
             return count;
         }
-        public static Game GetLastGame(string email) 
+        public static List<Game> GetUserGames(User user) 
         {
-            command.CommandText = "SELECT Max(gameID) FROM Games WHERE player = @email";
-            command.Parameters.AddWithValue("@email", email);
+            command.CommandText = "SELECT gameID FROM Games WHERE player = @email ORDER BY gameID DESC";
+            command.Parameters.AddWithValue("@email", user.email);
+            List<Game> games = new List<Game>();
             Conn.Open();
-            try { return new Game(Convert.ToInt32(command.ExecuteScalar())); }
-            catch { return null; }
-            finally { Conn.Close(); }
+            OleDbDataReader reader = command.ExecuteReader();
+            while (reader.Read()) games.Add(new Game(reader.GetInt32(0)));
+            Conn.Close();
+            return games;
         }
     }
 }

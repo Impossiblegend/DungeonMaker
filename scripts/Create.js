@@ -22,7 +22,7 @@ class MapCreator extends Phaser.Scene {
     }
     preload() {
         this.load.image('bg', 'assets/skies/space3stretch.png');
-        this.load.image('bg2', 'assets/pics/platformer-backdrop.png');
+        this.load.image('bg2', 'assets/sets/west.jpg');
         this.load.image('street', 'assets/sprites/cyberpunk-street.png');
         //this.load.image('bg3', 'assets/pics/backscroller.png');
         this.load.spritesheet('saw', 'assets/sprites/saws.png', { frameWidth: 548, frameHeight: 548 });
@@ -40,7 +40,7 @@ class MapCreator extends Phaser.Scene {
         platforms = this.add.group();
         var flag1 = false;
         var flag2 = true;
-        bg = this.add.image(375, 300, 'bg2').setScale(2.34);
+        bg = this.add.image(375, 250, 'bg2').setScale(0.52);
         creditsLabel = this.add.text(16, 16, 'Credits left: ' + maxCredits, { fontSize: '14px', fill: '#000' });
         platforms.create(150, 250, 'ground2');
         platforms.create(600, 460, 'ground3');

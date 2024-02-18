@@ -27,7 +27,7 @@ namespace DungeonMaker
                 userpage = (User)Session["userPage"];
                 user = (User)Session["user"];
                 string query = "SELECT mapID, mapName, Maps.creationDate, thumbnail, isPublic FROM Maps WHERE creator = '" + userpage.email + "' ORDER BY mapID DESC";
-                ds = ProductService.GetDataSetByQuery(query, "Maps");
+                ds = GeneralService.GetDataSetByQuery(query, "Maps");
                 MapsDataList.DataSource = ds;
                 MapsDataList.DataBind();
                 if (MapsDataList.Items.Count == 0) 
@@ -74,7 +74,7 @@ namespace DungeonMaker
             }
             if (e.CommandName == "DeleteButton")
             {
-                if (!PlayService.wasMapPlayed(map.mapID))
+                if (PlayService.countGames(map.mapID) == 0)
                 {
                     map.Delete();
                     DataTable dt = ds.Tables[0];
@@ -135,7 +135,7 @@ namespace DungeonMaker
                     ((Button)e.Item.FindControl("RenameButton")).Visible = true;
                     Map map = new Map(int.Parse(((Label)e.Item.FindControl("mapID")).Text));
                     Button btn2 = (Button)e.Item.FindControl("DeleteButton");
-                    if (PlayService.wasMapPlayed(map.mapID))
+                    if (PlayService.countGames(map.mapID) > 0)
                     { //If map exists in Games table, enable/disable button instead of delete button
                         if (map.isValid)
                         {

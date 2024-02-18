@@ -15,10 +15,8 @@ namespace DungeonMaker
         {
             if (!IsPostBack)
             {
-                User user = (User)Session["userPage"];
-                string query = "SELECT Games.*, Maps.mapName FROM Maps INNER JOIN Games " +
-                        "ON Games.mapID = Maps.mapID WHERE Games.player = '" + user.email + "'";
-                GamesDataList.DataSource = ProductService.GetDataSetByQuery(query, "Games");
+                string query = "SELECT Games.*, Maps.mapName FROM Maps INNER JOIN Games ON Games.mapID = Maps.mapID WHERE Games.player = '" + ((User)Session["userPage"]).email + "'";
+                GamesDataList.DataSource = GeneralService.GetDataSetByQuery(query, "Games");
                 GamesDataList.DataBind();
                 if (GamesDataList.Items.Count == 0)
                     EmptyLabel.Text = ((User)Session["user"]).elevation == 2 ?  "This user has not played any games yet." : "Play some games for them appear here!";
@@ -32,8 +30,8 @@ namespace DungeonMaker
                 e.Item.CssClass = "maps-template animated-item";
                 bool victory = (bool)DataBinder.Eval(e.Item.DataItem, "victory");
                 ((Label)e.Item.FindControl("Victory")).Text = victory ? "VICTORY" : "DEFEAT";
-                ((Label)e.Item.FindControl("DeathCounter")).Text = "x" + ((Label)e.Item.FindControl("DeathCounter")).Text.ToString();
-                ((Label)e.Item.FindControl("StarCounter")).Text = "x" + ((Label)e.Item.FindControl("StarCounter")).Text.ToString();
+                ((Label)e.Item.FindControl("DeathCounter")).Text = "x" + ((Label)e.Item.FindControl("DeathCounter")).Text;
+                ((Label)e.Item.FindControl("StarCounter")).Text = "x" + ((Label)e.Item.FindControl("StarCounter")).Text;
                 Label time = (Label)e.Item.FindControl("timeElapsed");
                 time.Text = Connect.SecToMin(int.Parse(time.Text));
                 Label date = (Label)e.Item.FindControl("datePlayed");

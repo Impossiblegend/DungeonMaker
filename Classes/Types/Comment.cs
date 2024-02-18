@@ -19,7 +19,7 @@ namespace DungeonMaker.classes.Types
         public Comment(int feedbackID)
         {
             this.feedbackID = feedbackID;
-            DataSet ds = ProductService.GetDataSetByQuery("SELECT * FROM Feedback WHERE feedbackID = " + feedbackID, "Feedback");
+            DataSet ds = GeneralService.GetDataSetByQuery("SELECT * FROM Feedback WHERE feedbackID = " + feedbackID, "Feedback");
             DataRow comment = ds.Tables[0].Rows[0];
             this.sender = new User(comment["sender"].ToString());
             this.feedbackBody = comment["feedbackBody"].ToString();

@@ -1,0 +1,34 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Achievements.aspx.cs" Inherits="DungeonMaker.Achievements" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <link rel="stylesheet" href="assets/styles/Gamelog.css" />
+    <script src="scripts/jquery-3.7.1.js"></script>
+    <div class="datalist-container">
+        <asp:Label ID="EmptyLabel" runat="server" CssClass="label"></asp:Label>
+        <asp:DataList ID="AchievementsDataList" runat="server" OnItemDataBound="AchievementsDataList_ItemDataBound" >
+            <ItemTemplate>
+                <div class="maps-template">
+                    &nbsp; &nbsp;
+                    <asp:Label ID="Title" runat="server" Text='<%# Bind("achievement") %>' Font-Bold="true" CssClass="other-labels" ></asp:Label> <br /> <br />
+                    <asp:Label ID="Bar" runat="server" Text=" | " CssClass="other-labels"></asp:Label>
+                    <asp:Label ID="DescriptionBody" runat="server" Text='<%# Bind("description") %>' CssClass="other-labels"></asp:Label> <br /> <br />
+                    <asp:Label ID="DateLabel" runat="server" Text=" | Received" Font-Bold="true" CssClass="other-labels"></asp:Label>
+                    <asp:Label ID="dateReceived" runat="server" Text='<%# Bind("dateReceived") %>' CssClass="other-labels"></asp:Label> <br />
+                    <asp:Label ID="CreditsLabel" runat="server" Text=" | Credits" Font-Bold="true" CssClass="other-labels"></asp:Label>
+                    <asp:Image ID="Coin" runat="server" ImageUrl="assets/ui/coin.png" Width="32px" Height="32px" CssClass="other-labels"/>
+                    <asp:Label ID="Credits" runat="server" Text='<%# Bind("creditsWorth") %>' CssClass="other-labels"></asp:Label> <br />
+                </div>
+            </ItemTemplate>
+        </asp:DataList>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $(".maps-template").css("opacity", "0");
+            $(".maps-template").each(function (index) {
+                $(this).css("animation", "slideIn 1s ease " + (index * 0.15) + "s forwards");
+                /*$(this).delay(250 * index).animate({ opacity: 1 }, 1000);*/
+            });
+        });
+    </script>
+</asp:Content>

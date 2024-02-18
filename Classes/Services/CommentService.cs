@@ -1,4 +1,5 @@
 ﻿using DungeonMaker.classes.Types;
+using DungeonMaker.Classes.Types;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
@@ -32,20 +33,28 @@ namespace DungeonMaker.classes.Services
             }
             finally { Conn.Close(); }
         }
-        public static void SendComment(string email, string feedback, int rating)
+        public static void SendComment(User user, string feedback, int rating)
         { //Uploads feedback and rating into database
-            command.CommandText = "INSERT INTO Feedback(sender, feedbackBody, starRating, dateSent) " +
-                "VALUES(@email, @feedback, @rating, @date)";
-            command.Parameters.AddWithValue("@email", email);
+            command.CommandText = "INSERT INTO Feedback(sender, feedbackBody, starRating, dateSent) VALUES(@email, @feedback, @rating, @date)";
+            command.Parameters.AddWithValue("@email", user.email);
             command.Parameters.AddWithValue("@feedback", feedback);
             command.Parameters.AddWithValue("@rating", rating);
             SafeExecute();
         }
         public static void ChangeFeatured(Comment comment) 
-        {
+        { //Negates the featured state of a comment
             command.CommandText = "UPDATE Feedback SET isFeatured = @f WHERE feedbackID = " + comment.feedbackID;
             command.Parameters.AddWithValue("@f", comment.isFeatured);
             SafeExecute();
+        }
+        public static bool CanUpload(User user)
+        { //Checks if a user has already sent feedback today
+            command.CommandText = "SELECT Count(feedbackID) FROM Feedback WHERE sender = @sender AND MONTH(dateSent) = Month(DATE())";
+            command.Parameters.AddWithValue("@sender", user.email);
+            Conn.Open();
+            int count = Convert.ToInt32(command.ExecuteScalar());
+            Conn.Close();
+            return count == 0;
         }
     }
 }

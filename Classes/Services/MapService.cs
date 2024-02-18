@@ -138,7 +138,7 @@ namespace DungeonMaker
         { //Returns all records in Stars table with foreign key mapID
             List<GameObject> stars = new List<GameObject>();
             string query = "SELECT xpos, ypos FROM Stars WHERE Stars.mapID = " + mapID;
-            DataTable StarsTbl = ProductService.GetDataSetByQuery(query, "Stars").Tables[0];
+            DataTable StarsTbl = GeneralService.GetDataSetByQuery(query, "Stars").Tables[0];
             foreach (DataRow dr in StarsTbl.Rows) stars.Add(new GameObject(Convert.ToInt32(dr["xpos"]), Convert.ToInt32(dr["ypos"])));
             return stars;
         }
@@ -146,7 +146,7 @@ namespace DungeonMaker
         { //Returns all records in Traps table with foreign key mapID
             List<Trap> traps = new List<Trap>();
             string query = "SELECT xpos, ypos, type FROM Traps WHERE Traps.mapID = " + mapID;
-            DataTable TrapsTbl = ProductService.GetDataSetByQuery(query, "Traps").Tables[0];
+            DataTable TrapsTbl = GeneralService.GetDataSetByQuery(query, "Traps").Tables[0];
             foreach (DataRow dr in TrapsTbl.Rows) traps.Add(new Trap(Convert.ToInt32(dr["xpos"]), Convert.ToInt32(dr["ypos"]), dr["type"].ToString()));
             return traps;
         }

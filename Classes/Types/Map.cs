@@ -27,7 +27,7 @@ namespace DungeonMaker.classes.Types
         {
             this.mapID = mapID;
             string query = "SELECT * FROM Maps WHERE mapID = " + mapID;
-            DataTable Maps = ProductService.GetDataSetByQuery(query, "Maps").Tables[0];
+            DataTable Maps = GeneralService.GetDataSetByQuery(query, "Maps").Tables[0];
             this.creator = new User(Maps.Rows[0]["creator"].ToString());
             this.mapType = Maps.Rows[0]["mapType"].ToString();
             this.creationDate = (DateTime)Maps.Rows[0]["creationDate"];
@@ -42,7 +42,7 @@ namespace DungeonMaker.classes.Types
         {
             this.mapID = mapID;
             string query = "SELECT * FROM Maps WHERE mapID = " + mapID;
-            DataTable Maps = ProductService.GetDataSetByQuery(query, "Maps").Tables[0];
+            DataTable Maps = GeneralService.GetDataSetByQuery(query, "Maps").Tables[0];
             DataRow map = Maps.Rows[0];
             this.creator = new User(map["creator"].ToString());
             this.mapType = map["mapType"].ToString();

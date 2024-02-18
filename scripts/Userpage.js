@@ -1,35 +1,32 @@
-﻿function UploadFile() {
-    var fileInput = document.getElementById('AvatarUploader');
-    fileInput.click();
-}
-window.onload = function () {
-    var fileInput = document.getElementById('<%= AvatarUploader.ClientID %>');
-    fileInput.onchange = handleFileUpload;
-};
-function handleFileUpload() {
-    var fileInput = document.getElementById('<%= AvatarUploader.ClientID %>');
-    var file = fileInput.files[0]; //Get selected file
-    if (file) {
-        var formData = new FormData();
-        formData.append("file", file);
-        $.ajax({
-            type: "POST",
-            url: "Userpage.aspx/AvatarUpload",
-            data: formData,
-            processData: false, //Prevent jQuery from processing the data
-            contentType: false,
-            success: function (response) {
-                console.log(response.d);
-            },
-            error: function (error) {
-                console.log("Error: " + error.responseText);
-            }
-        });
-    } else {
-        alert('No file selected.');
-    }
-    return false; //Prevent default form submission
-}
+﻿$(document).ready(function () {
+    $('#<%= Avatar.ClientID %>').click(function () {
+        $('#<%= AvatarUploader.ClientID %>').click();
+    });
+    $('#<%= AvatarUploader.ClientID %>').change(function () {
+        var fileInput = this.files[0];
+        if (fileInput) {
+            var formData = new FormData();
+            formData.append("file", fileInput);
+            $.ajax({
+                type: "POST",
+                url: "Userpage.aspx/AvatarUpload",
+                data: formData,
+                processData: false, //Prevent jQuery from processing the data
+                contentType: false,
+                success: function (response) {
+                    console.log(response.d);
+                },
+                error: function (error) {
+                    alert(error.responseText);
+                }
+            });
+        } else {
+            alert('No file selected.');
+        }
+        return false; //Prevent default form submission
+    });
+});
+
 var cells = document.querySelectorAll('.gridview-style td');
 cells.forEach(function (cell, columnIndex) {
     if (columnIndex < 2) {

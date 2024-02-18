@@ -34,9 +34,13 @@ namespace DungeonMaker
             }
             else if (user.email != null)
             {
-                CommentService.SendComment(user.email, Contact_Textbox.Text, rating);
-                SendButton.Text = "SENT!";
-                SendButton.Enabled = false;
+                if (CommentService.CanUpload(user))
+                {
+                    CommentService.SendComment(user, Contact_Textbox.Text, rating);
+                    SendButton.Text = "SENT!";
+                    SendButton.Enabled = false;
+                }
+                else RatingLabel.Text = "You have already sent feedback this month.";
             }
             else RatingLabel.Text = "You must be signed in to send feedback";
         }
