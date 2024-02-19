@@ -40,5 +40,14 @@ namespace DungeonMaker.Classes.Services
             command.Parameters.AddWithValue("@date", DateTime.Today);
             SafeExecute();
         }
+        public static int UserCreditsTotal(User user) 
+        {
+            command.CommandText = "SELECT SUM(A.creditsWorth) AS TotalCredits FROM Achievements A INNER JOIN UserAchievements UA " +
+                "ON A.achievementTitle = UA.achievement WHERE UA.awardee = '" + user.email + "'";
+            Conn.Open();
+            try { return Convert.ToInt32(command.ExecuteScalar()); }
+            catch { return 0; }
+            finally { Conn.Close(); }
+        }
     }
 }

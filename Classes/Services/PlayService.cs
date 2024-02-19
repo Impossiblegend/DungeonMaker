@@ -56,6 +56,14 @@ namespace DungeonMaker.classes.Services
             Conn.Close();
             return count;
         }
+        public static Game GetLastGame(User user) 
+        {
+            command.CommandText = "SELECT Max(gameID) FROM Games WHERE player = '" + user.email + "'";
+            Conn.Open();
+            try { return new Game(Convert.ToInt32(command.ExecuteScalar())); }
+            catch { return null; }
+            finally { Conn.Close(); }
+        }
         public static List<Game> GetUserGames(User user) 
         {
             command.CommandText = "SELECT gameID FROM Games WHERE player = @email ORDER BY gameID DESC";

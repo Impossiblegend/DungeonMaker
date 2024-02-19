@@ -9,7 +9,6 @@
     <script src="scripts/jquery-3.7.1.js"></script>
 </head>
 <body>
-
     <form id="form1" runat="server">
         <asp:ScriptManager ID="ScriptManager1" runat="server"  EnablePageMethods="true" EnablePartialRendering="true"></asp:ScriptManager>
         <asp:Label ID="Title_Label" class="container" runat="server" Text="Sign Up"></asp:Label>
@@ -25,13 +24,32 @@
         </asp:RegularExpressionValidator>
         <asp:Label ID="Password_Label" class="container" runat="server" Text="Password"></asp:Label>
         <asp:TextBox ID="Password_TextBox" class="container" runat="server" TabIndex="7" autocomplete="off" Height="45px" Width="330px" TextMode="Password"></asp:TextBox>
+        <asp:CheckBox ID="ToSCheckBox" runat="server" style="display: inline-block;"/>
+        <asp:Label ID="TosLabel" runat="server" Text="I agree to the terms of service" style="display: inline-block; vertical-align: middle;"></asp:Label>
         <asp:Label ID="IsSignUp" class="container" runat="server" Text=""></asp:Label>
         <a href="Login.aspx">
             <asp:Label ID="Login_Label" runat="server" Text="Login"></asp:Label>
         </a>
-        <asp:Button ID="SignUp_Button" class="container" runat="server" OnClick="SignUp_Button_Click" OnClientClick="attachValidationHandlers()" Text="Register" />
+        <asp:Button ID="SignUp_Button" class="container" runat="server" OnClick="SignUp_Button_Click" OnClientClick="attachValidationHandlers()" Text="Register" Enabled="false" />
     </form>
     <script>
+        window.onload =  function () {
+            var checkBox = document.getElementById("ToSCheckBox");
+            var signUpButton = document.getElementById("SignUp_Button");
+            checkBox.addEventListener('change', function () {
+                signUpButton.disabled = !this.checked;
+                toggleButtonHoverEffect(signUpButton.disabled);
+            });
+            toggleButtonHoverEffect(signUpButton.disabled);
+        }
+        function toggleButtonHoverEffect(isDisabled) {
+            var signUpButton = document.getElementById("SignUp_Button");
+            if (isDisabled) {
+                signUpButton.classList.add('disabled-hover');
+            } else {
+                signUpButton.classList.remove('disabled-hover');
+            }
+        }
         function attachValidationHandlers() {
             var Gmail_Validator = document.getElementById("Gmail_Validator");
             var Username_Validator = document.getElementById("Username_Validator");

@@ -11,13 +11,19 @@ namespace DungeonMaker
 {
     public partial class Register : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            if (!IsPostBack)
+        protected void Page_Load(object sender, EventArgs e) 
+        { 
+            if (!IsPostBack) 
             {
-                ScriptManager.ScriptResourceMapping.AddDefinition("jquery", new ScriptResourceDefinition { Path = "~/Scripts/jquery-3.7.1.min.js", DebugPath = "~/Scripts/jquery-3.7.1.js", CdnPath = "https://code.jquery.com/jquery-3.7.1.min.js", CdnDebugPath = "https://code.jquery.com/jquery-3.7.1.js"});
-                UserService US = new UserService();
-            }
+                ScriptManager.ScriptResourceMapping.AddDefinition("jquery", new ScriptResourceDefinition 
+                { 
+                    Path = "~/Scripts/jquery-3.7.1.min.js", 
+                    DebugPath = "~/Scripts/jquery-3.7.1.js", 
+                    CdnPath = "https://code.jquery.com/jquery-3.7.1.min.js", 
+                    CdnDebugPath = "https://code.jquery.com/jquery-3.7.1.js" 
+                });
+                UserService US = new UserService(); 
+            } 
         }
 
         protected void SignUp_Button_Click(object sender, EventArgs e)

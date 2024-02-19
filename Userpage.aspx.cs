@@ -6,13 +6,14 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Drawing;
+using DungeonMaker.classes.Types;
 using DungeonMaker.classes.Services;
+using DungeonMaker.Classes.Services;
+using System.Drawing;
 using System.Web.Services;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Threading;
-using DungeonMaker.classes.Types;
 
 namespace DungeonMaker
 {
@@ -37,6 +38,7 @@ namespace DungeonMaker
                 UsernameLabel.Text = userpage.username;
                 AvatarUploader.Attributes.Add("accept", ".jpg,.png");
                 PlayService PS = new PlayService();
+                AchievementService AS = new AchievementService();
                 if (user == userpage || user.elevation == 2)
                 {
                     DataTable dataTable = new DataTable();
@@ -44,11 +46,13 @@ namespace DungeonMaker
                     dataTable.Columns.Add("Password");
                     dataTable.Columns.Add("Email");
                     dataTable.Columns.Add("Date");
+                    dataTable.Columns.Add("CreditsText");
                     DataRow row = dataTable.NewRow();
                     row["Username"] = userpage.username;
                     row["Password"] = userpage.GetRedactedPassword();
                     row["Email"] = userpage.email;
                     row["Date"] = userpage.creationDate.ToShortDateString();
+                    row["CreditsText"] = AchievementService.UserCreditsTotal(userpage).ToString();
                     dataTable.Rows.Add(row);
                     UserGridView.DataSource = dataTable;
                     UserGridView.DataBind();

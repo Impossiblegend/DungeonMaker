@@ -15,6 +15,14 @@
                         <asp:BoundField DataField="Password" HeaderText="Password" />
                         <asp:BoundField DataField="Email" HeaderText="Email" />
                         <asp:BoundField DataField="Date" HeaderText="Creation Date" />
+                        <asp:TemplateField HeaderText="Credits">
+                            <ItemTemplate>
+                                <div class="tile-container">
+                                    <asp:Image ID="imgCredits" runat="server" ImageUrl="assets/ui/coin.png" Width="32px" Height="32px" />
+                                    <asp:Label ID="litCredits" runat="server" Text='<%# Eval("CreditsText") %>' CssClass="label-center" ></asp:Label>
+                                </div>
+                            </ItemTemplate>
+                        </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
             </div>

@@ -27,7 +27,7 @@ namespace DungeonMaker
             {
                 if (user.elevation > 0)
                 {
-                    game = PlayService.GetUserGames(user)[0];
+                    game = PlayService.GetLastGame(user);
                     if (game != null)
                     {
                         string nbsp = "<br />&nbsp;&nbsp;&nbsp;";
@@ -118,7 +118,7 @@ namespace DungeonMaker
                 default: //Only possible if (isDungeons)
                     query += "IIF(ISNULL(MapPopularity.play_count), 0, MapPopularity.play_count) ";
                     if (SortBy.SelectedValue == "Most popular") query += "DESC";
-                    query = query.Insert(mapQuery.IndexOf("WHERE") - 1,
+                    query = query.Insert(query.IndexOf("WHERE") - 1,
                         " LEFT JOIN ( SELECT mapID, COUNT(*) AS play_count FROM Games GROUP BY mapID ) AS MapPopularity ON Maps.mapID = MapPopularity.mapID ");
                     break;
             }

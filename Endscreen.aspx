@@ -23,5 +23,12 @@
         </div>
         </div>
     </form>
+    <script type="text/javascript">
+        function showAchievements(achievements) {
+            for (var i = 0; i < achievements.length; i++) {
+                alert('Achieved: ' + achievements[i]);
+            }
+        }
+    </script>
 </body>
 </html>

@@ -52,7 +52,7 @@ form {
 #UserName_Label, #Password_Label, #Gmail_Label {
     font-family: 'Gill Sans', sans-serif;
     display: block;
-    margin-top: 32px;
+    margin-top: 25px;
     font-size: 16px;
     font-weight: 600;
 }
@@ -61,7 +61,7 @@ form {
     font-family: 'Gill Sans', sans-serif;
     color: red;
     display: block;
-    margin-top: 32px;
+    margin-top: 25px;
     font-size: 16px;
     font-weight: 200;
 }
@@ -121,6 +121,12 @@ input {
 #SignUp_Button:hover {
     background-color: rgba(0, 0, 0, 0.17);
     color: #000000;
+}
+
+#SignUp_Button.disabled-hover:hover {
+    background-color: rgba(0, 0, 0, 0.17);
+    color: #000000;
+    cursor: not-allowed;
 }
 
 #Gmail_Validator {
