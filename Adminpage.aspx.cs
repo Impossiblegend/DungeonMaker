@@ -1,5 +1,6 @@
 ﻿using DungeonMaker.classes.Services;
 using DungeonMaker.classes.Types;
+using DungeonMaker.Classes.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,6 +20,8 @@ namespace DungeonMaker
                 string query = "SELECT Feedback.*, Users.username, Users.profilePicture FROM Users INNER JOIN Feedback ON Feedback.sender = Users.email";
                 FeedbackDataList.DataSource = GeneralService.GetDataSetByQuery(query, "Feedback");
                 FeedbackDataList.DataBind();
+                AchievementsDataList.DataSource = GeneralService.GetDataSetByQuery("SELECT * FROM Achievements", "Achievements");
+                AchievementsDataList.DataBind();
                 CommentService CS = new CommentService();
                 //Cache["featured"] = new List<Comment>();
             }
@@ -61,6 +64,30 @@ namespace DungeonMaker
             }
             CommentService.ChangeFeatured(comment);
             //ScriptManager.RegisterStartupScript(this, GetType(), "TriggerPostBack", "__doPostBack('', '');", true);
+        }
+        protected void AchievementsDataList_ItemDataBound(object sender, DataListItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                e.Item.CssClass = "maps-template animated-item";
+                ImageButton btn = (ImageButton)e.Item.FindControl("LockButton");
+                if (!(bool)DataBinder.Eval(e.Item.DataItem, "isValid")) btn.ImageUrl += "un";
+                btn.ImageUrl += "lock.png";
+                ((Label)e.Item.FindControl("Credits")).Text = "x" + ((Label)e.Item.FindControl("Credits")).Text;
+                Label body = (Label)e.Item.FindControl("DescriptionBody");
+                if (body.Text.Length > 100) body.Text = body.Text.Remove(100).Insert(100, "...");
+            }
+        }
+        protected void AchievementsDataList_ItemCommand(object source, DataListCommandEventArgs e)
+        {
+            switch (e.CommandName) 
+            {
+                case "LockButton_Click":
+                    AchievementService.ChangeValid(((Label)e.Item.FindControl("Title")).Text);
+                    ImageButton btn = (ImageButton)e.Item.FindControl("LockButton");
+                    btn.ImageUrl = "assets/ui/" + (btn.ImageUrl == "assets/ui/lock.png" ? "unlock.png" : "lock.png");
+                    break;
+            }
         }
     }
 }

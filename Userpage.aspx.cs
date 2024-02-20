@@ -190,9 +190,8 @@ namespace DungeonMaker
         }
         private void ChangeField(int column, string value)
         { //Reflects GridView changes to database
-            string email = userpage.email;
-            if (column == 0 && Regex.IsMatch(value, "^[a-zA-Z0-9]*$") && !UserService.FieldExists("username", value)) UserService.UpdateFieldByEmail("username", value, email);
-            if (column == 1 && value.Length > 3 && value.Length < 13) UserService.UpdateFieldByEmail("userPassword", value, email);
+            if (column == 0 && Regex.IsMatch(value, "^[a-zA-Z0-9]*$") && !UserService.FieldExists("username", value)) UserService.UpdateFieldByEmail("username", value, userpage);
+            if (column == 1 && value.Length > 3 && value.Length < 13) UserService.UpdateFieldByEmail("userPassword", value, userpage);
         }
     }
 }

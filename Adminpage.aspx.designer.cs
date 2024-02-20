@@ -24,6 +24,15 @@ namespace DungeonMaker
         protected global::System.Web.UI.WebControls.Panel Feedback;
 
         /// <summary>
+        /// FeedbackLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label FeedbackLabel;
+
+        /// <summary>
         /// FeedbackDataList control.
         /// </summary>
         /// <remarks>
@@ -31,5 +40,32 @@ namespace DungeonMaker
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DataList FeedbackDataList;
+
+        /// <summary>
+        /// AchievementsPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel AchievementsPanel;
+
+        /// <summary>
+        /// AchievementsLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label AchievementsLabel;
+
+        /// <summary>
+        /// AchievementsDataList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DataList AchievementsDataList;
     }
 }

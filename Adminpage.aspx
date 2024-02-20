@@ -2,8 +2,9 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-        <link rel="stylesheet" href="assets/styles/Adminpage.css" />
-        <asp:Panel ID="Feedback" runat="server" CssClass="datalist-container">
+    <link rel="stylesheet" href="assets/styles/Adminpage.css" />
+    <asp:Panel ID="Feedback" runat="server" CssClass="datalist-container">
+        <asp:Label ID="FeedbackLabel" runat="server" Text="Select feedback to feature on explore page:" CssClass="title" ></asp:Label>
         <asp:DataList ID="FeedbackDataList" runat="server" RepeatColumns="4" CellPadding="4" RepeatDirection="Horizontal" OnItemDataBound="FeedbackDataList_ItemDataBound" OnItemCommand="FeedbackDataList_ItemCommand" >
             <ItemTemplate>
                 <div class="item-template">
@@ -18,4 +19,32 @@
             </ItemTemplate>
         </asp:DataList>
     </asp:Panel>
+    <asp:Panel ID="AchievementsPanel" runat="server" CssClass="achievements-panel">
+        <asp:Label ID="AchievementsLabel" runat="server" Text="Achievements created:" CssClass="title" ></asp:Label>
+        <asp:DataList ID="AchievementsDataList" runat="server" OnItemDataBound="AchievementsDataList_ItemDataBound" OnItemCommand="AchievementsDataList_ItemCommand" >
+            <ItemTemplate>
+                <div class="achievements-template">
+                    &nbsp; &nbsp;
+                    <asp:ImageButton ID="LockButton" runat="server" ImageUrl="assets/ui/" CommandName="LockButton_Click" Width="27px" Height="40px" />
+                    &nbsp; &nbsp;
+                    <asp:Label ID="Title" runat="server" Text='<%# Bind("achievementTitle") %>' Font-Bold="true" CssClass="other-labels" ></asp:Label> <br /> <br />
+                    <asp:Label ID="Bar" runat="server" Text=" | " CssClass="other-labels"></asp:Label>
+                    <asp:Label ID="DescriptionBody" runat="server" Text='<%# Bind("description") %>' CssClass="other-labels"></asp:Label> <br /> <br />
+                    <asp:Label ID="CreditsLabel" runat="server" Text=" | Credits" Font-Bold="true" CssClass="other-labels"></asp:Label>
+                    <asp:Image ID="Coin" runat="server" ImageUrl="assets/ui/coin.png" Width="32px" Height="32px" CssClass="other-labels"/>
+                    <asp:Label ID="Credits" runat="server" Text='<%# Bind("creditsWorth") %>' CssClass="other-labels"></asp:Label> <br />
+                    <asp:Label ID="isValid" runat="server" Text='<%# Bind("isValid") %>' Visible="false" ></asp:Label>
+                </div>
+            </ItemTemplate>
+        </asp:DataList>
+    </asp:Panel>
+    <script>
+    $(document).ready(function () {
+        $(".maps-template").css("opacity", "0");
+        $(".maps-template").each(function (index) {
+            $(this).css("animation", "slideIn 1s ease " + (index * 0.15) + "s forwards");
+            /*$(this).delay(250 * index).animate({ opacity: 1 }, 1000);*/
+        });
+    });
+    </script>
 </asp:Content>

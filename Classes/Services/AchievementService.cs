@@ -49,5 +49,16 @@ namespace DungeonMaker.Classes.Services
             catch { return 0; }
             finally { Conn.Close(); }
         }
+        public static void ChangeValid(string title)
+        { //Negates the validity of an achievement
+            OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
+            OleDbCommand command = new OleDbCommand();
+            command.Connection = Conn;
+            command.CommandText = "UPDATE Achievements SET isValid = NOT isValid WHERE achievementTitle = @title";
+            command.Parameters.AddWithValue("@title", title);
+            Conn.Open();
+            command.ExecuteNonQuery();
+            Conn.Close();
+        }
     }
 }
