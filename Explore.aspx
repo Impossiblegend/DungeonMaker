@@ -20,6 +20,10 @@
                 <asp:ListItem Value="Users" Selected="True"> Users </asp:ListItem>
                 <asp:ListItem Value="Dungeons"> Dungeons </asp:ListItem>
             </asp:RadioButtonList>
+            <asp:CheckBoxList ID="BannedCBL" runat="server" Visible="false">
+                <asp:ListItem Value="Banned" Selected="True"> Banned </asp:ListItem>
+                <asp:ListItem Value="Unbanned" Selected="True"> Unbanned </asp:ListItem>
+            </asp:CheckBoxList>
         </div>
     </div>
     <asp:Label ID="SearchResultsLabel" runat="server" Text="SEARCH RESULTS" CssClass="search-label" Visible="false"></asp:Label>
@@ -32,9 +36,9 @@
                     <asp:Label ID="User" runat="server" CssClass="item-label" Text='<%# Bind("username") %>'></asp:Label> <br />
                     <asp:Label ID="Email" runat="server" Visible="false" Text='<%# Bind("email") %>'></asp:Label>
                     <asp:Image ID="ProfilePicture" runat="server" Width="110px" Height="110px" CssClass="profilePicture" ImageUrl='<%# Bind("profilePicture") %>' /><br />
-                    <asp:Button ID="Visit" runat="server" Text="Visit Page" Height="25px" Width="110px" CssClass="item-button" CommandName="Visit_Click" />
-                    <asp:Button ID="Block" runat="server" Text="Block" Height="25px" Width="110px" CssClass="item-button" Visible="false" CommandName="Block_Click"/>
-                    <asp:Button ID="Logs" runat="server" Text="View Logs" Height="25px" Width="110px" CssClass="item-button" Visible="false" CommandName="Logs_Click"/>
+                    <asp:Button ID="VisitButton" runat="server" Text="Visit Page" Height="25px" Width="110px" CssClass="item-button" CommandName="Visit_Click" />
+                    <asp:Button ID="BanButton" runat="server" Text="Block" Height="25px" Width="110px" CssClass="item-button" Visible="false" CommandName="Ban_Click"/>
+                    <asp:Button ID="LogsButton" runat="server" Text="View Logs" Height="25px" Width="110px" CssClass="item-button" Visible="false" CommandName="Logs_Click"/>
                 </div>
                 </ItemTemplate>
             </asp:DataList>

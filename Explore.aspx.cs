@@ -18,10 +18,11 @@ namespace DungeonMaker
     {
         private DataSet ds;
         private string mapQuery, userQuery;
+        private User user;
         protected void Page_Load(object sender, EventArgs e)
         {
             Game game = null;
-            User user = (User)Session["user"];
+            user = (User)Session["user"];
             if (Session["game"] != null) game = (Game)Session["game"];
             else if (user != null)
             {
@@ -30,6 +31,7 @@ namespace DungeonMaker
                     game = PlayService.GetLastGame(user);
                     if (game != null)
                     {
+                        //Shows previous game results in stats panel
                         string nbsp = "<br />&nbsp;&nbsp;&nbsp;";
                         ((Literal)statsList.FindControl("prevGame")).Text = "Previous game summary:<br />" + nbsp + //<b>&#x2022;</b>
                             "<b>Result</b> " + (game.victory ? "victory" : "defeat") + nbsp +
@@ -65,10 +67,12 @@ namespace DungeonMaker
                 FeedbackDataList.DataSource = GeneralService.GetDataSetByQuery(query, "Feedback");
                 FeedbackDataList.DataBind();
                 if (user.elevation == 2)
-                { //Enlarges datalist item styles to fit all admin buttons
+                { //Enlarges datalists' item styles to fit all admin buttons and shows banned user filtering
                     MapsDataList.ItemStyle.CssClass = "admin-maps-template";
                     UsersDataList.ItemStyle.CssClass = "admin-users-template";
+                    BannedCBL.Visible = true;
                 }
+                //Stats panel calculations
                 ((Literal)statsList.FindControl("totalGamesPlayed")).Text += GeneralService.LastMonthCompute("Games", "gameID", "datePlayed");
                 ((Literal)statsList.FindControl("totalMapsCreated")).Text += GeneralService.LastMonthCompute("Maps", "mapID", "creationDate");
                 ((Literal)statsList.FindControl("numberOfUsers")).Text += GeneralService.LastMonthCompute("Users", "email", "creationDate");
@@ -104,6 +108,7 @@ namespace DungeonMaker
         }
         protected void SearchButton_Click(object sender, ImageClickEventArgs e)
         { //Searches the database based on selected parameters
+            SearchResultsLabel.Visible = true;
             int index = mapQuery.IndexOf("LEFT JOIN");
             if (index != -1) mapQuery = mapQuery.Remove(index, mapQuery.IndexOf("WHERE") - index); //Remove specific map ordering
             bool isDungeons = TableSelect.SelectedValue == "Dungeons";
@@ -122,41 +127,50 @@ namespace DungeonMaker
                         " LEFT JOIN ( SELECT mapID, COUNT(*) AS play_count FROM Games GROUP BY mapID ) AS MapPopularity ON Maps.mapID = MapPopularity.mapID ");
                     break;
             }
-            query = query.Insert(query.IndexOf('%') + 1, SearchBar.Text); //Add user search input
+            index = query.IndexOf('%') + 1;
+            if (user.elevation == 2) //Filter un/banned users
+            {
+                if (!BannedCBL.Items[0].Selected) query = query.Insert(index + 2, " AND elevation > 0 ");
+                if (!BannedCBL.Items[1].Selected) query = query.Insert(index + 2, " AND elevation < 0 ");
+            }
+            query = query.Insert(index, SearchBar.Text); //Add user search input
             //SQL injection is not possible because the first '%' occurs before the search text and IndexOf() returns the index of the first occurrence
             ds = GeneralService.GetDataSetByQuery(query, TableSelect.SelectedValue);
-            query = query.Remove(query.IndexOf('%') + 1, SearchBar.Text.Length); //Remove user search input
+            query = query.Remove(index, SearchBar.Text.Length); //Remove user search input
             if (isDungeons) 
             {
                 mapQuery = query;
                 MapsDataList.DataSource = ds;
                 MapsDataList.DataBind();
-                BindDLCheck(MapsDataList);
+                BindDLCheck(MapsDataList, true);
             }
             else
             {
                 userQuery = query;
                 UsersDataList.DataSource = ds;
                 UsersDataList.DataBind();
-                BindDLCheck(UsersDataList);
+                BindDLCheck(UsersDataList, true);
             }
         }
-        private void BindDLCheck(DataList dl)
-        {
-            SearchResultsLabel.Visible = dl.Items.Count > 0;
+        private void BindDLCheck(DataList dl, bool show)
+        { //Visual technicalities, optimizes space on screen
+            SearchResultsLabel.Visible = show;
+            SearchResultsLabel.Text = (dl.Items.Count > 0 ? "SEARCH" : "NO") + " RESULTS";
             bool flag = dl.Items.Count > 0 && dl.ID == "MapsDataList";
             statisticsPanel.Style["Width"] = flag ? "13.5%" : "20%";
             patchNotesPanel.Style["Width"] = flag ? "13.5%" : "20%";
             patchNotesPanel.Style["left"] = flag ? "86.5%" : "80%";
         }
         protected void TableSelect_SelectedIndexChanged(object sender, EventArgs e)
-        { //Changes search objective
+        { //Changes search objective (users/dungeons)
             bool flag = TableSelect.SelectedValue == "Dungeons";
-            SortBy.Items[4].Enabled = flag; // most popular
-            SortBy.Items[5].Enabled = flag;// least popular
-            SearchBar.Attributes["placeholder"] = flag ? "Search for dungeons..." : "Search for users...";
-            BindDLCheck(flag ? MapsDataList : UsersDataList);
-            DataListMultiView.ActiveViewIndex = !flag ? 0 : 1;
+            if (user.elevation == 2) BannedCBL.Visible = !flag;
+            SortBy.Items[4].Enabled = flag; //most popular
+            SortBy.Items[5].Enabled = flag; //least popular
+            SearchBar.Attributes["placeholder"] = "Search for " + (flag ? "dungeons..." : "users...");
+            DataList dl = flag ? MapsDataList : UsersDataList;
+            BindDLCheck(dl, dl.Items.Count > 0);
+            DataListMultiView.ActiveViewIndex = Convert.ToInt32(flag); //false -> 0 -> users, true -> 1 -> dungeons
         }
         protected void MapsDataList_ItemCommand(object source, DataListCommandEventArgs e)
         {
@@ -173,7 +187,7 @@ namespace DungeonMaker
                     map.Delete();
                     FileInfo thumbnail = new FileInfo(Server.MapPath(map.thumbnail));
                     try { thumbnail.Delete(); }
-                    catch { ScriptManager.RegisterStartupScript(this, GetType(), "Log", "console.log('Deletion error, likely due to physical path.');", true); }
+                    catch { ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('Thumbnail deletion error, likely due to physical path.');", true); }
                     DataTable dt = ds.Tables[0];
                     DataRow rowToDelete = dt.Select("mapID = " + map.mapID).FirstOrDefault();
                     if (rowToDelete != null) dt.Rows.Remove(rowToDelete);
@@ -191,36 +205,37 @@ namespace DungeonMaker
             }
         }
         protected void UsersDataList_ItemCommand(object source, DataListCommandEventArgs e)
-        { 
-            if (e.CommandName == "Visit_Click")
-            { //Opens selected userpage
-                Session["userPage"] = new User(((Label)e.Item.FindControl("Email")).Text);
-                Response.Redirect("Userpage.aspx");
-            }
-            if (e.CommandName == "Block_Click")
-            { /* Un/blocks selected user */
-                UserService.ChangeBlockState(((Label)e.Item.FindControl("Email")).Text);
-                string isBlocked = ((Button)e.Item.FindControl("Block")).Text;
-                ((Button)e.Item.FindControl("Block")).Text = isBlocked == "Block" ? "Unblock" : "Block";
-            }
-            if (e.CommandName == "Logs_Click") 
-            { //Opens selected user's logs
-                Session["userPage"] = new User(((Label)e.Item.FindControl("Email")).Text);
-                Response.Redirect("Gamelog.aspx");
+        {
+            User userpage = new User(((Label)e.Item.FindControl("Email")).Text);
+            switch (e.CommandName) 
+            {
+                case "Visit_Click":
+                    Session["userPage"] = userpage;
+                    Response.Redirect("Userpage.aspx");
+                    break;
+                case "Ban_Click":
+                    UserService.ChangeBlockState(userpage);
+                    string isBlocked = ((Button)e.Item.FindControl("BanButton")).Text;
+                    ((Button)e.Item.FindControl("Block")).Text = isBlocked == "Ban" ? "Unban" : "Ban";
+                    break;
+                case "Logs_Click":
+                    Session["userPage"] = userpage;
+                    Response.Redirect("Gamelog.aspx");
+                    break;
             }
         }
         protected void UsersDataList_ItemDataBound(object sender, DataListItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                if (((User)Session["user"]).elevation == 2)
+                if (this.user.elevation == 2)
                 {
-                    ((Button)e.Item.FindControl("Block")).Visible = true;
-                    ((Button)e.Item.FindControl("Logs")).Visible = true;
+                    ((Button)e.Item.FindControl("BanButton")).Visible = true;
+                    ((Button)e.Item.FindControl("LogsButton")).Visible = true;
                 }
                 User user = new User(((Label)e.Item.FindControl("Email")).Text);
-                if (user.elevation == -1) ((Button)e.Item.FindControl("Block")).Text = "Unblock";
-                if (user.email == ((User)Session["user"]).email) e.Item.Enabled = false;
+                if (user.elevation == -1) ((Button)e.Item.FindControl("BanButton")).Text = "Unban";
+                if (user.email == this.user.email) e.Item.Enabled = false;
             }
         }
         protected void MapsDataList_ItemDataBound(object sender, DataListItemEventArgs e)
@@ -242,9 +257,9 @@ namespace DungeonMaker
                         ((Button)e.Item.FindControl("PlayButton")).Enabled = false;
                     }
                 }
-                if (((User)Session["user"]).elevation == 2) bt.Visible = true;
-                string st = ((Label)e.Item.FindControl("Title")).Text;
-                ((Label)e.Item.FindControl("Title")).Text = st.Remove(st.Length - 1); //Remove thumbnail name handler (map count suffix)
+                if (user.elevation == 2) bt.Visible = true;
+                Label title = (Label)e.Item.FindControl("Title");
+                title.Text = title.Text.Remove(title.Text.Length - 1); //Remove thumbnail name handler (map count suffix)
             }
         }
         protected void FeedbackDataList_ItemDataBound(object sender, DataListItemEventArgs e)

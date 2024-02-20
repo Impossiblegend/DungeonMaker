@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Data.OleDb;
 using DungeonMaker.Classes.Types;
 using System.Data;
+using DungeonMaker.classes.Types;
 
 namespace DungeonMaker
 {
@@ -54,29 +55,30 @@ namespace DungeonMaker
             command.Parameters.AddWithValue("@profile", "assets/profiles/default.png");
             SafeExecute();
         }
-        public static void ChangePassword(string Password, string UserName)
+        public static void ChangePassword(string newPassword, User user)
         { //Changes a user's password
-            command.CommandText = "UPDATE Users SET userPassword = '" + Password + "' WHERE username = '" + UserName + "'";
+            command.CommandText = "UPDATE Users SET userPassword = '" + newPassword + "' WHERE username = '" + user.username + "'";
             SafeExecute();
         }
-        public static void ChangePrivacy(int mapID)
+        public static void ChangePrivacy(Map map)
         { //Switch the current privacy setting public <--> private
-            command.CommandText = "UPDATE Maps SET isPublic = NOT isPublic WHERE mapID = " + mapID;
+            //Should really be in MapService but there is no SafeExecute() there, so this saves code
+            command.CommandText = "UPDATE Maps SET isPublic = NOT isPublic WHERE mapID = " + map.mapID;
             SafeExecute();
         }
-        public static void ChangeBlockState(string email)
+        public static void ChangeBlockState(User user)
         { //Switch the blocked state of a user un/block
-            command.CommandText = "UPDATE Users SET elevation = -1 * elevation WHERE email = '" + email + "'";
+            command.CommandText = "UPDATE Users SET elevation = -1 * elevation WHERE email = '" + user.email + "'";
             SafeExecute();
         }
-        public static void ChangeProfilePic(string email, string image)
+        public static void ChangeProfilePic(string newImage, User user)
         {
-            command.CommandText = "UPDATE Users SET profilePicture = '" + image + "' WHERE email = '" + email + "'";
+            command.CommandText = "UPDATE Users SET profilePicture = '" + newImage + "' WHERE email = '" + user.email + "'";
             SafeExecute();
         }
-        public static void UpdateFieldByEmail(string field, string value,  string email) 
+        public static void UpdateFieldByEmail(string field, string value,  User user) 
         { //Changes a Users field by email (PK) to a parameter value
-            command.CommandText = "UPDATE Users SET " + field + " = '" + value + "' WHERE email = '" + email + "'";
+            command.CommandText = "UPDATE Users SET " + field + " = '" + value + "' WHERE email = '" + user.email + "'";
             SafeExecute();
         }
     }

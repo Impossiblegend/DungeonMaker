@@ -74,7 +74,7 @@ namespace DungeonMaker
                 Button btn = (Button)e.Item.FindControl("PrivacyButton");
                 btn.Text = (btn.Text == "Public") ? "Private" : "Public";
                 btn.BackColor = (btn.Text == "Public") ? ColorTranslator.FromHtml("#009900") : ColorTranslator.FromHtml("#990000");
-                UserService.ChangePrivacy(map.mapID);
+                UserService.ChangePrivacy(map);
             }
             if (e.CommandName == "DeleteButton")
             {
@@ -176,7 +176,7 @@ namespace DungeonMaker
             if (AvatarUploader.PostedFile.ContentLength < 500000)
             {
                 AvatarUploader.SaveAs(filePath);
-                UserService.ChangeProfilePic(userpage.email, "assets/profiles/" + fileName);
+                UserService.ChangeProfilePic("assets/profiles/" + fileName, userpage);
             }
             Avatar.ImageUrl = filePath;
             if (Master is Site && user.email == userpage.email) 

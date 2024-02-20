@@ -85,7 +85,7 @@ namespace DungeonMaker
                 if(Email_TextBox.Text != token) IsPasswordChanged.Text = "Incorrect code - token invalid.";
                 else
                 {
-                    UserService.ChangePassword(ChangePassword_TextBox.Text, ((User)Session["user"]).username);
+                    UserService.ChangePassword(ChangePassword_TextBox.Text, (User)Session["user"]);
                     Response.Redirect("Login.aspx");
                 }
 
