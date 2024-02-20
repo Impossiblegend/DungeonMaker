@@ -35,18 +35,26 @@ namespace DungeonMaker.classes.Services
             }
             finally { Conn.Close(); }
         }
-        public static void UploadGame(string player, int mapID, int time, int stars, int deaths, bool victory) 
+        public static void UploadGame(Game game) 
         { //Uploads game stats into Games table
             command.CommandText = "INSERT INTO Games(player, mapID, datePlayed, timeElapsed, starsCollected, deathCount, victory) " +
                 "VALUES(@player, @mapID, @datePlayed, @timeElapsed, @starsCollected, @deathCount, @victory)";
-            command.Parameters.AddWithValue("@player", player);
-            command.Parameters.AddWithValue("@mapID", mapID);
+            command.Parameters.AddWithValue("@player", game.player);
+            command.Parameters.AddWithValue("@mapID", game.map.mapID);
             command.Parameters.AddWithValue("@datePlayed", DateTime.Today);
-            command.Parameters.AddWithValue("@timeElapsed", time);
-            command.Parameters.AddWithValue("@starsCollected", stars);
-            command.Parameters.AddWithValue("@deathCount", deaths);
-            command.Parameters.AddWithValue("@victory", victory);
+            command.Parameters.AddWithValue("@timeElapsed", game.time);
+            command.Parameters.AddWithValue("@starsCollected", game.stars);
+            command.Parameters.AddWithValue("@deathCount", game.deaths);
+            command.Parameters.AddWithValue("@victory", game.victory);
             SafeExecute();
+        }
+        public static int countGames() 
+        {
+            command.CommandText = "SELECT Max(gameID) FROM Games";
+            Conn.Open();
+            int count = Convert.ToInt32(command.ExecuteScalar());
+            Conn.Close();
+            return count;
         }
         public static int countGames(int mapID) 
         {

@@ -21,32 +21,21 @@ namespace DungeonMaker
         private User user;
         protected void Page_Load(object sender, EventArgs e)
         {
-            Game game = null;
+            if (Session["user"] == null) Session["user"] = new User();
             user = (User)Session["user"];
+            Game game = null;
             if (Session["game"] != null) game = (Game)Session["game"];
-            else if (user != null)
-            {
-                if (user.elevation > 0)
-                {
-                    game = PlayService.GetLastGame(user);
-                    if (game != null)
-                    {
-                        //Shows previous game results in stats panel
-                        string nbsp = "<br />&nbsp;&nbsp;&nbsp;";
-                        ((Literal)statsList.FindControl("prevGame")).Text = "Previous game summary:<br />" + nbsp + //<b>&#x2022;</b>
-                            "<b>Result</b> " + (game.victory ? "victory" : "defeat") + nbsp +
-                            "<b>Deaths</b> x" + game.deaths + nbsp +
-                            "<b>Stars</b> x" + game.stars + nbsp +
-                            "<b>Time</b> " + Connect.SecToMin(game.time) + nbsp +
-                            "<b>Map</b> " + game.map.mapName.Remove(game.map.mapName.Length - 1);
-                        ScriptManager.RegisterStartupScript(this, GetType(), "Display", "document.getElementById('prevList').style.display = 'block';", true);
-                    }
-                }
-            }
-            else
-            {
-                user = new User();
-                Session["user"] = user;
+            else if (user.elevation > 0) game = PlayService.GetLastGame(user);
+            if (game != null)
+            { //Shows previous game results in stats panel
+                string nbsp = "<br />&nbsp;&nbsp;&nbsp;";
+                ((Literal)statsList.FindControl("prevGame")).Text = "Previous game summary:<br />" + nbsp + //<b>&#x2022;</b>
+                    "<b>Result</b> " + (game.victory ? "victory" : "defeat") + nbsp +
+                    "<b>Deaths</b> x" + game.deaths + nbsp +
+                    "<b>Stars</b> x" + game.stars + nbsp +
+                    "<b>Time</b> " + Connect.SecToMin(game.time) + nbsp +
+                    "<b>Map</b> " + game.map.mapName.Remove(game.map.mapName.Length - 1);
+                ScriptManager.RegisterStartupScript(this, GetType(), "Display", "document.getElementById('prevList').style.display = 'block';", true);
             }
             if (!IsPostBack) 
             {
@@ -246,16 +235,8 @@ namespace DungeonMaker
                 Button bt = (Button)e.Item.FindControl("DeleteButton");
                 if (PlayService.countGames(map.mapID) > 0)
                 { //If map exists in Games table, changes to enable/disable button instead of delete button
-                    if (map.isValid)
-                    {
-                        bt.Text = "Disable";
-                        ((Button)e.Item.FindControl("PlayButton")).Enabled = true;
-                    }
-                    else
-                    {
-                        bt.Text = "Enable";
-                        ((Button)e.Item.FindControl("PlayButton")).Enabled = false;
-                    }
+                    ((Button)e.Item.FindControl("PlayButton")).Enabled = map.isValid;
+                    bt.Text = map.isValid ? "Disable" : "Enable";
                 }
                 if (user.elevation == 2) bt.Visible = true;
                 Label title = (Label)e.Item.FindControl("Title");

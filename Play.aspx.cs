@@ -53,12 +53,9 @@ namespace DungeonMaker
         private void SaveGame(int time, int stars, int deaths, bool victory) 
         {
             PlayService PS = new PlayService();
-            Map map = (Map)Session["map"];
-            Game game = new Game(PlayService.countGames(map.mapID), (User)Session["user"], map, DateTime.Today, time, stars, deaths, victory);
+            Game game = new Game(PlayService.countGames() + 1, (User)Session["user"], (Map)Session["map"], DateTime.Today, time, stars, deaths, victory);
             Session["game"] = game;
-            string email = game.player.email;
-            if (email == null) email = "Guest";
-            PlayService.UploadGame(email, map.mapID, game.time, game.stars, game.deaths, game.victory);
+            PlayService.UploadGame(game);
         }
     }
 }
