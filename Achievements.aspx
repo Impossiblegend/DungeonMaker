@@ -11,11 +11,9 @@
                 <div class="maps-template">
                     &nbsp; &nbsp;
                     <asp:Label ID="Title" runat="server" Text='<%# Bind("achievement") %>' Font-Bold="true" CssClass="other-labels" ></asp:Label> <br /> <br />
-                    <asp:Label ID="Bar" runat="server" Text=" | " CssClass="other-labels"></asp:Label>
+                    <asp:Literal ID="Bar" runat="server" Text="<b>|</b>&nbsp;"></asp:Literal>
                     <asp:Label ID="DescriptionBody" runat="server" Text='<%# Bind("description") %>' CssClass="other-labels"></asp:Label> <br /> <br />
-                    <asp:Label ID="DateLabel" runat="server" Text=" | Received" Font-Bold="true" CssClass="other-labels"></asp:Label>
                     <asp:Label ID="dateReceived" runat="server" Text='<%# Bind("dateReceived") %>' CssClass="other-labels"></asp:Label> <br />
-                    <asp:Label ID="CreditsLabel" runat="server" Text=" | Credits" Font-Bold="true" CssClass="other-labels"></asp:Label>
                     <asp:Image ID="Coin" runat="server" ImageUrl="assets/ui/coin.png" Width="32px" Height="32px" CssClass="other-labels"/>
                     <asp:Label ID="Credits" runat="server" Text='<%# Bind("creditsWorth") %>' CssClass="other-labels"></asp:Label> <br />
                 </div>

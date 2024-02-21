@@ -28,11 +28,11 @@ namespace DungeonMaker
                 { //BEGIN CHECK FOR ACHIEVEMENTS
                     List<string> achievements = new List<string>();
                     AchievementService AS = new AchievementService();
-                    if (game.deaths == 9) achievements.Add("Cat God");
-                    if (game.time <= Math.Ceiling(0.5 * game.map.estTime) && game.victory) achievements.Add("Speedrun");
+                    if (game.deaths == 9 && AchievementService.IsValid("Cat God")) achievements.Add("Cat God");
+                    if (game.time <= Math.Ceiling(0.5 * game.map.estTime) && game.victory && AchievementService.IsValid("Speedrun")) achievements.Add("Speedrun");
                     int countStars = 0;
                     foreach (Game log in PlayService.GetUserGames(game.player)) countStars += log.stars;
-                    if (countStars >= 100) achievements.Add("Tycoon");
+                    if (countStars >= 100 && AchievementService.IsValid("Tycoon")) achievements.Add("Tycoon");
                     string jsArray = "[" + string.Join(",", achievements.Select(a => "'" + a + "'")) + "]";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ShowAchievements", "window.onload = function() { showAchievements(" + jsArray + "); };", true);
                 }

@@ -71,7 +71,7 @@ namespace DungeonMaker
             {
                 e.Item.CssClass = "maps-template animated-item";
                 ImageButton btn = (ImageButton)e.Item.FindControl("LockButton");
-                if (!(bool)DataBinder.Eval(e.Item.DataItem, "isValid")) btn.ImageUrl += "un";
+                if ((bool)DataBinder.Eval(e.Item.DataItem, "isValid")) btn.ImageUrl += "un";
                 btn.ImageUrl += "lock.png";
                 ((Label)e.Item.FindControl("Credits")).Text = "x" + ((Label)e.Item.FindControl("Credits")).Text;
                 Label body = (Label)e.Item.FindControl("DescriptionBody");

@@ -48,7 +48,7 @@ namespace DungeonMaker
             command.CommandText = $"SELECT Count({PK}) FROM {table} WHERE {dateField} >= DateAdd('d', -30, Date())";
             Conn.Open();
             try { return Convert.ToInt32(command.ExecuteScalar()); }
-            catch (Exception ex){ throw new Exception(ex.Message); }
+            catch { return int.MinValue; }
             finally { Conn.Close(); }
         }
     }

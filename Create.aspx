@@ -16,11 +16,11 @@
     <main></main>
     <form id="form1" runat="server">
         <div>
-            <asp:TextBox ID="TB1" runat="server" width = "0px" hidden="true" Text="blank"></asp:TextBox>
-            <asp:TextBox ID="TB2" runat="server" width = "0px" hidden="true" Text="20"></asp:TextBox>
-            <asp:TextBox ID="TB3" runat="server" width = "0px" hidden="true"></asp:TextBox>
-            <asp:TextBox ID="TB4" runat="server" width = "0px" hidden="true"></asp:TextBox>
-            <asp:TextBox ID="TB5" runat="server" width = "0px" hidden="true"></asp:TextBox>
+            <asp:TextBox ID="TB1" runat="server" hidden="true" Text="blank"></asp:TextBox>
+            <asp:TextBox ID="TB2" runat="server" hidden="true" Text="20"></asp:TextBox>
+            <asp:TextBox ID="TB3" runat="server" hidden="true"></asp:TextBox>
+            <asp:TextBox ID="TB4" runat="server" hidden="true"></asp:TextBox>
+            <asp:TextBox ID="TB5" runat="server" hidden="true"></asp:TextBox>
             <asp:Button ID="Submit" class="container" runat="server" OnClientClick="saveMap()"  OnClick="Submit_Click" Text="SAVE & FINISH" BackColor="Green" />
             <asp:DropDownList ID="MapTypesDDL" runat="server" AutoPostBack="true" OnSelectedIndexChanged="Selection_Change" width="100px">
                 <asp:ListItem Selected="True" Value="blank"> blank </asp:ListItem>

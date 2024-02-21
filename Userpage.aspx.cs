@@ -169,7 +169,7 @@ namespace DungeonMaker
         { //Updates user avatar in database, current userpage and masterpage (if applicable)
             FileInfo prev = new FileInfo(Server.MapPath(userpage.profilePicture));
             try { prev.Delete(); }
-            catch { ScriptManager.RegisterStartupScript(this, GetType(), "AlertScript", "console.log('Deletion error, likely due to physical path.');", true); }
+            catch { ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('Deletion error, likely due to physical path.');", true); }
             string fileName = Path.GetFileName(AvatarUploader.PostedFile.FileName),
                 fileType = AvatarUploader.PostedFile.ContentType,
                 filePath = Server.MapPath("~/assets/profiles/") + fileName;
@@ -190,8 +190,10 @@ namespace DungeonMaker
         }
         private void ChangeField(int column, string value)
         { //Reflects GridView changes to database
-            if (column == 0 && Regex.IsMatch(value, "^[a-zA-Z0-9]*$") && !UserService.FieldExists("username", value)) UserService.UpdateFieldByEmail("username", value, userpage);
-            if (column == 1 && value.Length > 3 && value.Length < 13) UserService.UpdateFieldByEmail("userPassword", value, userpage);
+            if (column == 0 && Regex.IsMatch(value, "^[a-zA-Z0-9]*$") && !UserService.FieldExists("username", value)) UserService.UpdateFieldByEmail("username", value, (User)Session["userPage"]);
+            else ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('Username change failed. It must only consist of (latin) letters and numbers. If not applicable, this username may already exist.');", true);
+            if (column == 1 && value.Length > 3 && value.Length < 13) UserService.UpdateFieldByEmail("userPassword", value, (User)Session["userPage"]);
+            else ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('Password change failed. It must be between 3 and 13 characters.');", true);
         }
     }
 }

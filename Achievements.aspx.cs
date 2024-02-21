@@ -32,8 +32,9 @@ namespace DungeonMaker
                 ((Label)e.Item.FindControl("Credits")).Text = "x" + ((Label)e.Item.FindControl("Credits")).Text;
                 Label body = (Label)e.Item.FindControl("DescriptionBody");
                 if (body.Text.Length > 100) body.Text = body.Text.Remove(100).Insert(100, "...");
+                body.Text += " <b>| Received</b>";
                 Label date = (Label)e.Item.FindControl("dateReceived");
-                date.Text = date.Text.Remove(date.Text.IndexOf(' '));
+                date.Text = date.Text.Remove(date.Text.IndexOf(' ')) + " <b>| Credits</b>";
             }
         }
     }

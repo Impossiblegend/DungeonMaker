@@ -16,12 +16,19 @@
     margin-right: 10px;
 }
 
+.center-container {
+    margin-top: 2.5%;
+    text-align: center;
+    place-content: center;
+    justify-content: center;
+}
+
 .datalist-container {
     display: flex;
     justify-content: center;
     text-align: center;
-    margin-top: 50px;
-    margin-bottom: 100px;
+    margin-top: 2.5%;
+    margin-bottom: 5%;
 }
 
 @keyframes slideIn {
