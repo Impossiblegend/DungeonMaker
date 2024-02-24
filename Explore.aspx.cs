@@ -117,14 +117,19 @@ namespace DungeonMaker
                     break;
             }
             index = query.IndexOf('%') + 1;
-            if (user.elevation == 2) //Filter un/banned users
+            if (user.elevation == 2) 
             {
-                if (!BannedCBL.Items[0].Selected) query = query.Insert(index + 2, " AND elevation > 0 ");
-                if (!BannedCBL.Items[1].Selected) query = query.Insert(index + 2, " AND elevation < 0 ");
+                if (isDungeons) query = query.Remove(query.IndexOf("AND"), 13); //Show private maps by removing "AND isPublic"
+                else
+                { //Filter un/banned users based on selection
+                    if (!BannedCBL.Items[0].Selected) query = query.Insert(index + 2, " AND elevation > 0 ");
+                    if (!BannedCBL.Items[1].Selected) query = query.Insert(index + 2, " AND elevation < 0 ");
+                }
             }
             query = query.Insert(index, SearchBar.Text); //Add user search input
             //SQL injection is not possible because the first '%' occurs before the search text and IndexOf() returns the index of the first occurrence
             ds = GeneralService.GetDataSetByQuery(query, TableSelect.SelectedValue);
+            Session["ds"] = ds;
             query = query.Remove(index, SearchBar.Text.Length); //Remove user search input
             if (isDungeons) 
             {
@@ -177,7 +182,7 @@ namespace DungeonMaker
                     FileInfo thumbnail = new FileInfo(Server.MapPath(map.thumbnail));
                     try { thumbnail.Delete(); }
                     catch { ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('Thumbnail deletion error, likely due to physical path.');", true); }
-                    DataTable dt = ds.Tables[0];
+                    DataTable dt = ((DataSet)Session["ds"]).Tables[0];
                     DataRow rowToDelete = dt.Select("mapID = " + map.mapID).FirstOrDefault();
                     if (rowToDelete != null) dt.Rows.Remove(rowToDelete);
                     MapsDataList.DataSource = dt;

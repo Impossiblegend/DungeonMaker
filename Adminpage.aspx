@@ -24,7 +24,7 @@
         <asp:Label ID="AchievementsLabel" runat="server" Text="Achievements created:" CssClass="title" Font-Bold="true" ></asp:Label>
         <asp:DataList ID="AchievementsDataList" runat="server" OnItemDataBound="AchievementsDataList_ItemDataBound" OnItemCommand="AchievementsDataList_ItemCommand" >
             <ItemTemplate>
-                <div class="achievements-template">
+                <div class="maps-template">
                     &nbsp; &nbsp;
                     <asp:ImageButton ID="LockButton" runat="server" ImageUrl="assets/ui/" CommandName="LockButton_Click" Width="27px" Height="40px" />
                     &nbsp; &nbsp;
@@ -40,13 +40,5 @@
         </asp:DataList>
     </asp:Panel>
     </div>
-    <script>
-    $(document).ready(function () {
-        $(".maps-template").css("opacity", "0");
-        $(".maps-template").each(function (index) {
-            $(this).css("animation", "slideIn 1s ease " + (index * 0.15) + "s forwards");
-            /*$(this).delay(250 * index).animate({ opacity: 1 }, 1000);*/
-        });
-    });
-    </script>
+    <script src="scripts/DataListAnimation.js"></script>
 </asp:Content>

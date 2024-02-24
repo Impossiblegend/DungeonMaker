@@ -21,10 +21,7 @@ namespace DungeonMaker
         private User user;
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack) 
-            { 
-                user = (User)Session["user"]; 
-            }
+            user = (User)Session["user"]; 
             if (user.email == null || user.elevation < 1) Response.Redirect("Register.aspx");
         }
         protected void Selection_Change(object sender, EventArgs e)

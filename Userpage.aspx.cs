@@ -30,6 +30,7 @@ namespace DungeonMaker
                 string query = "SELECT mapID, mapName, Maps.creationDate, thumbnail, isPublic FROM Maps WHERE creator = '" + userpage.email + "' ORDER BY mapID DESC";
                 ds = GeneralService.GetDataSetByQuery(query, "Maps");
                 MapsDataList.DataSource = ds;
+                Session["ds"] = ds;
                 MapsDataList.DataBind();
                 if (MapsDataList.Items.Count == 0) 
                     EmptyLabel.Text = user == userpage ? "Create dungeons for them to appear here!" : "This user has not created any dungeons yet.";
@@ -81,7 +82,7 @@ namespace DungeonMaker
                 if (PlayService.countGames(map.mapID) == 0)
                 {
                     map.Delete();
-                    DataTable dt = ds.Tables[0];
+                    DataTable dt = ((DataSet)Session["ds"]).Tables[0];
                     DataRow rowToDelete = dt.Select("mapID = " + map.mapID).FirstOrDefault();
                     if (rowToDelete != null) dt.Rows.Remove(rowToDelete);
                     MapsDataList.DataSource = dt;
@@ -127,6 +128,8 @@ namespace DungeonMaker
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
+                if (user == null) user = (User)Session["user"];
+                if (userpage == null) userpage = (User)Session["userPage"];
                 Label date = (Label)e.Item.FindControl("CreationDate");
                 date.Text = date.Text.Remove(date.Text.IndexOf(' '));
                 bool isPublic = (bool)DataBinder.Eval(e.Item.DataItem, "isPublic");
