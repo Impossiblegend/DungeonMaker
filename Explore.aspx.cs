@@ -209,8 +209,8 @@ namespace DungeonMaker
                     break;
                 case "Ban_Click":
                     UserService.ChangeBlockState(userpage);
-                    string isBlocked = ((Button)e.Item.FindControl("BanButton")).Text;
-                    ((Button)e.Item.FindControl("Block")).Text = isBlocked == "Ban" ? "Unban" : "Ban";
+                    Button banBtn = (Button)e.Item.FindControl("BanButton");
+                    banBtn.Text = banBtn.Text == "Ban" ? "Unban" : "Ban";
                     break;
                 case "Logs_Click":
                     Session["userPage"] = userpage;
