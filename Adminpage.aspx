@@ -3,8 +3,9 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <link rel="stylesheet" href="assets/styles/Adminpage.css" />
+    <script src="scripts/jquery-3.7.1.js"></script>
     <div class="content-wrapper">
-    <asp:Panel ID="Feedback" runat="server" CssClass="datalist-container">
+    <asp:Panel ID="FeedbackPanel" runat="server" CssClass="datalist-container">
         <asp:Label ID="FeedbackLabel" runat="server" Text="Select feedback to feature on explore page:" CssClass="title" Font-Bold="true" ></asp:Label>
         <asp:DataList ID="FeedbackDataList" runat="server" RepeatColumns="4" CellPadding="4" RepeatDirection="Horizontal" OnItemDataBound="FeedbackDataList_ItemDataBound" OnItemCommand="FeedbackDataList_ItemCommand" >
             <ItemTemplate>
@@ -20,6 +21,21 @@
             </ItemTemplate>
         </asp:DataList>
     </asp:Panel>
+   <script>
+       function expandText(element) {
+           var fullTextElement = element.nextElementSibling;
+           var itemTemplate = element.closest('.item-template');
+           if (fullTextElement.style.display === "none") {
+               fullTextElement.style.display = "inline";
+               element.style.display = "none";
+               itemTemplate.style.height = "auto";
+           } else {
+               fullTextElement.style.display = "none";
+               element.style.display = "inline";
+               itemTemplate.style.height = "225px"; 
+           }
+       }
+   </script>
     <asp:Panel ID="AchievementsPanel" runat="server" CssClass="achievements-panel">
         <asp:Label ID="AchievementsLabel" runat="server" Text="Achievements created:" CssClass="title" Font-Bold="true" ></asp:Label>
         <asp:DataList ID="AchievementsDataList" runat="server" OnItemDataBound="AchievementsDataList_ItemDataBound" OnItemCommand="AchievementsDataList_ItemCommand" >

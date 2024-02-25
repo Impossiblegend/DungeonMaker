@@ -1,6 +1,7 @@
 ﻿using DungeonMaker.Classes.Types;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -14,11 +15,11 @@ namespace DungeonMaker
         {
             if (!IsPostBack)
             {
-                //CHECK FOR ACHIEVEMENTS START
-                //CHECK FOR ACHIEVEMENTS END
-                string query = "SELECT * FROM Achievements INNER JOIN UserAchievements ON " +
-                    "Achievements.achievementTitle = UserAchievements.achievement WHERE Achievements.isValid AND UserAchievements.awardee = '" + ((User)Session["userPage"]).email + "'";
-                AchievementsDataList.DataSource = GeneralService.GetDataSetByQuery(query, "Achievements");
+                string query = "SELECT * FROM Achievements INNER JOIN UserAchievements ON Achievements.achievementTitle = UserAchievements.achievement " +
+                    "WHERE Achievements.isValid AND UserAchievements.awardee = '" + ((User)Session["userPage"]).email + "' ORDER BY UserAchievements.dateReceived";
+                DataSet ds = GeneralService.GetDataSetByQuery(query, "Achievements");
+                AchievementsDataList.DataSource = ds;
+                Session["ds"] = ds;
                 AchievementsDataList.DataBind();
                 if (AchievementsDataList.Items.Count == 0)
                     EmptyLabel.Text = ((User)Session["user"]).elevation == 2 ? "This user has not achieved anything yet." : "Play some games to get achievements!";
@@ -36,6 +37,34 @@ namespace DungeonMaker
                 Label date = (Label)e.Item.FindControl("dateReceived");
                 date.Text = date.Text.Remove(date.Text.IndexOf(' ')) + " <b>| Credits</b>";
             }
+        }
+        protected void ConfirmButton_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(FromDateTB.Text) && !string.IsNullOrEmpty(ToDateTB.Text))
+            {
+                DateTime fromDate = DateTime.Parse(FromDateTB.Text), toDate = DateTime.Parse(ToDateTB.Text);
+                if (toDate >= fromDate)
+                {
+                    DataRow[] filteredRows = ((DataSet)Session["ds"]).Tables[0].Select("dateReceived >= #" + fromDate.ToString("MM/dd/yyyy") + "# AND dateReceived <= #" + toDate.ToString("MM/dd/yyyy") + "#");
+                    if (filteredRows.Length > 0)
+                    {
+                        DataTable filteredTable = ((DataSet)Session["ds"]).Tables[0].Clone();
+                        foreach (DataRow row in filteredRows) filteredTable.ImportRow(row);
+                        AchievementsDataList.DataSource = filteredTable;
+                        AchievementsDataList.DataBind();
+                        EmptyLabel.Text = "";
+                    }
+                    else ErrorMsg("No games found within the specified date range.");
+                }
+                else ErrorMsg("To date should be after or equal to From date.");
+            }
+            else ErrorMsg("Please provide both From and To dates.");
+        }
+        private void ErrorMsg(string msg)
+        {
+            EmptyLabel.Text = msg;
+            AchievementsDataList.DataSource = null;
+            AchievementsDataList.DataBind();
         }
     }
 }

@@ -4,6 +4,13 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <link rel="stylesheet" href="assets/styles/Gamelog.css" />
     <script src="scripts/jquery-3.7.1.js"></script>
+    <div class="center-container">
+        <asp:Label ID="From" runat="server" Text="From"></asp:Label> &nbsp;
+        <asp:TextBox ID="FromDateTB" runat="server" TextMode="Date"></asp:TextBox> &nbsp;
+        <asp:Label ID="To" runat="server" Text="to"></asp:Label> &nbsp;
+        <asp:TextBox ID="ToDateTB" runat="server" TextMode="Date"></asp:TextBox> &nbsp;
+        <asp:Button ID="ConfirmButton" runat="server" Text="Confirm" OnClick="ConfirmButton_Click" />
+    </div>
     <div class="datalist-container">
         <asp:Label ID="EmptyLabel" runat="server" CssClass="label"></asp:Label>
         <asp:DataList ID="AchievementsDataList" runat="server" OnItemDataBound="AchievementsDataList_ItemDataBound" >

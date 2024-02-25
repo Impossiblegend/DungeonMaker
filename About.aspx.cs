@@ -19,14 +19,15 @@ namespace DungeonMaker
             if (!IsPostBack)
             {
                 if (Session["user"] == null) Session["user"] = new User();
-                user = (User)Session["user"];
                 rating = 0;
                 CommentService CS = new CommentService();
             }
+            user = (User)Session["user"];
         }
         protected void SendButton_Click(object sender, EventArgs e)
         { //Uploads feedback and rating to database if logged in
             RatingLabel.ForeColor = Color.Black;
+            if (Session["rating"] != null) rating = Convert.ToInt32(Session["rating"]);
             if (rating == 0)
             {
                 RatingLabel.Text = "Rating must be between 1 and 5";
@@ -36,7 +37,9 @@ namespace DungeonMaker
             {
                 if (CommentService.CanUpload(user))
                 {
-                    CommentService.SendComment(user, Contact_Textbox.Text, rating);
+                    CommentService CS = new CommentService();
+                    try { CommentService.SendComment(user, Contact_Textbox.Text, rating); }
+                    catch (Exception ex){ ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + ex.Message + "');", true); return; }
                     SendButton.Text = "SENT!";
                     SendButton.Enabled = false;
                 }
@@ -61,6 +64,7 @@ namespace DungeonMaker
                 ThreeStars.ImageUrl = "assets/ui/" + (rating >= 3 ? "fullStar.png" : "emptyStar.png");
                 FourStars.ImageUrl = "assets/ui/" + (rating >= 4 ? "fullStar.png" : "emptyStar.png");
                 FiveStars.ImageUrl = "assets/ui/" + (rating == 5 ? "fullStar.png" : "emptyStar.png");
+                Session["rating"] = rating;
             }
         }
     }

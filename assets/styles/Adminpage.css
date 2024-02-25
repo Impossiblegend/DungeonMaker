@@ -38,6 +38,14 @@
     margin: 5px auto;
 }
 
+    .item-template.featured {
+        background-color: lightgreen;
+    }
+
+    .item-template.transparent {
+        background-color: transparent;
+    }
+
 .maps-template {
     width: 100%;
     height: 60px;

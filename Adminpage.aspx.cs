@@ -37,8 +37,8 @@ namespace DungeonMaker
                     imgStar.Height = 20;
                     starsPlaceHolder.Controls.Add(imgStar);
                 }
-                if (comment.isFeatured) item.BackColor = System.Drawing.Color.LightGreen;
-                else item.BackColor = System.Drawing.Color.Transparent;
+                if (comment.isFeatured) item.CssClass = "item-template featured";
+                else item.CssClass = "item-template transparent";
             }
         }
         protected void FeedbackDataList_ItemDataBound(object sender, DataListItemEventArgs e)
@@ -46,7 +46,8 @@ namespace DungeonMaker
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 Label body = (Label)e.Item.FindControl("Feedback");
-                if (body.Text.Length > 100) body.Text = body.Text.Remove(100).Insert(100, "...");
+                if (body.Text.Length > 100) body.Text = "<span class='expandable-text' onclick='expandText(this)'>" +  body.Text.Remove(100) + "..." + "</span>" +
+                        "<span class='full-text' style='display:none;'>" + body.Text + "</span>";
             }
         }
         protected void FeedbackDataList_ItemCommand(object source, DataListCommandEventArgs e)
@@ -55,12 +56,12 @@ namespace DungeonMaker
             if (e.CommandName == "Checkmark_Click") 
             {
                 comment.isFeatured = true;
-                e.Item.BackColor = System.Drawing.Color.LightGreen;
+                e.Item.CssClass = "item-template featured";
             }
             if (e.CommandName == "Cross_Click")
             {
                 comment.isFeatured = false;
-                e.Item.BackColor = System.Drawing.Color.Transparent;
+                e.Item.CssClass = "item-template transparent";
             }
             CommentService.ChangeFeatured(comment);
             //ScriptManager.RegisterStartupScript(this, GetType(), "TriggerPostBack", "__doPostBack('', '');", true);
@@ -74,8 +75,6 @@ namespace DungeonMaker
                 if ((bool)DataBinder.Eval(e.Item.DataItem, "isValid")) btn.ImageUrl += "un";
                 btn.ImageUrl += "lock.png";
                 ((Label)e.Item.FindControl("Credits")).Text = "x" + ((Label)e.Item.FindControl("Credits")).Text;
-                Label body = (Label)e.Item.FindControl("DescriptionBody");
-                if (body.Text.Length > 100) body.Text = body.Text.Remove(100).Insert(100, "...");
             }
         }
         protected void AchievementsDataList_ItemCommand(object source, DataListCommandEventArgs e)

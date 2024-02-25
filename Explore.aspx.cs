@@ -34,7 +34,7 @@ namespace DungeonMaker
                     "<b>Deaths</b> x" + game.deaths + nbsp +
                     "<b>Stars</b> x" + game.stars + nbsp +
                     "<b>Time</b> " + Connect.SecToMin(game.time) + nbsp +
-                    "<b>Map</b> " + game.map.mapName.Remove(game.map.mapName.Length - 1);
+                    "<b>Map</b> " + game.map.mapName.Remove(game.map.mapName.Length - 1); //Remove map name handler suffix
                 ScriptManager.RegisterStartupScript(this, GetType(), "Display", "document.getElementById('prevList').style.display = 'block';", true);
             }
             if (!IsPostBack) 
@@ -253,7 +253,8 @@ namespace DungeonMaker
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 Label body = (Label)e.Item.FindControl("Feedback");
-                if (body.Text.Length > 100) body.Text = body.Text.Remove(100).Insert(100, "...");
+                if (body.Text.Length > 100) body.Text = "<span class='expandable-text' onclick='expandText(this)'>" + body.Text.Remove(100) + "..." + "</span>" +
+                        "<span class='full-text' style='display:none;'>" + body.Text + "</span>";
             }
         }
     }

@@ -27,6 +27,9 @@
                 </asp:GridView>
             </div>
         </asp:Panel>
+        <asp:Panel ID="StatsPanel" runat="server">
+
+        </asp:Panel>
     </div>
     <script src="scripts/Userpage.js"></script>
     <hr />
