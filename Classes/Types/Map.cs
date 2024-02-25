@@ -31,6 +31,7 @@ namespace DungeonMaker.classes.Types
             this.creator = new User(Maps.Rows[0]["creator"].ToString());
             this.mapType = Maps.Rows[0]["mapType"].ToString();
             this.creationDate = (DateTime)Maps.Rows[0]["creationDate"];
+            this.mapName = Maps.Rows[0]["mapName"].ToString();
             this.isPublic = (bool)Maps.Rows[0]["isPublic"];
             this.estTime = (int)Maps.Rows[0]["estTime"];
             this.thumbnail = Maps.Rows[0]["thumbnail"].ToString();
@@ -54,6 +55,20 @@ namespace DungeonMaker.classes.Types
             this.isValid = (bool)map["isValid"];
             this.stars = needLists ? MapService.GetStarsByMapID(mapID) : new List<GameObject>();
             this.traps = needLists ? MapService.GetTrapsByMapID(mapID) : new List<Trap>();
+        }
+        public Map(int mapID, User creator, string mapType, DateTime creationDate, string mapName, bool isPublic, int estTime, string thumbnail, List<GameObject> stars, List<Trap> traps, bool isValid)
+        {
+            this.mapID = mapID;
+            this.creator = creator;
+            this.mapType = mapType;
+            this.creationDate = creationDate;
+            this.mapName = mapName;
+            this.isPublic = isPublic;
+            this.estTime = estTime;
+            this.thumbnail = thumbnail;
+            this.stars = stars;
+            this.traps = traps;
+            this.isValid = isValid;
         }
         public void Delete()
         {
