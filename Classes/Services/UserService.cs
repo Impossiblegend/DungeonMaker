@@ -7,7 +7,6 @@ using System.Web.UI.WebControls;
 using System.Data.OleDb;
 using DungeonMaker.Classes.Types;
 using System.Data;
-using DungeonMaker.classes.Types;
 
 namespace DungeonMaker
 {

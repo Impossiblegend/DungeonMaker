@@ -1,12 +1,11 @@
-﻿using DungeonMaker.classes.Types;
-using DungeonMaker.Classes.Types;
+﻿using DungeonMaker.Classes.Types;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.Linq;
 using System.Web;
 
-namespace DungeonMaker.classes.Services
+namespace DungeonMaker.Classes.Services
 {
     public class CommentService
     {

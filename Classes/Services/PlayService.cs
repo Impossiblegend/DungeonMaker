@@ -5,10 +5,9 @@ using System.Data;
 using System.Data.OleDb;
 using System.Linq;
 using System.Web;
-using DungeonMaker.classes.Types;
 using DungeonMaker.Classes.Types;
 
-namespace DungeonMaker.classes.Services
+namespace DungeonMaker.Classes.Services
 {
     public class PlayService
     {

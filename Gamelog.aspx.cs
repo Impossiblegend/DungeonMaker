@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using DungeonMaker.Classes.Types;
-using DungeonMaker.classes.Types;
 using System.Data;
 
 namespace DungeonMaker

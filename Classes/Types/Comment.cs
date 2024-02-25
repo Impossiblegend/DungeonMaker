@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Web;
 
-namespace DungeonMaker.classes.Types
+namespace DungeonMaker.Classes.Types
 {
     public class Comment
     {

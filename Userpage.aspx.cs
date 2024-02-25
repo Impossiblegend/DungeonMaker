@@ -6,8 +6,6 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using DungeonMaker.classes.Types;
-using DungeonMaker.classes.Services;
 using DungeonMaker.Classes.Services;
 using System.Drawing;
 using System.Web.Services;
@@ -35,11 +33,11 @@ namespace DungeonMaker
                 if (MapsDataList.Items.Count == 0) 
                     EmptyLabel.Text = user == userpage ? "Create dungeons for them to appear here!" : "This user has not created any dungeons yet.";
                 UserService US = new UserService();
+                PlayService PS = new PlayService();
+                AchievementService AS = new AchievementService();
                 Avatar.ImageUrl = userpage.profilePicture;
                 UsernameLabel.Text = userpage.username;
                 AvatarUploader.Attributes.Add("accept", ".jpg,.png");
-                PlayService PS = new PlayService();
-                AchievementService AS = new AchievementService();
                 if (user == userpage || user.elevation == 2)
                 {
                     DataTable dataTable = new DataTable();

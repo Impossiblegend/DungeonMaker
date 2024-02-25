@@ -1,4 +1,4 @@
-﻿using DungeonMaker.classes.Services;
+﻿using DungeonMaker.Classes.Services;
 using DungeonMaker.Classes.Types;
 using System;
 using System.Collections.Generic;
@@ -20,8 +20,8 @@ namespace DungeonMaker
             {
                 if (Session["user"] == null) Session["user"] = new User();
                 rating = 0;
-                CommentService CS = new CommentService();
             }
+            CommentService CS = new CommentService();
             user = (User)Session["user"];
         }
         protected void SendButton_Click(object sender, EventArgs e)
@@ -37,7 +37,6 @@ namespace DungeonMaker
             {
                 if (CommentService.CanUpload(user))
                 {
-                    CommentService CS = new CommentService();
                     try { CommentService.SendComment(user, Contact_Textbox.Text, rating); }
                     catch (Exception ex){ ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + ex.Message + "');", true); return; }
                     SendButton.Text = "SENT!";

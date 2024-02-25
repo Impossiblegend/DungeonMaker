@@ -1,5 +1,4 @@
-﻿using DungeonMaker.classes.Services;
-using DungeonMaker.classes.Types;
+﻿using DungeonMaker.Classes.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
