@@ -1,8 +1,8 @@
 ﻿$(document).ready(function () {
-    $('#<%= Avatar.ClientID %>').click(function () {
-        $('#<%= AvatarUploader.ClientID %>').click();
+    $('Avatar').click(function () {
+        $('AvatarUploader').click();
     });
-    $('#<%= AvatarUploader.ClientID %>').change(function () {
+    $('AvatarUploader').change(function () {
         var fileInput = this.files[0];
         if (fileInput) {
             var formData = new FormData();

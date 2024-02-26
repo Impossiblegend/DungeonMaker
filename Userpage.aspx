@@ -5,8 +5,8 @@
     <link rel="stylesheet" href="assets/styles/Userpage.css" />
     <div class="center-container">
         <asp:Panel ID="ProfilePanel" runat="server" CssClass="panel">
-        <asp:ImageButton ID="Avatar" runat="server" Height="100px" Width="100px" CssClass="picture" ClientIDMode="Static" />
-        <asp:FileUpload ID="AvatarUploader" runat="server" Visible="false" ClientIDMode="Static" />
+            <asp:ImageButton ID="Avatar" runat="server" Height="100px" Width="100px" CssClass="picture" ClientIDMode="Static" />
+            <asp:FileUpload ID="AvatarUploader" runat="server" Visible="false" ClientIDMode="Static" />
             <asp:Label ID="UsernameLabel" runat="server" CssClass="item-label" Text=" "></asp:Label>
             <div class="gridview-container">
                 <asp:GridView ID="UserGridView" runat="server" AutoGenerateColumns="False" CssClass="gridview-style">
@@ -27,9 +27,19 @@
                 </asp:GridView>
             </div>
         </asp:Panel>
-        <asp:Panel ID="StatsPanel" runat="server">
-
-        </asp:Panel>
+        <div class="gridview-container">
+            <asp:GridView ID="StatsGridView" runat="server" AutoGenerateColumns="False" CssClass="stats-gridview-style">
+                <Columns>
+                    <asp:BoundField DataField="Maps Created" HeaderText="Maps Created" />
+                    <asp:BoundField DataField="Games Played" HeaderText="Games Played" />
+                    <asp:BoundField DataField="Achievements" HeaderText="Achievements" />
+                    <asp:BoundField DataField="Stars Collected" HeaderText="Stars Collected" />
+                    <asp:BoundField DataField="Deaths" HeaderText="Deaths" />
+                    <asp:BoundField DataField="Total Time Played" HeaderText="Total Time Played" />
+                    <asp:BoundField DataField="Since Joined" HeaderText="Since Joined" />
+                </Columns>
+            </asp:GridView>
+        </div>
     </div>
     <script src="scripts/Userpage.js"></script>
     <hr />

@@ -38,15 +38,17 @@ namespace DungeonMaker
                 Avatar.ImageUrl = userpage.profilePicture;
                 UsernameLabel.Text = userpage.username;
                 AvatarUploader.Attributes.Add("accept", ".jpg,.png");
+                DataTable dataTable;
+                DataRow row;
                 if (user == userpage || user.elevation == 2)
                 {
-                    DataTable dataTable = new DataTable();
+                    dataTable = new DataTable();
                     dataTable.Columns.Add("Username");
                     dataTable.Columns.Add("Password");
                     dataTable.Columns.Add("Email");
                     dataTable.Columns.Add("Date");
                     dataTable.Columns.Add("CreditsText");
-                    DataRow row = dataTable.NewRow();
+                    row = dataTable.NewRow();
                     row["Username"] = userpage.username;
                     row["Password"] = userpage.GetRedactedPassword();
                     row["Email"] = userpage.email;
@@ -57,8 +59,33 @@ namespace DungeonMaker
                     UserGridView.DataBind();
                     UserGridView.Visible = true;
                 }
+                else StatsGridView.Style["bottom"] = "40%";
                 if (user.email == null && userpage.email == null) Response.Redirect("Register.aspx");
+                dataTable = new DataTable();
+                dataTable.Columns.Add("Maps Created");
+                dataTable.Columns.Add("Games Played");
+                dataTable.Columns.Add("Achievements");
+                dataTable.Columns.Add("Stars Collected");
+                dataTable.Columns.Add("Deaths");
+                dataTable.Columns.Add("Total Time Played");
+                dataTable.Columns.Add("Since Joined");
+                row = dataTable.NewRow();
+                row["Maps Created"] = GeneralService.GetStringByQuery("SELECT COUNT(mapID) FROM Maps WHERE creator = '" + userpage.email + "'");
+                row["Games Played"] = GeneralService.GetStringByQuery("SELECT COUNT(gameID) FROM Games WHERE player = '" + userpage.email + "'");
+                row["Achievements"] = GeneralService.GetStringByQuery("SELECT COUNT(achievement) FROM UserAchievements WHERE awardee = '" + userpage.email + "'");
+                row["Stars Collected"] = "x" + SumGamesField("starsCollected");
+                row["Deaths"] = "x" + SumGamesField("deathCount");
+                row["Total Time Played"] = Connect.SecToMin(SumGamesField("timeElapsed"));
+                row["Since Joined"] = GeneralService.GetStringByQuery("SELECT DATEDIFF('d', creationDate, Date()) FROM Users WHERE email = '" + userpage.email + "'") + " days";
+                dataTable.Rows.Add(row);
+                StatsGridView.DataSource = dataTable;
+                StatsGridView.DataBind();
             }
+        }
+        private int SumGamesField(string field) 
+        {
+            try { return int.Parse(GeneralService.GetStringByQuery("SELECT SUM(" + field + ") FROM Games WHERE player = '" + userpage.email + "'")); }
+            catch { return 0; }
         }
         protected void MapsDataList_ItemCommand(object sender, DataListCommandEventArgs e)
         {

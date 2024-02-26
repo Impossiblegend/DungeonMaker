@@ -74,7 +74,7 @@
 .gridview-style {
     border-collapse: collapse;
     width: 80%;
-    max-width: 800px; 
+    max-width: 800px;
 }
     .gridview-style th {
         background-color: #f2f2f2;
@@ -98,6 +98,42 @@
         }
 
     .gridview-style tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+.stats-gridview-style {
+    position: absolute;
+    border-collapse: collapse;
+    width: 75%;
+    align-content: center;
+    align-items: center;
+    align-self: center;
+    justify-content: center;
+    text-align: center;
+    bottom: 28.5%;
+    left: 10%;
+}
+
+    .stats-gridview-style th {
+        background-color: #f2f2f2;
+        color: #333;
+        padding: 10px;
+        text-align: center;
+        font-weight: bold;
+        border-bottom: 2px solid #ddd;
+    }
+
+    .stats-gridview-style td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+
+        .stats-gridview-style td:hover {
+            background-color: #e0e0e0;
+            cursor: pointer;
+        }
+
+    .stats-gridview-style tr:nth-child(even) {
         background-color: #f9f9f9;
     }
 
