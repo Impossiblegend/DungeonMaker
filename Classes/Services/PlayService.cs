@@ -38,7 +38,7 @@ namespace DungeonMaker.Classes.Services
         { //Uploads game stats into Games table
             command.CommandText = "INSERT INTO Games(player, mapID, datePlayed, timeElapsed, starsCollected, deathCount, victory) " +
                 "VALUES(@player, @mapID, @datePlayed, @timeElapsed, @starsCollected, @deathCount, @victory)";
-            command.Parameters.AddWithValue("@player", game.player);
+            command.Parameters.AddWithValue("@player", game.player.email);
             command.Parameters.AddWithValue("@mapID", game.map.mapID);
             command.Parameters.AddWithValue("@datePlayed", DateTime.Today);
             command.Parameters.AddWithValue("@timeElapsed", game.time);

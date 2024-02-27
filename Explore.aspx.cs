@@ -23,7 +23,8 @@ namespace DungeonMaker
             if (Session["user"] == null) Session["user"] = new User();
             user = (User)Session["user"];
             Game game = null;
-            if (Session["game"] != null) game = (Game)Session["game"];
+            PlayService PS = new PlayService();
+            if (Session["game"] != null) game = (Game)Session["game"]; //Saves pulling from database
             else if (user.elevation > 0) game = PlayService.GetLastGame(user);
             if (game != null)
             { //Shows previous game results in stats panel
@@ -35,23 +36,44 @@ namespace DungeonMaker
                     "<b>Time</b> " + Connect.SecToMin(game.time) + nbsp +
                     "<b>Map</b> " + game.map.mapName.Remove(game.map.mapName.Length - 1); //Remove map name handler suffix
                 ScriptManager.RegisterStartupScript(this, GetType(), "Display", "document.getElementById('prevList').style.display = 'block';", true);
+                if (user.elevation > 0)
+                {
+                    string RecentMapsQuery = "SELECT TOP 5 Maps.mapID, Maps.mapName, Maps.thumbnail FROM ((Games INNER JOIN Users ON Games.player = Users.email) " +
+                        "INNER JOIN Maps ON Games.mapID = Maps.mapID) WHERE Games.player = '" + user.email + "' ORDER BY Games.gameID DESC";
+                    DataTable table = GeneralService.GetDataSetByQuery(RecentMapsQuery, "Maps").Tables[0], distinctDataTable = table.Clone();
+                    //DISTINCT does not work with ORDER BY in Access, so the following code selects distinct items programatically
+                    HashSet<string> distinctItems = new HashSet<string>(); //part of System.Collections.Generic
+                    //HashSet<T> does not allow duplicate elements. If you try to add an element that already exists in the HashSet, the addition will be ignored.
+                    foreach (DataRow row in table.Rows)
+                    {
+                        string key = row["mapID"].ToString();
+                        if (!distinctItems.Contains(key))
+                        {
+                            distinctItems.Add(key);
+                            distinctDataTable.ImportRow(row);
+                        }
+                    }
+                    RecentlyPlayedDataList.DataSource = distinctDataTable;
+                    RecentlyPlayedDataList.DataBind();
+                    foreach (DataListItem item in RecentlyPlayedDataList.Items) 
+                        ((Label)item.FindControl("Creator")).Text = new Map(int.Parse(((Label)item.FindControl("mapID")).Text)).creator.username;
+                    RecentlyPlayedLabel.Visible = true;
+                    RecentlyPlayedPanel.Visible = true;
+                }
             }
             if (!IsPostBack) 
             {
                 DataListMultiView.ActiveViewIndex = 0; //Users view index = 0, Dungeons view index = 1, more TBD
-                PlayService PS = new PlayService(); //Initialize private static properties
                 string query = "SELECT Maps.mapID, Maps.mapName, Maps.thumbnail, COUNT(Games.mapID) AS playCount, Users.username AS creatorUsername " +
                     "FROM (Maps LEFT JOIN Games ON Maps.mapID = Games.mapID) LEFT JOIN Users ON Maps.creator = Users.email WHERE isPublic " +
                     "GROUP BY Maps.mapID, Maps.mapName, Maps.thumbnail, Users.username ORDER BY COUNT(Games.mapID) DESC";
                 PopularMapsDataList.DataSource = GeneralService.GetDataSetByQuery(query, "Maps").Tables[0].AsEnumerable().Take(5).CopyToDataTable();
                 // ↑ Equivalent to SQL "TOP 5" which didn't work for me in this query ↑
                 PopularMapsDataList.DataBind();
-                query = "SELECT TOP 5 mapID, mapName, username, thumbnail FROM Users INNER JOIN Maps " +
-                    "ON Users.email = Maps.creator WHERE isPublic ORDER BY mapID DESC";
+                query = "SELECT TOP 5 mapID, mapName, username, thumbnail FROM Users INNER JOIN Maps ON Users.email = Maps.creator WHERE isPublic ORDER BY mapID DESC";
                 NewestMapsDataList.DataSource = GeneralService.GetDataSetByQuery(query, "Maps");
                 NewestMapsDataList.DataBind();
-                query = "SELECT Feedback.*, Users.username, Users.profilePicture FROM Users INNER JOIN Feedback " +
-                    "ON Feedback.sender = Users.email WHERE Feedback.isFeatured";
+                query = "SELECT Feedback.*, Users.username, Users.profilePicture FROM Users INNER JOIN Feedback ON Feedback.sender = Users.email WHERE Feedback.isFeatured";
                 FeedbackDataList.DataSource = GeneralService.GetDataSetByQuery(query, "Feedback");
                 FeedbackDataList.DataBind();
                 if (user.elevation == 2)
@@ -145,6 +167,7 @@ namespace DungeonMaker
                 BindDLCheck(UsersDataList, true);
             }
         }
+
         private void BindDLCheck(DataList dl, bool show)
         { //Visual technicalities, optimizes space on screen
             SearchResultsLabel.Visible = show;
@@ -154,6 +177,7 @@ namespace DungeonMaker
             patchNotesPanel.Style["Width"] = flag ? "13.5%" : "20%";
             patchNotesPanel.Style["left"] = flag ? "86.5%" : "80%";
         }
+
         protected void TableSelect_SelectedIndexChanged(object sender, EventArgs e)
         { //Changes search objective (users/dungeons)
             bool flag = TableSelect.SelectedValue == "Dungeons";
@@ -165,6 +189,7 @@ namespace DungeonMaker
             BindDLCheck(dl, dl.Items.Count > 0);
             DataListMultiView.ActiveViewIndex = Convert.ToInt32(flag); //false -> 0 -> users, true -> 1 -> dungeons
         }
+
         protected void MapsDataList_ItemCommand(object source, DataListCommandEventArgs e)
         {
             Map map = new Map(int.Parse(((Label)e.Item.FindControl("mapID")).Text));

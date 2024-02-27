@@ -37,7 +37,7 @@
                     <asp:Label ID="Email" runat="server" Visible="false" Text='<%# Bind("email") %>'></asp:Label>
                     <asp:Image ID="ProfilePicture" runat="server" Width="110px" Height="110px" CssClass="profilePicture" ImageUrl='<%# Bind("profilePicture") %>' /><br />
                     <asp:Button ID="VisitButton" runat="server" Text="Visit Page" Height="25px" Width="110px" CssClass="item-button" CommandName="Visit_Click" />
-                    <asp:Button ID="BanButton" runat="server" Text="Block" Height="25px" Width="110px" CssClass="item-button" Visible="false" CommandName="Ban_Click"/>
+                    <asp:Button ID="BanButton" runat="server" Text="Ban" Height="25px" Width="110px" CssClass="item-button" Visible="false" CommandName="Ban_Click"/>
                     <asp:Button ID="LogsButton" runat="server" Text="View Logs" Height="25px" Width="110px" CssClass="item-button" Visible="false" CommandName="Logs_Click"/>
                 </div>
                 </ItemTemplate>
@@ -59,24 +59,42 @@
             </asp:View>
         </asp:MultiView>
     </div>
+    <asp:Panel ID="BlankSpace0" runat="server" Height="30px"></asp:Panel>
+    <div class="container">        
+        <asp:Label ID="RecentlyPlayedLabel" runat="server" Text="RECENTLY PLAYED" CssClass="title" Visible="false"></asp:Label>
+        <asp:Panel ID="RecentlyPlayedPanel" runat="server" CssClass="newest-datalist-container" Visible="false">
+            <asp:DataList ID="RecentlyPlayedDataList" runat="server" CellPadding="4" RepeatDirection="Horizontal" OnItemDataBound="MapsDataList_ItemDataBound" OnItemCommand="MapsDataList_ItemCommand">
+                <ItemTemplate>
+                <div class="maps-template">
+                    <asp:Label ID="title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
+                    <asp:Label ID="Creator" runat="server" CssClass="item-label"></asp:Label> <br />
+                    <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" Height="0px"></asp:Label>
+                    <asp:Image ID="Thumbnail" runat="server" Width="150px" CssClass="item-image" Height="75px" ImageUrl='<%# Bind("thumbnail") %>'/>
+                    <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton"/> <br />
+                    <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="30px" Width="110px" CssClass="Delete-Button" CommandName="DeleteButton" Visible="false" BackColor="#000000" />
+                </div>
+                </ItemTemplate>
+            </asp:DataList>
+        </asp:Panel>
+    </div>
     <asp:Panel ID="BlankSpace1" runat="server" Height="30px"></asp:Panel>
-        <div class="container">        
-            <asp:Label ID="PopularMapsLabel" runat="server" Text="POPULAR DUNGEONS" CssClass="title"></asp:Label>
-            <asp:Panel ID="PopularMapsPanel" runat="server" CssClass="newest-datalist-container">
-                <asp:DataList ID="PopularMapsDataList" runat="server" CellPadding="4" RepeatDirection="Horizontal" OnItemDataBound="MapsDataList_ItemDataBound" OnItemCommand="MapsDataList_ItemCommand">
-                    <ItemTemplate>
-                    <div class="maps-template">
-                        <asp:Label ID="title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
-                        <asp:Label ID="Creator" runat="server" CssClass="item-label" Text='<%# Bind("creatorUsername") %>'></asp:Label> <br />
-                        <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" Height="0px"></asp:Label>
-                        <asp:Image ID="Thumbnail" runat="server" Width="150px" CssClass="item-image" Height="75px" ImageUrl='<%# Bind("thumbnail") %>'/>
-                        <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton"/> <br />
-                        <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="30px" Width="110px" CssClass="Delete-Button" CommandName="DeleteButton" Visible="false" BackColor="#000000" />
-                    </div>
-                    </ItemTemplate>
-                </asp:DataList>
-            </asp:Panel>
-        </div>
+    <div class="container">        
+        <asp:Label ID="PopularMapsLabel" runat="server" Text="POPULAR DUNGEONS" CssClass="title"></asp:Label>
+        <asp:Panel ID="PopularMapsPanel" runat="server" CssClass="newest-datalist-container">
+            <asp:DataList ID="PopularMapsDataList" runat="server" CellPadding="4" RepeatDirection="Horizontal" OnItemDataBound="MapsDataList_ItemDataBound" OnItemCommand="MapsDataList_ItemCommand">
+                <ItemTemplate>
+                <div class="maps-template">
+                    <asp:Label ID="title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
+                    <asp:Label ID="Creator" runat="server" CssClass="item-label" Text='<%# Bind("creatorUsername") %>'></asp:Label> <br />
+                    <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" Height="0px"></asp:Label>
+                    <asp:Image ID="Thumbnail" runat="server" Width="150px" CssClass="item-image" Height="75px" ImageUrl='<%# Bind("thumbnail") %>'/>
+                    <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton"/> <br />
+                    <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="30px" Width="110px" CssClass="Delete-Button" CommandName="DeleteButton" Visible="false" BackColor="#000000" />
+                </div>
+                </ItemTemplate>
+            </asp:DataList>
+        </asp:Panel>
+    </div>
     <asp:Panel ID="BlankSpace2" runat="server" Height="30px"></asp:Panel>
     <div class="container">
         <asp:Label ID="NewestMapsLabel" runat="server" Text="NEWEST DUNGEONS" CssClass="title"></asp:Label>
@@ -128,19 +146,5 @@
             </ItemTemplate>
         </asp:DataList>
     </asp:Panel>
-    <script>
-    function expandText(element) {
-        var fullTextElement = element.nextElementSibling;
-        var itemTemplate = element.closest('.item-template');
-        if (fullTextElement.style.display === "none") {
-            fullTextElement.style.display = "inline";
-            element.style.display = "none";
-            itemTemplate.style.height = "auto";
-        } else {
-            fullTextElement.style.display = "none";
-            element.style.display = "inline";
-            itemTemplate.style.height = "225px"; 
-        }
-    }
-    </script>
+    <script src="scripts/ExpandText.js"></script>
 </asp:Content>

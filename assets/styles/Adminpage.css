@@ -12,7 +12,7 @@
 .datalist-container, .achievements-panel {
     display: block;
     margin-top: 50px;
-    text-align: center;
+    justify-content: center;
 }
 
 .item-label {
@@ -47,14 +47,20 @@
     }
 
 .maps-template {
-    width: 100%;
+    width: 125%;
     height: 60px;
     border-radius: 8px;
     display: flex;
     align-items: center;
+    justify-content: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin: 0 auto;
 }
+
+    .maps-template .lock-button {
+        position: absolute;
+        left: 2.5%;
+    }
 
 .datalist-container, .achievements-panel {
     display: block;

@@ -54,6 +54,7 @@ namespace DungeonMaker
             PlayService PS = new PlayService();
             Game game = new Game(PlayService.countGames() + 1, (User)Session["user"], (Map)Session["map"], DateTime.Today, time, stars, deaths, victory);
             Session["game"] = game;
+            PS = new PlayService();
             PlayService.UploadGame(game);
         }
     }

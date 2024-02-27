@@ -19,8 +19,9 @@ namespace DungeonMaker
                 Session["ds"] = GeneralService.GetDataSetByQuery(query, "Games");
                 GamesDataList.DataSource = (DataSet)Session["ds"];
                 GamesDataList.DataBind();
-                if (GamesDataList.Items.Count == 0)
-                    EmptyLabel.Text = ((User)Session["user"]).elevation == 2 ? "This user has not played any games yet." : "Play some games for them appear here!";
+                int count = GamesDataList.Items.Count;
+                if (count == 0) EmptyLabel.Text = ((User)Session["user"]).elevation == 2 ? "This user has not played any games yet." : "Play some games for them appear here!";
+                if (count > 5) ScriptManager.RegisterStartupScript(this, GetType(), "Padding", "changePadding();", true);
             }
         }
         protected void GamesDataList_ItemDataBound(object sender, DataListItemEventArgs e)

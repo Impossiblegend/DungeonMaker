@@ -70,9 +70,9 @@ namespace DungeonMaker
                 dataTable.Columns.Add("Total Time Played");
                 dataTable.Columns.Add("Since Joined");
                 row = dataTable.NewRow();
-                row["Maps Created"] = GeneralService.GetStringByQuery("SELECT COUNT(mapID) FROM Maps WHERE creator = '" + userpage.email + "'");
-                row["Games Played"] = GeneralService.GetStringByQuery("SELECT COUNT(gameID) FROM Games WHERE player = '" + userpage.email + "'");
-                row["Achievements"] = GeneralService.GetStringByQuery("SELECT COUNT(achievement) FROM UserAchievements WHERE awardee = '" + userpage.email + "'");
+                row["Maps Created"] = "x" + GeneralService.GetStringByQuery("SELECT COUNT(mapID) FROM Maps WHERE creator = '" + userpage.email + "'");
+                row["Games Played"] = "x" + GeneralService.GetStringByQuery("SELECT COUNT(gameID) FROM Games WHERE player = '" + userpage.email + "'");
+                row["Achievements"] = "x" + GeneralService.GetStringByQuery("SELECT COUNT(achievement) FROM UserAchievements WHERE awardee = '" + userpage.email + "'");
                 row["Stars Collected"] = "x" + SumGamesField("starsCollected");
                 row["Deaths"] = "x" + SumGamesField("deathCount");
                 row["Total Time Played"] = Connect.SecToMin(SumGamesField("timeElapsed"));

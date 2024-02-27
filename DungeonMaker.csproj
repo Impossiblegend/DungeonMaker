@@ -132,6 +132,7 @@
     <Content Include="Play.aspx" />
     <Content Include="Register.aspx" />
     <Content Include="scripts\DataListAnimation.js" />
+    <Content Include="scripts\ExpandText.js" />
     <Content Include="scripts\Play.js" />
     <Content Include="scripts\Create.js" />
     <Content Include="scripts\Userpage.js" />
