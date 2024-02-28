@@ -21,10 +21,13 @@ namespace DungeonMaker
         private User userpage, user;
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (userpage == null) userpage = (User)Session["userPage"];
+            if (user == null) user = (User)Session["user"];
+            UserService US = new UserService();
+            PlayService PS = new PlayService();
+            AchievementService AS = new AchievementService();
             if (!IsPostBack)
             {
-                userpage = (User)Session["userPage"];
-                user = (User)Session["user"];
                 string query = "SELECT mapID, mapName, Maps.creationDate, thumbnail, isPublic FROM Maps WHERE creator = '" + userpage.email + "' ORDER BY mapID DESC";
                 ds = GeneralService.GetDataSetByQuery(query, "Maps");
                 MapsDataList.DataSource = ds;
@@ -32,9 +35,6 @@ namespace DungeonMaker
                 MapsDataList.DataBind();
                 if (MapsDataList.Items.Count == 0) 
                     EmptyLabel.Text = user == userpage ? "Create dungeons for them to appear here!" : "This user has not created any dungeons yet.";
-                UserService US = new UserService();
-                PlayService PS = new PlayService();
-                AchievementService AS = new AchievementService();
                 Avatar.ImageUrl = userpage.profilePicture;
                 UsernameLabel.Text = userpage.username;
                 AvatarUploader.Attributes.Add("accept", ".jpg,.png");
@@ -80,6 +80,12 @@ namespace DungeonMaker
                 dataTable.Rows.Add(row);
                 StatsGridView.DataSource = dataTable;
                 StatsGridView.DataBind();
+            }
+            if (user == userpage || user.IsAdmin())
+            { //Rewritten with each postback for AJAX dynamic text changes
+                UserGridView.Rows[0].Cells[0].Text = userpage.username;
+                UserGridView.Rows[0].Cells[1].Text = userpage.GetRedactedPassword();
+                UsernameLabel.Text = userpage.username;
             }
         }
         private int SumGamesField(string field) 
@@ -217,10 +223,19 @@ namespace DungeonMaker
             userpageInstance.ChangeField(int.Parse(column), newValue);
         }
         private void ChangeField(int column, string value)
-        { //Reflects GridView changes to database
-            if (column == 0 && Regex.IsMatch(value, "^[a-zA-Z0-9]*$") && !UserService.FieldExists("username", value)) UserService.UpdateFieldByEmail("username", value, (User)Session["userPage"]);
+        { //Reflects GridView changes to database and Session
+            User userpage = (User)Session["userPage"];
+            if (column == 0 && Regex.IsMatch(value, "^[a-zA-Z0-9]*$") && !UserService.FieldExists("username", value))
+            {
+                UserService.UpdateFieldByEmail("username", value, userpage);
+                ((User)Session["userPage"]).username = value;
+            }
             else ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('Username change failed. It must only consist of (latin) letters and numbers. If not applicable, this username may already exist.');", true);
-            if (column == 1 && value.Length > 3 && value.Length < 13) UserService.UpdateFieldByEmail("userPassword", value, (User)Session["userPage"]);
+            if (column == 1 && value.Length > 3 && value.Length < 13) 
+            { 
+                UserService.UpdateFieldByEmail("userPassword", value, userpage); 
+                ((User)Session["userPage"]).userPassword = value; 
+            }
             else ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('Password change failed. It must be between 3 and 13 characters.');", true);
         }
     }

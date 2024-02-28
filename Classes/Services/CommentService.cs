@@ -34,8 +34,8 @@ namespace DungeonMaker.Classes.Services
         }
         public static void SendComment(User user, string feedback, int rating)
         { //Uploads feedback and rating into database
-            command.CommandText = "INSERT INTO Feedback(sender, feedbackBody, starRating, dateSent, isFeatured) VALUES(@sender, @feedback, @rating, @dateSent, false)";
-            command.Parameters.AddWithValue("@sender", user.email);
+            command.CommandText = "INSERT INTO Feedback(sender, feedbackBody, starRating, dateSent, isFeatured) VALUES(@email, @feedback, @rating, @dateSent, false)";
+            command.Parameters.AddWithValue("@email", user.email);
             command.Parameters.AddWithValue("@feedback", feedback);
             command.Parameters.AddWithValue("@rating", rating);
             command.Parameters.AddWithValue("@dateSent", DateTime.Today);

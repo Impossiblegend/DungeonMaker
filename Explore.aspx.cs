@@ -29,7 +29,8 @@ namespace DungeonMaker
             if (game != null)
             { //Shows previous game results in stats panel
                 string nbsp = "<br />&nbsp;&nbsp;&nbsp;";
-                ((Literal)statsList.FindControl("prevGame")).Text = "Previous game summary:<br />" + nbsp + //<b>&#x2022;</b>
+                //<b>&#x2022;</b>
+                ((Literal)statsList.FindControl("prevGame")).Text = "Previous game summary:<br />" + nbsp +
                     "<b>Result</b> " + (game.victory ? "victory" : "defeat") + nbsp +
                     "<b>Deaths</b> x" + game.deaths + nbsp +
                     "<b>Stars</b> x" + game.stars + nbsp +
@@ -43,7 +44,7 @@ namespace DungeonMaker
                     DataTable table = GeneralService.GetDataSetByQuery(RecentMapsQuery, "Maps").Tables[0], distinctDataTable = table.Clone();
                     //DISTINCT does not work with ORDER BY in Access, so the following code selects distinct items programatically
                     HashSet<string> distinctItems = new HashSet<string>();
-                    //HashSet<T> does not allow duplicate elements. If you try to add an element that already exists in the HashSet, the addition will be ignored.
+                    //HashSet<T> does not allow duplicate elements. If you try to add an element that already exists in it, it'll be ignored.
                     foreach (DataRow row in table.Rows)
                     {
                         string key = row["mapID"].ToString();
@@ -61,6 +62,10 @@ namespace DungeonMaker
                     RecentlyPlayedPanel.Visible = true;
                 }
             }
+            //Default sort: newest. Queries must reset with each postback
+            mapQuery = "SELECT Maps.mapID, Maps.mapName, Users.username, Maps.thumbnail FROM (Users INNER JOIN Maps ON " +
+                "Users.email = Maps.creator) WHERE mapName LIKE '%%' AND isPublic ORDER BY mapID DESC";
+            userQuery = "SELECT email, username, profilePicture FROM Users WHERE username LIKE '%%' ORDER BY Users.creationDate";
             if (!IsPostBack) 
             {
                 DataListMultiView.ActiveViewIndex = 0; //Users view index = 0, Dungeons view index = 1, more TBD
@@ -100,11 +105,6 @@ namespace DungeonMaker
                     "INNER JOIN Users ON Users.email = CombinedActivities.email GROUP BY Users.username, Users.email ORDER BY SUM(CombinedActivities.activity_count) DESC";
                 ((Literal)statsList.FindControl("mostActiveUser")).Text = GeneralService.GetStringByQuery(query); //Counts maps created and games played equally
             }
-            //Default sort: newest. Queries reset each search (postback)
-            mapQuery = "SELECT Maps.mapID, Maps.mapName, Users.username, Maps.thumbnail FROM (Users INNER JOIN Maps ON " +
-                "Users.email = Maps.creator) WHERE mapName LIKE '%%' AND isPublic ORDER BY mapID DESC";
-            userQuery = "SELECT email, username, profilePicture FROM Users WHERE username " +
-                "LIKE '%%' ORDER BY Users.creationDate";
             foreach (DataListItem item in FeedbackDataList.Items)
             { //Stars are generated in runtime so must be recreated with each postback
                 Label starRating = (Label)item.FindControl("starRating");
@@ -122,6 +122,7 @@ namespace DungeonMaker
                 }
             }
         }
+
         protected void SearchButton_Click(object sender, ImageClickEventArgs e)
         { //Searches the database based on selected parameters
             SearchResultsLabel.Visible = true;
@@ -228,6 +229,7 @@ namespace DungeonMaker
                 }
             }
         }
+
         protected void UsersDataList_ItemCommand(object source, DataListCommandEventArgs e)
         {
             User userpage = new User(((Label)e.Item.FindControl("Email")).Text);
@@ -248,6 +250,7 @@ namespace DungeonMaker
                     break;
             }
         }
+
         protected void UsersDataList_ItemDataBound(object sender, DataListItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
@@ -262,6 +265,7 @@ namespace DungeonMaker
                 if (user.email == this.user.email) e.Item.Enabled = false;
             }
         }
+
         protected void MapsDataList_ItemDataBound(object sender, DataListItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
@@ -282,6 +286,7 @@ namespace DungeonMaker
                 }
             }
         }
+
         private bool IsExist(int mapID) 
         { 
             foreach(Map map in (List<Map>)Cache["playedMaps"]) 
@@ -289,10 +294,11 @@ namespace DungeonMaker
                         return true;
             return false;
         }
+
         protected void FeedbackDataList_ItemDataBound(object sender, DataListItemEventArgs e)
-        {
+        { //Truncate long text and make it expandable through js
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
+            { 
                 Label body = (Label)e.Item.FindControl("Feedback");
                 if (body.Text.Length > 100) body.Text = "<span class='expandable-text' onclick='expandText(this)'>" + body.Text.Remove(100) + "..." + "</span>" +
                         "<span class='full-text' style='display:none;'>" + body.Text + "</span>";

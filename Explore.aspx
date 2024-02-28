@@ -32,28 +32,28 @@
             <asp:View ID="Users" runat="server">
             <asp:DataList ID="UsersDataList" runat="server" RepeatColumns="5" CellPadding="4" OnItemCommand="UsersDataList_ItemCommand" RepeatDirection="Horizontal" OnItemDataBound="UsersDataList_ItemDataBound">
                 <ItemTemplate>
-                <div class="users-template">
-                    <asp:Label ID="User" runat="server" CssClass="item-label" Text='<%# Bind("username") %>'></asp:Label> <br />
-                    <asp:Label ID="Email" runat="server" Visible="false" Text='<%# Bind("email") %>'></asp:Label>
-                    <asp:Image ID="ProfilePicture" runat="server" Width="110px" Height="110px" CssClass="profilePicture" ImageUrl='<%# Bind("profilePicture") %>' /><br />
-                    <asp:Button ID="VisitButton" runat="server" Text="Visit Page" Height="25px" Width="110px" CssClass="item-button" CommandName="Visit_Click" />
-                    <asp:Button ID="BanButton" runat="server" Text="Ban" Height="25px" Width="110px" CssClass="item-button" Visible="false" CommandName="Ban_Click"/>
-                    <asp:Button ID="LogsButton" runat="server" Text="View Logs" Height="25px" Width="110px" CssClass="item-button" Visible="false" CommandName="Logs_Click"/>
-                </div>
+                    <div class="users-template">
+                        <asp:Label ID="User" runat="server" CssClass="item-label" Text='<%# Bind("username") %>'></asp:Label> <br />
+                        <asp:Label ID="Email" runat="server" Visible="false" Text='<%# Bind("email") %>'></asp:Label>
+                        <asp:Image ID="ProfilePicture" runat="server" Width="110px" Height="110px" CssClass="profilePicture" ImageUrl='<%# Bind("profilePicture") %>' /><br />
+                        <asp:Button ID="VisitButton" runat="server" Text="Visit Page" Height="25px" Width="110px" CssClass="item-button" CommandName="Visit_Click" />
+                        <asp:Button ID="BanButton" runat="server" Text="Ban" Height="25px" Width="110px" CssClass="item-button" Visible="false" CommandName="Ban_Click"/>
+                        <asp:Button ID="LogsButton" runat="server" Text="View Logs" Height="25px" Width="110px" CssClass="item-button" Visible="false" CommandName="Logs_Click"/>
+                    </div>
                 </ItemTemplate>
             </asp:DataList>
             </asp:View>
             <asp:View ID="Dungeons" runat="server">
             <asp:DataList ID="MapsDataList" runat="server" RepeatColumns="4" CellPadding="4" OnItemCommand="MapsDataList_ItemCommand" RepeatDirection="Horizontal" OnItemDataBound="MapsDataList_ItemDataBound">
                 <ItemTemplate>
-                <div class="maps-template">
-                    <asp:Label ID="Title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
-                    <asp:Label ID="Creator" runat="server" CssClass="item-label" Text='<%# Bind("username") %>'></asp:Label> <br />
-                    <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" Width="0px"></asp:Label>
-                    <asp:Image ID="Thumbnail" runat="server" Width="200px" CssClass="item-image" Height="100px" ImageUrl='<%# Bind("thumbnail") %>'/>
-                    <asp:Button ID="PlayButton" runat="server" Text="Play" Height="35px" Width="145px" CssClass="item-button"  CommandName="PlayButton"/>
-                    <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="35px" Width="145px" CssClass="Delete-Button" CommandName="DeleteButton" Visible="false" BackColor="#000000" />
-                </div>
+                    <div class="maps-template">
+                        <asp:Label ID="Title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
+                        <asp:Label ID="Creator" runat="server" CssClass="item-label" Text='<%# Bind("username") %>'></asp:Label> <br />
+                        <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" Width="0px"></asp:Label>
+                        <asp:Image ID="Thumbnail" runat="server" Width="200px" CssClass="item-image" Height="100px" ImageUrl='<%# Bind("thumbnail") %>'/>
+                        <asp:Button ID="PlayButton" runat="server" Text="Play" Height="35px" Width="145px" CssClass="item-button"  CommandName="PlayButton"/>
+                        <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="35px" Width="145px" CssClass="Delete-Button" CommandName="DeleteButton" Visible="false" BackColor="#000000" />
+                    </div>
                 </ItemTemplate>
             </asp:DataList>
             </asp:View>
@@ -65,14 +65,14 @@
         <asp:Panel ID="RecentlyPlayedPanel" runat="server" CssClass="newest-datalist-container" Visible="false">
             <asp:DataList ID="RecentlyPlayedDataList" runat="server" CellPadding="4" RepeatDirection="Horizontal" OnItemDataBound="MapsDataList_ItemDataBound" OnItemCommand="MapsDataList_ItemCommand">
                 <ItemTemplate>
-                <div class="maps-template">
-                    <asp:Label ID="title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
-                    <asp:Label ID="Creator" runat="server" CssClass="item-label"></asp:Label> <br />
-                    <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" Height="0px"></asp:Label>
-                    <asp:Image ID="Thumbnail" runat="server" Width="150px" CssClass="item-image" Height="75px" ImageUrl='<%# Bind("thumbnail") %>'/>
-                    <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton"/> <br />
-                    <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="30px" Width="110px" CssClass="Delete-Button" CommandName="DeleteButton" Visible="false" BackColor="#000000" />
-                </div>
+                    <div class="maps-template">
+                        <asp:Label ID="title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
+                        <asp:Label ID="Creator" runat="server" CssClass="item-label"></asp:Label> <br />
+                        <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" ></asp:Label>
+                        <asp:Image ID="Thumbnail" runat="server" Width="150px" CssClass="item-image" Height="75px" ImageUrl='<%# Bind("thumbnail") %>'/>
+                        <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton"/> <br />
+                        <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="30px" Width="110px" CssClass="Delete-Button" CommandName="DeleteButton" Visible="false" BackColor="#000000" />
+                    </div>
                 </ItemTemplate>
             </asp:DataList>
         </asp:Panel>
@@ -83,14 +83,14 @@
         <asp:Panel ID="PopularMapsPanel" runat="server" CssClass="newest-datalist-container">
             <asp:DataList ID="PopularMapsDataList" runat="server" CellPadding="4" RepeatDirection="Horizontal" OnItemDataBound="MapsDataList_ItemDataBound" OnItemCommand="MapsDataList_ItemCommand">
                 <ItemTemplate>
-                <div class="maps-template">
-                    <asp:Label ID="title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
-                    <asp:Label ID="Creator" runat="server" CssClass="item-label" Text='<%# Bind("creatorUsername") %>'></asp:Label> <br />
-                    <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" Height="0px"></asp:Label>
-                    <asp:Image ID="Thumbnail" runat="server" Width="150px" CssClass="item-image" Height="75px" ImageUrl='<%# Bind("thumbnail") %>'/>
-                    <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton"/> <br />
-                    <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="30px" Width="110px" CssClass="Delete-Button" CommandName="DeleteButton" Visible="false" BackColor="#000000" />
-                </div>
+                    <div class="maps-template">
+                        <asp:Label ID="title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
+                        <asp:Label ID="Creator" runat="server" CssClass="item-label" Text='<%# Bind("creatorUsername") %>'></asp:Label> <br />
+                        <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" ></asp:Label>
+                        <asp:Image ID="Thumbnail" runat="server" Width="150px" CssClass="item-image" Height="75px" ImageUrl='<%# Bind("thumbnail") %>'/>
+                        <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton"/> <br />
+                        <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="30px" Width="110px" CssClass="Delete-Button" CommandName="DeleteButton" Visible="false" BackColor="#000000" />
+                    </div>
                 </ItemTemplate>
             </asp:DataList>
         </asp:Panel>
@@ -101,14 +101,14 @@
         <asp:Panel ID="NewestMapsPanel" runat="server" CssClass="newest-datalist-container">
             <asp:DataList ID="NewestMapsDataList" runat="server" CellPadding="4" RepeatDirection="Horizontal" OnItemDataBound="MapsDataList_ItemDataBound" OnItemCommand="MapsDataList_ItemCommand">
                 <ItemTemplate>
-                <div class="maps-template">
-                    <asp:Label ID="Title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
-                    <asp:Label ID="Creator" runat="server" CssClass="item-label" Text='<%# Bind("username") %>'></asp:Label> <br />
-                    <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" Height="0px"></asp:Label>
-                    <asp:Image ID="Thumbnail" runat="server" Width="150px" CssClass="item-image" Height="75px" ImageUrl='<%# Bind("thumbnail") %>'/>
-                    <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton"/> <br />
-                    <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="30px" Width="110px" CssClass="Delete-Button" CommandName="DeleteButton" Visible="false" BackColor="#000000" />
-                </div>
+                    <div class="maps-template">
+                        <asp:Label ID="Title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
+                        <asp:Label ID="Creator" runat="server" CssClass="item-label" Text='<%# Bind("username") %>'></asp:Label> <br />
+                        <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" Height="0px"></asp:Label>
+                        <asp:Image ID="Thumbnail" runat="server" Width="150px" CssClass="item-image" Height="75px" ImageUrl='<%# Bind("thumbnail") %>'/>
+                        <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton"/> <br />
+                        <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="30px" Width="110px" CssClass="Delete-Button" CommandName="DeleteButton" Visible="false" BackColor="#000000" />
+                    </div>
                 </ItemTemplate>
             </asp:DataList>
         </asp:Panel>

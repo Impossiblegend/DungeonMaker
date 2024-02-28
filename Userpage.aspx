@@ -4,10 +4,10 @@
     <script src="scripts/jquery-3.7.1.js"></script>
     <link rel="stylesheet" href="assets/styles/Userpage.css" />
     <div class="center-container">
-        <asp:Panel ID="ProfilePanel" runat="server" CssClass="panel">
+        <asp:Panel ID="ProfilePanel" runat="server" CssClass="panel" ClientIDMode="Static">
             <asp:ImageButton ID="Avatar" runat="server" Height="100px" Width="100px" CssClass="picture" ClientIDMode="Static" />
             <asp:FileUpload ID="AvatarUploader" runat="server" Visible="false" ClientIDMode="Static" />
-            <asp:Label ID="UsernameLabel" runat="server" CssClass="item-label" Text=" "></asp:Label>
+            <asp:Label ID="UsernameLabel" runat="server" CssClass="item-label" Text=" " ClientIDMode="Static"></asp:Label>
             <div class="gridview-container">
                 <asp:GridView ID="UserGridView" runat="server" AutoGenerateColumns="False" CssClass="gridview-style">
                     <Columns>

@@ -37,6 +37,7 @@ namespace DungeonMaker
             {
                 if (CommentService.CanUpload(user))
                 {
+                    CommentService CS = new CommentService();
                     try { CommentService.SendComment(user, Contact_Textbox.Text, rating); }
                     catch (Exception ex){ ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + ex.Message + "');", true); return; }
                     SendButton.Text = "SENT!";

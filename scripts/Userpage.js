@@ -44,7 +44,7 @@ cells.forEach(function (cell, columnIndex) {
                 let newValue = input.value;
                 if (columnIndex != 1) cell.textContent = newValue;
                 else for (let i = 0; i < newValue.length; i++) cell.textContent = newValue.replace(/./g, '*');
-                if (columnIndex == 0) document.getElementById('UsernameLabel').value = newValue;
+                if (columnIndex == 0) document.getElementById('UsernameLabel').innerText = newValue;
                 $.ajax({
                     type: "POST",
                     url: "Userpage.aspx/TextChanged",
