@@ -30,7 +30,7 @@ namespace DungeonMaker
                     Logout.Text = "Login";
                 }
                 ProfilePic.ImageUrl = user.profilePicture;
-                if (user.elevation == 2) Admin.Visible = true;
+                if (user.IsAdmin()) Admin.Visible = true;
             }
         }
         protected void About_Click(object sender, EventArgs e) { Response.Redirect("About.aspx"); }

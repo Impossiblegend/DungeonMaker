@@ -25,7 +25,7 @@ namespace DungeonMaker
             Game game = null;
             PlayService PS = new PlayService();
             if (Session["game"] != null) game = (Game)Session["game"]; //Saves pulling from database
-            else if (user.elevation > 0) game = PlayService.GetLastGame(user);
+            else if (!user.IsBanned()) game = PlayService.GetLastGame(user);
             if (game != null)
             { //Shows previous game results in stats panel
                 string nbsp = "<br />&nbsp;&nbsp;&nbsp;";
@@ -36,13 +36,13 @@ namespace DungeonMaker
                     "<b>Time</b> " + Connect.SecToMin(game.time) + nbsp +
                     "<b>Map</b> " + game.map.mapName.Remove(game.map.mapName.Length - 1); //Remove map name handler suffix
                 ScriptManager.RegisterStartupScript(this, GetType(), "Display", "document.getElementById('prevList').style.display = 'block';", true);
-                if (user.elevation > 0)
+                if (!user.IsBanned())
                 {
                     string RecentMapsQuery = "SELECT TOP 5 Maps.mapID, Maps.mapName, Maps.thumbnail FROM ((Games INNER JOIN Users ON Games.player = Users.email) " +
                         "INNER JOIN Maps ON Games.mapID = Maps.mapID) WHERE Games.player = '" + user.email + "' ORDER BY Games.gameID DESC";
                     DataTable table = GeneralService.GetDataSetByQuery(RecentMapsQuery, "Maps").Tables[0], distinctDataTable = table.Clone();
                     //DISTINCT does not work with ORDER BY in Access, so the following code selects distinct items programatically
-                    HashSet<string> distinctItems = new HashSet<string>(); //part of System.Collections.Generic
+                    HashSet<string> distinctItems = new HashSet<string>();
                     //HashSet<T> does not allow duplicate elements. If you try to add an element that already exists in the HashSet, the addition will be ignored.
                     foreach (DataRow row in table.Rows)
                     {
@@ -64,6 +64,12 @@ namespace DungeonMaker
             if (!IsPostBack) 
             {
                 DataListMultiView.ActiveViewIndex = 0; //Users view index = 0, Dungeons view index = 1, more TBD
+                DataTable mapsTbl = GeneralService.GetDataSetByQuery("SELECT mapID FROM Maps", "Maps").Tables[0];
+                List<Map> playedMaps = new List<Map>();
+                foreach (DataRow row in mapsTbl.Rows)
+                    if (PlayService.countGames(Convert.ToInt32(row["mapID"])) > 0)
+                        playedMaps.Add(new Map(Convert.ToInt32(row["mapID"])));
+                Cache["playedMaps"] = playedMaps;
                 string query = "SELECT Maps.mapID, Maps.mapName, Maps.thumbnail, COUNT(Games.mapID) AS playCount, Users.username AS creatorUsername " +
                     "FROM (Maps LEFT JOIN Games ON Maps.mapID = Games.mapID) LEFT JOIN Users ON Maps.creator = Users.email WHERE isPublic " +
                     "GROUP BY Maps.mapID, Maps.mapName, Maps.thumbnail, Users.username ORDER BY COUNT(Games.mapID) DESC";
@@ -76,7 +82,7 @@ namespace DungeonMaker
                 query = "SELECT Feedback.*, Users.username, Users.profilePicture FROM Users INNER JOIN Feedback ON Feedback.sender = Users.email WHERE Feedback.isFeatured";
                 FeedbackDataList.DataSource = GeneralService.GetDataSetByQuery(query, "Feedback");
                 FeedbackDataList.DataBind();
-                if (user.elevation == 2)
+                if (user.IsAdmin())
                 { //Enlarges datalists' item styles to fit all admin buttons and shows banned user filtering
                     MapsDataList.ItemStyle.CssClass = "admin-maps-template";
                     UsersDataList.ItemStyle.CssClass = "admin-users-template";
@@ -94,7 +100,7 @@ namespace DungeonMaker
                     "INNER JOIN Users ON Users.email = CombinedActivities.email GROUP BY Users.username, Users.email ORDER BY SUM(CombinedActivities.activity_count) DESC";
                 ((Literal)statsList.FindControl("mostActiveUser")).Text = GeneralService.GetStringByQuery(query); //Counts maps created and games played equally
             }
-            //Default sort: newest
+            //Default sort: newest. Queries reset each search (postback)
             mapQuery = "SELECT Maps.mapID, Maps.mapName, Users.username, Maps.thumbnail FROM (Users INNER JOIN Maps ON " +
                 "Users.email = Maps.creator) WHERE mapName LIKE '%%' AND isPublic ORDER BY mapID DESC";
             userQuery = "SELECT email, username, profilePicture FROM Users WHERE username " +
@@ -138,7 +144,7 @@ namespace DungeonMaker
                     break;
             }
             index = query.IndexOf('%') + 1;
-            if (user.elevation == 2) 
+            if (user.IsAdmin()) 
             {
                 if (isDungeons) query = query.Remove(query.IndexOf("AND"), 13); //Show private maps by removing "AND isPublic"
                 else
@@ -181,7 +187,7 @@ namespace DungeonMaker
         protected void TableSelect_SelectedIndexChanged(object sender, EventArgs e)
         { //Changes search objective (users/dungeons)
             bool flag = TableSelect.SelectedValue == "Dungeons";
-            if (user.elevation == 2) BannedCBL.Visible = !flag;
+            if (user.IsAdmin()) BannedCBL.Visible = !flag;
             SortBy.Items[4].Enabled = flag; //most popular
             SortBy.Items[5].Enabled = flag; //least popular
             SearchBar.Attributes["placeholder"] = "Search for " + (flag ? "dungeons..." : "users...");
@@ -246,13 +252,13 @@ namespace DungeonMaker
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                if (this.user.elevation == 2)
+                if (this.user.IsAdmin())
                 {
                     ((Button)e.Item.FindControl("BanButton")).Visible = true;
                     ((Button)e.Item.FindControl("LogsButton")).Visible = true;
                 }
                 User user = new User(((Label)e.Item.FindControl("Email")).Text);
-                if (user.elevation == -1) ((Button)e.Item.FindControl("BanButton")).Text = "Unban";
+                if (user.IsBanned()) ((Button)e.Item.FindControl("BanButton")).Text = "Unban";
                 if (user.email == this.user.email) e.Item.Enabled = false;
             }
         }
@@ -260,17 +266,28 @@ namespace DungeonMaker
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                Map map = new Map(int.Parse(((Label)e.Item.FindControl("mapID")).Text));
-                Button bt = (Button)e.Item.FindControl("DeleteButton");
-                if (PlayService.countGames(map.mapID) > 0)
-                { //If map exists in Games table, changes to enable/disable button instead of delete button
-                    ((Button)e.Item.FindControl("PlayButton")).Enabled = map.isValid;
-                    bt.Text = map.isValid ? "Disable" : "Enable";
-                }
-                if (user.elevation == 2) bt.Visible = true;
                 Label title = (Label)e.Item.FindControl("Title");
                 title.Text = title.Text.Remove(title.Text.Length - 1); //Remove thumbnail name handler (map count suffix)
+                if (user.IsAdmin())
+                {
+                    int mapID = int.Parse(((Label)e.Item.FindControl("mapID")).Text);
+                    Button bt = (Button)e.Item.FindControl("DeleteButton");
+                    if (IsExist(mapID))
+                    { //If map exists in Games table, delete button repurposes to an enable/disable button
+                        Map map = new Map(mapID);
+                        ((Button)e.Item.FindControl("PlayButton")).Enabled = map.isValid;
+                        bt.Text = map.isValid ? "Disable" : "Enable";
+                    }
+                    bt.Visible = true;
+                }
             }
+        }
+        private bool IsExist(int mapID) 
+        { 
+            foreach(Map map in (List<Map>)Cache["playedMaps"]) 
+                if(map.mapID == mapID) 
+                        return true;
+            return false;
         }
         protected void FeedbackDataList_ItemDataBound(object sender, DataListItemEventArgs e)
         {

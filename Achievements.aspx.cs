@@ -22,7 +22,7 @@ namespace DungeonMaker
                 Session["ds"] = ds;
                 AchievementsDataList.DataBind();
                 if (AchievementsDataList.Items.Count == 0)
-                    EmptyLabel.Text = ((User)Session["user"]).elevation == 2 ? "This user has not achieved anything yet." : "Play some games to get achievements!";
+                    EmptyLabel.Text = ((User)Session["user"]).IsAdmin() ? "This user has not achieved anything yet." : "Play some games to get achievements!";
             }
         }
         protected void AchievementsDataList_ItemDataBound(object sender, DataListItemEventArgs e)

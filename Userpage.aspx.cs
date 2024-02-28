@@ -40,7 +40,7 @@ namespace DungeonMaker
                 AvatarUploader.Attributes.Add("accept", ".jpg,.png");
                 DataTable dataTable;
                 DataRow row;
-                if (user == userpage || user.elevation == 2)
+                if (user == userpage || user.IsAdmin())
                 {
                     dataTable = new DataTable();
                     dataTable.Columns.Add("Username");
@@ -158,27 +158,20 @@ namespace DungeonMaker
                 Label date = (Label)e.Item.FindControl("CreationDate");
                 date.Text = date.Text.Remove(date.Text.IndexOf(' '));
                 bool isPublic = (bool)DataBinder.Eval(e.Item.DataItem, "isPublic");
-                if (user.email == userpage.email || user.elevation == 2)
+                if (user.email == userpage.email || user.IsAdmin())
                 { //Initializes privacyButton if this is the user's userpage
                     Button btn = (Button)e.Item.FindControl("PrivacyButton");
                     btn.Text = isPublic ? "Public" : "Private";
                     btn.BackColor = isPublic ? ColorTranslator.FromHtml("#009900") : ColorTranslator.FromHtml("#990000");
                     btn.Visible = true;
                     ((Button)e.Item.FindControl("RenameButton")).Visible = true;
-                    Map map = new Map(int.Parse(((Label)e.Item.FindControl("mapID")).Text));
+                    int mapID = int.Parse(((Label)e.Item.FindControl("mapID")).Text);
                     Button btn2 = (Button)e.Item.FindControl("DeleteButton");
-                    if (PlayService.countGames(map.mapID) > 0)
-                    { //If map exists in Games table, enable/disable button instead of delete button
-                        if (map.isValid)
-                        {
-                            btn2.Text = "Disable";
-                            ((Button)e.Item.FindControl("PlayButton")).Enabled = true;
-                        }
-                        else
-                        {
-                            btn2.Text = "Enable";
-                            ((Button)e.Item.FindControl("PlayButton")).Enabled = false;
-                        }
+                    if (IsExist(mapID))
+                    { //If map exists in Games table, delete button repurposes to an enable/disable button
+                        Map map = new Map(mapID);
+                        btn2.Text = map.isValid ? "Disable" : "Enable";
+                        ((Button)e.Item.FindControl("PlayButton")).Enabled = map.isValid;
                     }
                     btn2.Visible = true;
                 }
@@ -186,6 +179,13 @@ namespace DungeonMaker
                 string title = ((Label)e.Item.FindControl("Title")).Text;
                 ((Label)e.Item.FindControl("Title")).Text = title.Remove(title.Length - 1);
             }
+        }
+        private bool IsExist(int mapID)
+        {
+            foreach (Map map in (List<Map>)Cache["playedMaps"])
+                if (map.mapID == mapID)
+                    return true;
+            return false;
         }
         [WebMethod]
         public static void AvatarUpload() 

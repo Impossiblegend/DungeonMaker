@@ -27,8 +27,9 @@
             <asp:DataList ID="AchievementsDataList" runat="server" OnItemDataBound="AchievementsDataList_ItemDataBound" OnItemCommand="AchievementsDataList_ItemCommand" >
                 <ItemTemplate>
                     <div class="maps-template">
-                        <asp:ImageButton ID="LockButton" runat="server" CssClass="lock-button" ImageUrl="assets/ui/" CommandName="LockButton_Click" Width="27px" Height="40px" />
                         &nbsp;&nbsp;&nbsp;&nbsp;
+                        <asp:ImageButton ID="LockButton" runat="server" CssClass="lock-button" ImageUrl="assets/ui/" CommandName="LockButton_Click" Width="27px" Height="40px" />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <asp:Label ID="Title" runat="server" Text='<%# Bind("achievementTitle") %>' Font-Bold="true" CssClass="other-labels" ></asp:Label>
                         <asp:Label ID="Bar" runat="server" Text=" | " CssClass="other-labels"></asp:Label>
                         <asp:Label ID="DescriptionBody" runat="server" Text='<%# Bind("description") %>' CssClass="other-labels"></asp:Label>

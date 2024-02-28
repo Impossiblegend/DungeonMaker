@@ -25,7 +25,7 @@ namespace DungeonMaker
                 User user = new User();
                 try { user = new User(UserName_TextBox.Text, Password_TextBox.Text); }
                 catch { IsLogIn.Text = "Username or password are incorrect"; return; }
-                if (user.elevation > 0)
+                if (!user.IsBanned())
                 {
                     Session["user"] = user;
                     Session["userPage"] = user;

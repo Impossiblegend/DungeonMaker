@@ -20,7 +20,7 @@ namespace DungeonMaker
                 GamesDataList.DataSource = (DataSet)Session["ds"];
                 GamesDataList.DataBind();
                 int count = GamesDataList.Items.Count;
-                if (count == 0) EmptyLabel.Text = ((User)Session["user"]).elevation == 2 ? "This user has not played any games yet." : "Play some games for them appear here!";
+                if (count == 0) EmptyLabel.Text = ((User)Session["user"]).IsAdmin() ? "This user has not played any games yet." : "Play some games for them appear here!";
                 if (count > 5) ScriptManager.RegisterStartupScript(this, GetType(), "Padding", "changePadding();", true);
             }
         }
