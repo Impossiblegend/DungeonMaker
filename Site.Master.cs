@@ -24,13 +24,13 @@ namespace DungeonMaker
             {
                 if (user.elevation == 0)
                 {
-                    Create.Visible = false;
-                    Achievements.Visible = false;
-                    Gamelog.Visible = false;
-                    Logout.Text = "Login";
+                    CreateButton.Visible = false;
+                    AchievementsButton.Visible = false;
+                    GamelogButton.Visible = false;
+                    LogoutButton.Text = "Login";
                 }
                 ProfilePic.ImageUrl = user.profilePicture;
-                if (user.IsAdmin()) Admin.Visible = true;
+                if (user.IsAdmin()) AdminButton.Visible = true;
             }
         }
         protected void About_Click(object sender, EventArgs e) { Response.Redirect("About.aspx"); }
@@ -59,5 +59,6 @@ namespace DungeonMaker
         }
         protected void Create_Click(object sender, EventArgs e) { Response.Redirect("Create.aspx"); }
         protected void Admin_Click(object sender, EventArgs e) { Response.Redirect("Adminpage.aspx"); }
+        protected void Store_Click(object sender, EventArgs e) { Response.Redirect("Store.aspx"); }
     }
 }

@@ -9,7 +9,7 @@ using System.Data;
 
 namespace DungeonMaker
 {
-    public partial class Gamelog : System.Web.UI.Page
+    public partial class GamelogButton : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

@@ -23,15 +23,16 @@ namespace DungeonMaker
                 BG.Style["Width"] = "100%";
                 BG.Style["Height"] = "100%";
                 BG.ImageUrl = game.map.thumbnail;
-                if (game.player != new User())
+                if (!game.player.IsBanned())
                 { //BEGIN CHECK FOR ACHIEVEMENTS
-                    List<string> achievements = new List<string>();
                     AchievementService AS = new AchievementService();
-                    if (game.deaths == 9 && AchievementService.IsValid("Cat God")) achievements.Add("Cat God");
-                    if (game.time <= Math.Ceiling(0.5 * game.map.estTime) && game.victory && AchievementService.IsValid("Speedrun")) achievements.Add("Speedrun");
+                    List<string> achievements = new List<string>(),
+                        existing = AchievementService.GetAchievementsByUser(game.player);
+                    if (game.deaths == 9 && AchievementService.IsValid("Cat God") && !existing.Contains("Cat God")) achievements.Add("Cat God");
+                    if (game.time <= Math.Ceiling(0.5 * game.map.estTime) && game.victory && AchievementService.IsValid("Speedrun") && !existing.Contains("Speedrun")) achievements.Add("Speedrun");
                     int countStars = 0;
                     foreach (Game log in PlayService.GetUserGames(game.player)) countStars += log.stars;
-                    if (countStars >= 100 && AchievementService.IsValid("Tycoon")) achievements.Add("Tycoon");
+                    if (countStars >= 100 && AchievementService.IsValid("Tycoon") && !existing.Contains("Tycoon")) achievements.Add("Tycoon");
                     string jsArray = "[" + string.Join(",", achievements.Select(a => "'" + a + "'")) + "]";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ShowAchievements", "window.onload = function() { showAchievements(" + jsArray + "); };", true);
                 }

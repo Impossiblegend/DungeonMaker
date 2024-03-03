@@ -41,7 +41,8 @@ namespace DungeonMaker.Classes.Types
             DataRow user = ds.Tables[0].Rows[0];
             this.username = user["username"].ToString();
             this.userPassword = user["userPassword"].ToString();
-            this.creationDate = (DateTime)user["creationDate"];
+            try { this.creationDate = DateTime.Parse(user["creationDate"].ToString()); }
+            catch { this.creationDate = DateTime.MinValue; }
             this.elevation = Convert.ToInt32(user["elevation"]);
             this.profilePicture = user["profilePicture"].ToString();
         }

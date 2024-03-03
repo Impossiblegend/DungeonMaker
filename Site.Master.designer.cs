@@ -51,49 +51,58 @@ namespace DungeonMaker
         protected global::System.Web.UI.WebControls.LinkButton AboutButton;
 
         /// <summary>
-        /// Achievements control.
+        /// StoreButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton Achievements;
+        protected global::System.Web.UI.WebControls.LinkButton StoreButton;
 
         /// <summary>
-        /// Gamelog control.
+        /// AchievementsButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton Gamelog;
+        protected global::System.Web.UI.WebControls.LinkButton AchievementsButton;
 
         /// <summary>
-        /// Create control.
+        /// GamelogButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton Create;
+        protected global::System.Web.UI.WebControls.LinkButton GamelogButton;
 
         /// <summary>
-        /// Admin control.
+        /// CreateButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton Admin;
+        protected global::System.Web.UI.WebControls.LinkButton CreateButton;
 
         /// <summary>
-        /// Logout control.
+        /// AdminButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton Logout;
+        protected global::System.Web.UI.WebControls.LinkButton AdminButton;
+
+        /// <summary>
+        /// LogoutButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton LogoutButton;
 
         /// <summary>
         /// ProfilePic control.

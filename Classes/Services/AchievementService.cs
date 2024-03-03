@@ -1,6 +1,7 @@
 ﻿using DungeonMaker.Classes.Types;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.OleDb;
 using System.Linq;
 using System.Web;
@@ -65,6 +66,13 @@ namespace DungeonMaker.Classes.Services
             try { return (bool)command.ExecuteScalar(); }
             catch { throw new Exception("Achievement not found: " + title); }
             finally { Conn.Close(); }
+        }
+        public static List<string> GetAchievementsByUser(User user) 
+        {
+            List<string> achievements = new List<string>();
+            DataTable table = GeneralService.GetDataSetByQuery("SELECT achievement FROM UserAchievements WHERE awardee = '" + user.email + "'", "Achievements").Tables[0];
+            foreach (DataRow row in table.Rows) achievements.Add(row[0].ToString());
+            return achievements;
         }
     }
 }

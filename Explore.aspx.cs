@@ -22,53 +22,53 @@ namespace DungeonMaker
         {
             if (Session["user"] == null) Session["user"] = new User();
             user = (User)Session["user"];
-            Game game = null;
             PlayService PS = new PlayService();
-            if (Session["game"] != null) game = (Game)Session["game"]; //Saves pulling from database
-            else if (!user.IsBanned()) game = PlayService.GetLastGame(user);
-            if (game != null)
-            { //Shows previous game results in stats panel
-                string nbsp = "<br />&nbsp;&nbsp;&nbsp;";
-                //<b>&#x2022;</b>
-                ((Literal)statsList.FindControl("prevGame")).Text = "Previous game summary:<br />" + nbsp +
-                    "<b>Result</b> " + (game.victory ? "victory" : "defeat") + nbsp +
-                    "<b>Deaths</b> x" + game.deaths + nbsp +
-                    "<b>Stars</b> x" + game.stars + nbsp +
-                    "<b>Time</b> " + Connect.SecToMin(game.time) + nbsp +
-                    "<b>Map</b> " + game.map.mapName.Remove(game.map.mapName.Length - 1); //Remove map name handler suffix
-                ScriptManager.RegisterStartupScript(this, GetType(), "Display", "document.getElementById('prevList').style.display = 'block';", true);
-                if (!user.IsBanned())
-                {
-                    string RecentMapsQuery = "SELECT TOP 5 Maps.mapID, Maps.mapName, Maps.thumbnail FROM ((Games INNER JOIN Users ON Games.player = Users.email) " +
-                        "INNER JOIN Maps ON Games.mapID = Maps.mapID) WHERE Games.player = '" + user.email + "' ORDER BY Games.gameID DESC";
-                    DataTable table = GeneralService.GetDataSetByQuery(RecentMapsQuery, "Maps").Tables[0], distinctDataTable = table.Clone();
-                    //DISTINCT does not work with ORDER BY in Access, so the following code selects distinct items programatically
-                    HashSet<string> distinctItems = new HashSet<string>();
-                    //HashSet<T> does not allow duplicate elements. If you try to add an element that already exists in it, it'll be ignored.
-                    foreach (DataRow row in table.Rows)
-                    {
-                        string key = row["mapID"].ToString();
-                        if (!distinctItems.Contains(key))
-                        {
-                            distinctItems.Add(key);
-                            distinctDataTable.ImportRow(row);
-                        }
-                    }
-                    RecentlyPlayedDataList.DataSource = distinctDataTable;
-                    RecentlyPlayedDataList.DataBind();
-                    foreach (DataListItem item in RecentlyPlayedDataList.Items) 
-                        ((Label)item.FindControl("Creator")).Text = new Map(int.Parse(((Label)item.FindControl("mapID")).Text)).creator.username;
-                    RecentlyPlayedLabel.Visible = true;
-                    RecentlyPlayedPanel.Visible = true;
-                }
-            }
             //Default sort: newest. Queries must reset with each postback
             mapQuery = "SELECT Maps.mapID, Maps.mapName, Users.username, Maps.thumbnail FROM (Users INNER JOIN Maps ON " +
                 "Users.email = Maps.creator) WHERE mapName LIKE '%%' AND isPublic ORDER BY mapID DESC";
             userQuery = "SELECT email, username, profilePicture FROM Users WHERE username LIKE '%%' ORDER BY Users.creationDate";
-            if (!IsPostBack) 
+            if (!IsPostBack)
             {
+                Game game = null;
+                if (Session["game"] != null) game = (Game)Session["game"]; //Saves pulling from database
+                else if (!user.IsBanned()) game = PlayService.GetLastGame(user);
                 DataListMultiView.ActiveViewIndex = 0; //Users view index = 0, Dungeons view index = 1, more TBD
+                if (game != null)
+                { //Shows previous game results in stats panel
+                    string nbsp = "<br />&nbsp;&nbsp;&nbsp;";
+                    //<b>&#x2022;</b>
+                    ((Literal)statsList.FindControl("prevGame")).Text = "Previous game summary:<br />" + nbsp +
+                        "<b>Result</b> " + (game.victory ? "victory" : "defeat") + nbsp +
+                        "<b>Deaths</b> x" + game.deaths + nbsp +
+                        "<b>Stars</b> x" + game.stars + nbsp +
+                        "<b>Time</b> " + Connect.SecToMin(game.time) + nbsp +
+                        "<b>Map</b> " + game.map.mapName.Remove(game.map.mapName.Length - 1); //Remove map name handler suffix
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Display", "document.getElementById('prevList').style.display = 'block';", true);
+                    if (!user.IsBanned())
+                    {
+                        string RecentMapsQuery = "SELECT TOP 5 Maps.mapID, Maps.mapName, Maps.thumbnail FROM ((Games INNER JOIN Users ON Games.player = Users.email) " +
+                            "INNER JOIN Maps ON Games.mapID = Maps.mapID) WHERE Games.player = '" + user.email + "' ORDER BY Games.gameID DESC";
+                        DataTable table = GeneralService.GetDataSetByQuery(RecentMapsQuery, "Maps").Tables[0], distinctDataTable = table.Clone();
+                        //DISTINCT does not work with ORDER BY in Access, so the following code selects distinct items programatically
+                        HashSet<string> distinctItems = new HashSet<string>();
+                        //HashSet<T> does not allow duplicate elements. If you try to add an element that already exists in it, it'll be ignored.
+                        foreach (DataRow row in table.Rows)
+                        {
+                            string key = row["mapID"].ToString();
+                            if (!distinctItems.Contains(key))
+                            {
+                                distinctItems.Add(key);
+                                distinctDataTable.ImportRow(row);
+                            }
+                        }
+                        RecentlyPlayedDataList.DataSource = distinctDataTable;
+                        RecentlyPlayedDataList.DataBind();
+                        foreach (DataListItem item in RecentlyPlayedDataList.Items)
+                            ((Label)item.FindControl("Creator")).Text = new Map(int.Parse(((Label)item.FindControl("mapID")).Text)).creator.username;
+                        RecentlyPlayedLabel.Visible = true;
+                        RecentlyPlayedPanel.Visible = true;
+                    }
+                }
                 DataTable mapsTbl = GeneralService.GetDataSetByQuery("SELECT mapID FROM Maps", "Maps").Tables[0];
                 List<Map> playedMaps = new List<Map>();
                 foreach (DataRow row in mapsTbl.Rows)
@@ -105,8 +105,9 @@ namespace DungeonMaker
                     "INNER JOIN Users ON Users.email = CombinedActivities.email GROUP BY Users.username, Users.email ORDER BY SUM(CombinedActivities.activity_count) DESC";
                 ((Literal)statsList.FindControl("mostActiveUser")).Text = GeneralService.GetStringByQuery(query); //Counts maps created and games played equally
             }
+            //Stars are generated in runtime so must be recreated with each postback after the first
             foreach (DataListItem item in FeedbackDataList.Items)
-            { //Stars are generated in runtime so must be recreated with each postback
+            {
                 Label starRating = (Label)item.FindControl("starRating");
                 PlaceHolder starsPlaceHolder = (PlaceHolder)item.FindControl("starsPlaceHolder");
                 if (int.TryParse(starRating.Text, out int rating))
@@ -288,9 +289,9 @@ namespace DungeonMaker
         }
 
         private bool IsExist(int mapID) 
-        { 
+        { //Checks if a map was played
             foreach(Map map in (List<Map>)Cache["playedMaps"]) 
-                if(map.mapID == mapID) 
+                if(map.mapID == mapID)
                         return true;
             return false;
         }

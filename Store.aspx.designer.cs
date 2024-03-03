@@ -11,70 +11,79 @@ namespace DungeonMaker
 {
 
 
-    public partial class GamelogButton
+    public partial class Store
     {
 
         /// <summary>
-        /// From control.
+        /// imgCredits1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label From;
+        protected global::System.Web.UI.WebControls.Image imgCredits1;
 
         /// <summary>
-        /// FromDateTB control.
+        /// lblCredits1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox FromDateTB;
+        protected global::System.Web.UI.WebControls.Label lblCredits1;
 
         /// <summary>
-        /// To control.
+        /// lblPrice1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label To;
+        protected global::System.Web.UI.WebControls.Label lblPrice1;
 
         /// <summary>
-        /// ToDateTB control.
+        /// btnPurchase1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ToDateTB;
+        protected global::System.Web.UI.WebControls.Button btnPurchase1;
 
         /// <summary>
-        /// ConfirmButton control.
+        /// imgCredits2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button ConfirmButton;
+        protected global::System.Web.UI.WebControls.Image imgCredits2;
 
         /// <summary>
-        /// EmptyLabel control.
+        /// lblCredits2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label EmptyLabel;
+        protected global::System.Web.UI.WebControls.Label lblCredits2;
 
         /// <summary>
-        /// GamesDataList control.
+        /// lblPrice2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DataList GamesDataList;
+        protected global::System.Web.UI.WebControls.Label lblPrice2;
+
+        /// <summary>
+        /// btnPurchase2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnPurchase2;
     }
 }

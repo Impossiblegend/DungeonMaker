@@ -5,7 +5,7 @@
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 400 },
+            gravity: { y: 800 },
             debug: false
         }
     },
@@ -90,7 +90,7 @@ function create() {
     portals = this.physics.add.staticGroup();
     portals.create(TRAPX[portNum2], TRAPY[portNum2], 'portalFull').setScale(2);
     //player.setBounce(0.2);
-    player.setCollideWorldBounds(true);
+    player.setCollideWorldBounds(false);
     this.anims.create({
         key: 'left',
         frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
@@ -170,9 +170,60 @@ function create() {
     this.physics.add.overlap(player, traps, hitTrap, null, this);
 }
 
+
+let vx = 0;
 function update(time) {
     gameRuntime = time * 0.001 - 1; //Converted to Seconds
     timeText.setText("Time Elapsed: " + Math.round(gameRuntime) + " s");
+    if (player.x < 10 || player.x > 1132) {
+        vx = 0;
+        player.setVelocityX(vx);
+        if (player.x > 1132)
+            player.x = 1130;
+        else player.x = 12;
+    }
+    else {
+        if (vx <= 200 && vx >= -200) {
+            if (cursors.left.isDown) {
+                if (vx > -30 && vx < 20) {
+                    vx = -30;
+                }
+                if (vx > 0)
+                    vx -= 20;
+                vx -= 3;
+                player.setVelocityX(vx);
+                player.anims.play('left', true);
+            }
+            else if (cursors.right.isDown) {
+                if (vx < 30 && vx > -20) {
+                    vx = 30;
+                }
+                if (vx < 0)
+                    vx += 20;
+                vx += 3;
+                player.setVelocityX(vx);
+                player.anims.play('right', true);
+            }
+        }
+        if (!cursors.left.isDown && !cursors.right.isDown) {
+
+
+            if (vx > 0) {
+                vx -= 20;
+                if (vx < 0)
+                    vx = 0;
+            }
+            if (vx < 0) {
+                vx += 20;
+                if (vx > 0)
+                    vx = 0;
+            }
+            player.setVelocityX(vx);;
+
+            player.anims.play('turn');
+        }
+    }
+
     if (gameOver) {
         entrance = true;
         var tempTrapNum = 0;
@@ -199,22 +250,10 @@ function update(time) {
         player.setVelocityY(0);
         this.physics.resume();
         gameOver = false;
-        //Add a quit button, recording all the necessary statistics as game end by winning, such as number of deaths, time elapsed, date played, but leaving blank stars collected.
     }
-    if (cursors.left.isDown) {
-        player.setVelocityX(-160);
-        player.anims.play('left', true);
-    }
-    else if (cursors.right.isDown) {
-        player.setVelocityX(160);
-        player.anims.play('right', true);
-    }
-    else {
-        player.setVelocityX(0);
-        player.anims.play('turn');
-    }
+    
     if (cursors.up.isDown && player.body.touching.down && canJump)
-        player.setVelocityY(-250);
+        player.setVelocityY(-500);
     if (entrance) {
         portalEmpty.anims.play('entry', true);
         entrance = false;

@@ -122,6 +122,7 @@
     <Content Include="assets\styles\Login.css" />
     <Content Include="assets\styles\Master.css" />
     <Content Include="assets\styles\Register.css" />
+    <Content Include="assets\styles\Store.css" />
     <Content Include="assets\styles\Userpage.css" />
     <Content Include="Endscreen.aspx" />
     <Content Include="Error.html" />
@@ -136,6 +137,7 @@
     <Content Include="scripts\Play.js" />
     <Content Include="scripts\Create.js" />
     <Content Include="scripts\Userpage.js" />
+    <Content Include="Store.aspx" />
     <Content Include="Userpage.aspx" />
     <Content Include="Web.config" />
     <Content Include="Login.aspx" />
@@ -238,6 +240,13 @@
     </Compile>
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Store.aspx.cs">
+      <DependentUpon>Store.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Store.aspx.designer.cs">
+      <DependentUpon>Store.aspx</DependentUpon>
     </Compile>
     <Compile Include="Userpage.aspx.cs">
       <DependentUpon>Userpage.aspx</DependentUpon>
