@@ -6,13 +6,12 @@
 }
 
 .container {
-    max-width: 800px;
+    max-width: 920px;
     margin: 20px auto;
     padding: 20px;
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 200px;
 }
 
 h1 {
@@ -21,36 +20,32 @@ h1 {
 }
 
 .bundles-container {
+    margin-top: 25px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
 
+.bundles-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
 .bundle {
-    width: 150px;
-    height: 150px;
+    width: 175px;
+    height: auto;
     border: 1px solid #ccc;
-    margin: 10px;
+    margin-bottom: 20px;
     padding: 10px;
     border-radius: 5px;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin-right: 20px;
+    margin-left: 10px;
 }
-
-    .bundle p {
-        margin: 5px 0;
-    }
-
-.bundle-content {
-    display: flex;
-    align-items: center;
-}
-
-    .bundle-content img {
-        margin-right: 50%;
-    }
 
 .btnPurchase {
     background-color: #007bff;
@@ -59,10 +54,40 @@ h1 {
     padding: 8px 16px;
     border-radius: 5px;
     cursor: pointer;
-    width: 100%;
+    align-self: flex-end;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
 }
 
     .btnPurchase:hover {
         background-color: #0056b3;
     }
 
+.Disabled {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: not-allowed;
+    align-self: flex-end;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+}
+
+.map-type {
+    width: 250px;
+    height: auto;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-right: 20px;
+    margin-left: 10px;
+}

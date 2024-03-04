@@ -83,5 +83,13 @@ namespace DungeonMaker.Classes.Services
             Conn.Close();
             return games;
         }
+        public static void InitializeTrap(string email, string trapType) 
+        {
+            command.CommandText = "INSERT INTO OwnedTraps(owner, trapType, dateOfPurchase) VALUES(@owner, @type, @date)";
+            command.Parameters.AddWithValue("@owner", email);
+            command.Parameters.AddWithValue("@type", trapType);
+            command.Parameters.AddWithValue("@date", DateTime.Today);
+            SafeExecute();
+        }
     }
 }

@@ -57,6 +57,6 @@ namespace DungeonMaker.Classes.Types
         }
         public string GetRedactedPassword() { return new string('*', this.userPassword.Length); } // e.g. "redact" ---> "*****"
         public bool IsAdmin() { return this.elevation == 2; }
-        public bool IsBanned() { return this.elevation < 0; }
+        public bool IsBanned() { return this.elevation <= 0; }
     }
 }

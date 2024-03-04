@@ -150,5 +150,17 @@ namespace DungeonMaker
             foreach (DataRow dr in TrapsTbl.Rows) traps.Add(new Trap(Convert.ToInt32(dr["xpos"]), Convert.ToInt32(dr["ypos"]), dr["type"].ToString()));
             return traps;
         }
+        public static void InitializeMap(string email) 
+        {
+            OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
+            OleDbCommand command = new OleDbCommand();
+            command.Connection = Conn;
+            command.CommandText = "INSERT INTO OwnedMapTypes(owner, mapType, dateOfPurchase) VALUES(@owner, 'blank', @date)";
+            command.Parameters.AddWithValue("@owner", email);
+            command.Parameters.AddWithValue("@date", DateTime.Today);
+            Conn.Open();
+            command.ExecuteNonQuery();
+            Conn.Close();
+        }
     }
 }

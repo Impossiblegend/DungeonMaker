@@ -97,13 +97,15 @@ namespace DungeonMaker
                 ((Literal)statsList.FindControl("totalGamesPlayed")).Text += GeneralService.LastMonthCompute("Games", "gameID", "datePlayed");
                 ((Literal)statsList.FindControl("totalMapsCreated")).Text += GeneralService.LastMonthCompute("Maps", "mapID", "creationDate");
                 ((Literal)statsList.FindControl("numberOfUsers")).Text += GeneralService.LastMonthCompute("Users", "email", "creationDate");
+                //To find the user with the most popular maps, I sum all games with respect to the mapIDs of users' maps
                 query = "SELECT TOP 1 Users.username, Users.email FROM (Users INNER JOIN Maps ON Users.email = Maps.creator) INNER JOIN Games " +
                     "ON Maps.mapID = Games.mapID GROUP BY Users.username, Users.email ORDER BY COUNT(Games.gameID) DESC";
                 ((Literal)statsList.FindControl("mostPlayedUserMaps")).Text = GeneralService.GetStringByQuery(query);
-                query = "SELECT TOP 1 Users.username, Users.email FROM(SELECT creator AS email, COUNT(*) AS activity_count FROM Maps " +
-                    "GROUP BY creator UNION ALL SELECT player AS email, COUNT(*) AS activity_count FROM Games GROUP BY player) AS CombinedActivities " +
-                    "INNER JOIN Users ON Users.email = CombinedActivities.email GROUP BY Users.username, Users.email ORDER BY SUM(CombinedActivities.activity_count) DESC";
-                ((Literal)statsList.FindControl("mostActiveUser")).Text = GeneralService.GetStringByQuery(query); //Counts maps created and games played equally
+                //To find the most active user, I sum games played and maps created for all users except Guest.
+                query = "SELECT TOP 1 Users.username, Users.email FROM(SELECT creator AS email, COUNT(*) AS activity_count FROM Maps GROUP BY creator " +
+                    "UNION ALL SELECT player AS email, COUNT(*) AS activity_count FROM Games GROUP BY player) AS CombinedActivities INNER JOIN Users " +
+                    "ON Users.email = CombinedActivities.email WHERE Users.email <> 'Guest' GROUP BY Users.username, Users.email ORDER BY SUM(CombinedActivities.activity_count) DESC";
+                ((Literal)statsList.FindControl("mostActiveUser")).Text = GeneralService.GetStringByQuery(query);
             }
             //Stars are generated in runtime so must be recreated with each postback after the first
             foreach (DataListItem item in FeedbackDataList.Items)
@@ -209,7 +211,7 @@ namespace DungeonMaker
             if (e.CommandName == "DeleteButton")
             { //Deletes unplayed map from DB, and updates datalist accordingly
                 if (PlayService.countGames(map.mapID) == 0)
-                {
+                { //Delete map
                     map.Delete();
                     FileInfo thumbnail = new FileInfo(Server.MapPath(map.thumbnail));
                     try { thumbnail.Delete(); }
@@ -221,14 +223,36 @@ namespace DungeonMaker
                     MapsDataList.DataBind();
                 }
                 else 
-                {
-                    Button bt = (Button)e.Item.FindControl("DeleteButton");
-                    bool isEnabled = bt.Text == "Disable";
-                    ((Button)e.Item.FindControl("PlayButton")).Enabled = !isEnabled;
-                    bt.Text = isEnabled ? "Enable" : "Disable";
+                { /* Disable/enable map */
+                    BindButtonChange(e.Item);
                     MapService.ChangeValid(map.mapID);
+                    DataList[] dataLists = { MapsDataList, RecentlyPlayedDataList, PopularMapsDataList, NewestMapsDataList };
+                    bool flag;
+                    foreach (DataList dl in dataLists)
+                    {
+                        if (((DataList)source).ID != dl.ID)
+                        { //No need to scan through source datalist, already changed using e.Item
+                            flag = true;
+                            for (int i = 0; flag && i < dl.Items.Count; i++)
+                            {
+                                if (int.Parse(((Label)dl.Items[i].FindControl("mapID")).Text) == map.mapID)
+                                {
+                                    BindButtonChange(dl.Items[i]);
+                                    flag = false; //Once found no need to scan through rest of datalist
+                                }
+                            }
+                        }
+                    }
                 }
             }
+        }
+
+        private void BindButtonChange(DataListItem item) 
+        {
+            Button bt = (Button)item.FindControl("DeleteButton");
+            bool isEnabled = bt.Text == "Disable";
+            ((Button)item.FindControl("PlayButton")).Enabled = !isEnabled;
+            bt.Text = isEnabled ? "Enable" : "Disable";
         }
 
         protected void UsersDataList_ItemCommand(object source, DataListCommandEventArgs e)

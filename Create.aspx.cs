@@ -24,17 +24,6 @@ namespace DungeonMaker
             user = (User)Session["user"]; 
             if (user.email == null || user.elevation < 1) Response.Redirect("Register.aspx");
         }
-        protected void Selection_Change(object sender, EventArgs e)
-        { //Sends data to javascript on map type change
-            TB1.Text = MapTypesDDL.SelectedValue;
-            mapType = TB1.Text;
-            switch (TB1.Text)
-            {
-                case "blank": TB2.Text = "20"; break;
-                case "classic": TB2.Text = "25"; break;
-                default: throw new Exception("Map type does not exist.");
-            }
-        }
         protected void Submit_Click(object sender, EventArgs e)
         { //Saves everything and finishes map creation
             //Random rand = new Random();

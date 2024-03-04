@@ -23,6 +23,7 @@ namespace DungeonMaker
         {
             if (userpage == null) userpage = (User)Session["userPage"];
             if (user == null) user = (User)Session["user"];
+            if (user.elevation == 0) Response.Redirect("Register.aspx");
             UserService US = new UserService();
             PlayService PS = new PlayService();
             AchievementService AS = new AchievementService();
@@ -58,6 +59,7 @@ namespace DungeonMaker
                     UserGridView.DataSource = dataTable;
                     UserGridView.DataBind();
                     UserGridView.Visible = true;
+                    ((Site)Master).CoinVisible = false;
                 }
                 else StatsGridView.Style["bottom"] = "40%";
                 if (user.email == null && userpage.email == null) Response.Redirect("Register.aspx");

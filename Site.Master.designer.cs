@@ -96,6 +96,24 @@ namespace DungeonMaker
         protected global::System.Web.UI.WebControls.LinkButton AdminButton;
 
         /// <summary>
+        /// imgCredits control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgCredits;
+
+        /// <summary>
+        /// litCredits control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label litCredits;
+
+        /// <summary>
         /// LogoutButton control.
         /// </summary>
         /// <remarks>

@@ -22,10 +22,6 @@
             <asp:TextBox ID="TB4" runat="server" hidden="true"></asp:TextBox>
             <asp:TextBox ID="TB5" runat="server" hidden="true"></asp:TextBox>
             <asp:Button ID="Submit" class="container" runat="server" OnClientClick="saveMap()"  OnClick="Submit_Click" Text="SAVE & FINISH" BackColor="Green" />
-            <asp:DropDownList ID="MapTypesDDL" runat="server" AutoPostBack="true" OnSelectedIndexChanged="Selection_Change" width="100px">
-                <asp:ListItem Selected="True" Value="blank"> blank </asp:ListItem>
-                <asp:ListItem Value="classic"> classic </asp:ListItem>
-            </asp:DropDownList>
             <asp:TextBox ID="mapName_TextBox" runat="server" placeholder="Name your map"></asp:TextBox>
             <asp:Button ID="Discard" runat="server" Text="QUIT & DISCARD" OnClientClick="confirmDiscard(); return false;" BackColor="Red"/>
         </div>

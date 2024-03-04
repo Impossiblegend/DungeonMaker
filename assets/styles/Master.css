@@ -39,6 +39,16 @@
     margin-left: auto;
 }
 
+#imgCredits{
+    position: absolute;
+    left: 82.5%;
+}
+
+#litCredits {
+    position: absolute;
+    left: 85.5%;
+}
+
 #ProfilePic {
     margin-left: 5px;
     border-radius: 100%;

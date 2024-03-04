@@ -42,7 +42,7 @@
         </div>
     </div>
     <script src="scripts/Userpage.js"></script>
-    <hr />
+    <hr /> <br />
     <asp:Label ID="DungeonsLabel" runat="server" Text="DUNGEONS" CssClass="title"></asp:Label> <br/>
     <div class="datalist-container">
         <asp:Label ID="EmptyLabel" runat="server" CssClass="label"></asp:Label>

@@ -1,4 +1,5 @@
-﻿using DungeonMaker.Classes.Types;
+﻿using DungeonMaker.Classes.Services;
+using DungeonMaker.Classes.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,12 @@ namespace DungeonMaker
             get { return ProfilePic.ImageUrl; }
             set { ProfilePic.ImageUrl = value; }
         }
+        public bool CoinVisible { set { imgCredits.Style["display"] = value ? "block" : "none"; } }
+        public int UserCredits 
+        {
+            get { return int.Parse(litCredits.Text); }
+            set { litCredits.Text = value.ToString(); }
+        }
         private User user;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -29,27 +36,15 @@ namespace DungeonMaker
                     GamelogButton.Visible = false;
                     LogoutButton.Text = "Login";
                 }
+                else
+                {
+                    AchievementService AS = new AchievementService();
+                    litCredits.Text = AchievementService.UserCreditsTotal(user).ToString();
+                    imgCredits.Visible = true;
+                }
                 ProfilePic.ImageUrl = user.profilePicture;
                 if (user.IsAdmin()) AdminButton.Visible = true;
             }
-        }
-        protected void About_Click(object sender, EventArgs e) { Response.Redirect("About.aspx"); }
-        protected void ProfilePic_Click(object sender, EventArgs e)
-        {
-            if (user.elevation == 0) Response.Redirect("Register.aspx");
-            Session["userPage"] = user;
-            Response.Redirect("Userpage.aspx");
-        }
-        protected void Explore_Click(object sender, EventArgs e) { Response.Redirect("Explore.aspx"); }
-        protected void Gamelog_Click(object sender, EventArgs e) 
-        {
-            Session["userPage"] = user;
-            Response.Redirect("Gamelog.aspx"); 
-        }
-        protected void Achievements_Click(object sender, EventArgs e) 
-        {
-            Session["userPage"] = user;
-            Response.Redirect("Achievements.aspx"); 
         }
         protected void Logout_Click(object sender, EventArgs e)
         {
@@ -57,8 +52,12 @@ namespace DungeonMaker
             //Session.Abandon();
             Response.Redirect("Login.aspx");
         }
-        protected void Create_Click(object sender, EventArgs e) { Response.Redirect("Create.aspx"); }
-        protected void Admin_Click(object sender, EventArgs e) { Response.Redirect("Adminpage.aspx"); }
-        protected void Store_Click(object sender, EventArgs e) { Response.Redirect("Store.aspx"); }
+        protected void Menu_Click(object sender, EventArgs e) 
+        {
+            Session["userPage"] = user;
+            imgCredits.Style["display"] = "block";
+            IButtonControl btn = (IButtonControl)sender; //LinkButton and ImageButton both implement/inherit IButtonControl
+            Response.Redirect(btn.CommandArgument + ".aspx");
+        }
     }
 }

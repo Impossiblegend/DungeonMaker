@@ -78,6 +78,7 @@
     text-align: center;
     white-space: normal;
     overflow-wrap: break-word;
+    pointer-events: none;
 }
 
 .item-image {
@@ -98,7 +99,7 @@
 
 .item-template {
     width: 200px;
-    height: 200px;
+    height: 100%;
     margin-right: 10px;
     margin-bottom: 10px;
     animation: slideIn 1s ease forwards;

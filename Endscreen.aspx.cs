@@ -23,7 +23,7 @@ namespace DungeonMaker
                 BG.Style["Width"] = "100%";
                 BG.Style["Height"] = "100%";
                 BG.ImageUrl = game.map.thumbnail;
-                if (!game.player.IsBanned())
+                if (game.player.elevation > 0)
                 { //BEGIN CHECK FOR ACHIEVEMENTS
                     AchievementService AS = new AchievementService();
                     List<string> achievements = new List<string>(),
