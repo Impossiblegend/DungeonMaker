@@ -54,7 +54,8 @@ namespace DungeonMaker
                     row["Password"] = userpage.GetRedactedPassword();
                     row["Email"] = userpage.email;
                     row["Date"] = userpage.creationDate.ToShortDateString();
-                    row["CreditsText"] = AchievementService.UserCreditsTotal(userpage).ToString();
+                    StoreService SS = new StoreService();
+                    row["CreditsText"] = userpage.IsAdmin() ? "<p style='font-size:30px;'>&#8734;</p>" : userpage.GetCredits().ToString();
                     dataTable.Rows.Add(row);
                     UserGridView.DataSource = dataTable;
                     UserGridView.DataBind();

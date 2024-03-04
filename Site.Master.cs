@@ -39,7 +39,8 @@ namespace DungeonMaker
                 else
                 {
                     AchievementService AS = new AchievementService();
-                    litCredits.Text = AchievementService.UserCreditsTotal(user).ToString();
+                    StoreService SS = new StoreService();
+                    litCredits.Text = user.IsAdmin() ? "<p style='font-size:35px;'><b>&#8734;</b></p>" : user.GetCredits().ToString();
                     imgCredits.Visible = true;
                 }
                 ProfilePic.ImageUrl = user.profilePicture;

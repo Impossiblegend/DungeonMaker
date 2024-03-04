@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DungeonMaker.Classes.Services;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -49,7 +50,7 @@ namespace DungeonMaker.Classes.Types
         public User()
         {
             this.elevation = 0;
-            this.username = "guest";
+            this.username = "Guest";
             this.email = null;
             this.userPassword = null;
             this.creationDate = DateTime.Today;
@@ -58,5 +59,10 @@ namespace DungeonMaker.Classes.Types
         public string GetRedactedPassword() { return new string('*', this.userPassword.Length); } // e.g. "redact" ---> "*****"
         public bool IsAdmin() { return this.elevation == 2; }
         public bool IsBanned() { return this.elevation <= 0; }
+        public int GetCredits() 
+        { //Returns a user's calculated credit total
+            AchievementService AS = new AchievementService(); StoreService SS = new StoreService(); PlayService PS = new PlayService();
+            return AchievementService.UserCreditsTotal(this) - StoreService.SumUserPurchases(this) + PlayService.CountUserVictories(this) * 5 + PlayService.CountStars(this);
+        }
     }
 }

@@ -4,6 +4,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <div class="container">
+        <!-- Game Credits -->
         <h1>Game Credits</h1>
         <div class="bundles-container">
             <div class="bundle">
@@ -43,64 +44,38 @@
                 <asp:Button ID="btnPurchase4" runat="server" Text="Purchase" OnClick="btnPurchase_Click" CommandName="$" CommandArgument="149.99" CssClass="btnPurchase" />
             </div>
         </div>
-        <br /> <hr />
+
+        <!-- Map Types -->
         <h1>Map Types</h1>
-        <div class="bundles-container">
-            <div class="map-type">
-                <div class="bundle-content">
-                    <asp:Label ID="DefaultLbl" runat="server" Text="Default"></asp:Label> <br /> <br />
-                    <asp:Image ID="DefaultImg" runat="server" ImageUrl="assets/sets/west.jpg" Width="220px" Height="145px" />
+        <asp:DataList ID="dlMapTypes" runat="server" CssClass="bundles-container" RepeatDirection="Horizontal" OnItemDataBound="dlMapTypes_ItemDataBound">
+            <ItemTemplate>
+                <div class="map-type">
+                    <div class="bundle-content">
+                        <asp:Label ID="lblMapType" runat="server" Text='<%# Eval("mapType") %>'></asp:Label>
+                        <asp:Image ID="imgMapType" runat="server" ImageUrl='<%# Eval("asset") %>' Width="220px" Height="145px" />
+                    </div>
+                    <p><b><%# Eval("cost") %> CREDITS</b></p>
+                    <asp:Button ID="btnMapPurchase" runat="server" Text="Purchase" OnClick="btnPurchase_Click" CommandName="Map" CommandArgument='<%# Eval("cost") %>' CssClass="btnPurchase" />
                 </div>
-                <p><asp:Label ID="Label6" runat="server" Text="FREE" Font-Bold="true"></asp:Label></p>
-                <asp:Button ID="Button4" runat="server" Text="Owned" CssClass="Disabled" Enabled="false" />
-            </div>
-            <div class="map-type">
-                <div class="bundle-content">
-                    <asp:Label ID="SteampunkLbl" runat="server" Text="Steampunk"></asp:Label> <br /> <br />
-                    <asp:Image ID="SteampunkImg" runat="server" ImageUrl="assets/sets/city.jpeg" Width="220px" Height="145px" />
-                </div>
-                <p><asp:Label ID="Label1" runat="server" Text="250" Font-Bold="true"></asp:Label> <b>CREDITS</b></p>
-                <asp:Button ID="Button1" runat="server" Text="Purchase" OnClick="btnPurchase_Click" CommandArgument="250" CssClass="btnPurchase" Enabled="false" />
-            </div>
-            <div class="map-type">
-                <div class="bundle-content">
-                    <asp:Label ID="CyberpunkLbl" runat="server" Text="Cyberpunk"></asp:Label> <br /> <br />
-                    <asp:Image ID="CyberpunkImg" runat="server" ImageUrl="assets/sets/cyberpunk-street.png" Width="220px" Height="145px" />
-                </div>
-                <p><asp:Label ID="Label5" runat="server" Text="350" Font-Bold="true"></asp:Label> <b>CREDITS</b></p>
-                <asp:Button ID="Button3" runat="server" Text="Purchase" OnClick="btnPurchase_Click" CommandArgument="350" CssClass="btnPurchase" />
-            </div>
-        </div>
-        <br /> <hr />
+            </ItemTemplate>
+        </asp:DataList>
+
+        <!-- Trap Types -->
         <h1>Trap Types</h1>
-        <div class="bundles-container">
-            <div class="bundle">
-                <div class="bundle-content">
-                    <asp:Label ID="SawLbl" runat="server" Text="Saw"></asp:Label> <br /> <br />
-                    <asp:Image ID="SawImg" runat="server" ImageUrl="assets/sprites/saw.png" Width="100px" Height="100px" />
+        <asp:DataList ID="dlTrapTypes" runat="server" CssClass="bundles-container" RepeatDirection="Horizontal" OnItemDataBound="dlTrapTypes_ItemDataBound" >
+            <ItemTemplate>
+                <div class="bundle">
+                    <div class="bundle-content">
+                        <asp:Label ID="lblTrapType" runat="server" Text='<%# Eval("trapType") %>'></asp:Label> <br />
+                        <asp:Image ID="imgTrapType" runat="server" ImageUrl='<%# Eval("asset") %>' Width="100px" Height="100px" />
+                    </div>
+                    <p><b><%# Eval("cost") %> CREDITS</b></p>
+                    <asp:Button ID="btnTrapPurchase" runat="server" Text="Purchase" OnClick="btnPurchase_Click" CommandName="Trap" CommandArgument='<%# Eval("cost") %>' CssClass="btnPurchase" />
                 </div>
-                <p><asp:Label ID="Label3" runat="server" Text="FREE" Font-Bold="true"></asp:Label></p>
-                <asp:Button ID="Button5" runat="server" Text="Owned" CssClass="Disabled" Enabled="false" />
-            </div>
-            <div class="bundle">
-                <div class="bundle-content">
-                    <asp:Label ID="TurretLbl" runat="server" Text="Turret"></asp:Label> <br /> <br />
-                    <asp:Image ID="TurretImg" runat="server" ImageUrl="assets/sprites/turret-freeze.png" Width="140px" Height="90px" />
-                </div>
-                <p><asp:Label ID="Label8" runat="server" Text="100" Font-Bold="true"></asp:Label> <b>CREDITS</b></p>
-                <asp:Button ID="Button6" runat="server" Text="Purchase" OnClick="btnPurchase_Click"  CommandArgument="100" CssClass="btnPurchase" Enabled="false" />
-            </div>
-            <div class="bundle">
-                <div class="bundle-content">
-                    <asp:Label ID="SpikesLbl" runat="server" Text="Spikes"></asp:Label> <br /> <br /> <br />
-                    <asp:Image ID="SpikesImg" runat="server" ImageUrl="assets/sprites/spikes.png" Width="100px" Height="50px" />
-                </div>
-                <br />
-                <p><asp:Label ID="Label10" runat="server" Text="25" Font-Bold="true"></asp:Label> <b>CREDITS</b></p>
-                <asp:Button ID="Button7" runat="server" Text="Purchase" OnClick="btnPurchase_Click" CommandArgument="25" CssClass="btnPurchase" />
-            </div>
-        </div>
-        <br /> <hr />
+            </ItemTemplate>
+        </asp:DataList>
+
+        <!-- Player Sprites -->
         <h1>Player Sprites</h1>
         <div class="bundles-container">
             <div class="bundle">

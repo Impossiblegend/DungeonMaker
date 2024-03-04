@@ -40,8 +40,8 @@ namespace DungeonMaker
                 Session["user"] = user;
                 Session["userPage"] = user;
                 string[] freeTraps = new string[] { "saw", "portalFull", "portalEmpty" };
-                foreach (string trap in freeTraps) PlayService.InitializeTrap(user.email, trap);
-                MapService.InitializeMap(user.email);
+                foreach (string trap in freeTraps) StoreService.PurchaseTrapType(user, trap);
+                StoreService.PurchaseMapType(user, "blank");
                 Response.Redirect("Explore.aspx");
             }
             else IsSignUp.Text = "User already exists.";

@@ -168,6 +168,7 @@
     <Compile Include="Classes\Services\AchievementService.cs" />
     <Compile Include="Classes\Services\CommentService.cs" />
     <Compile Include="Classes\Services\PlayService.cs" />
+    <Compile Include="Classes\Services\StoreService.cs" />
     <Compile Include="Classes\Types\Comment.cs" />
     <Compile Include="Classes\Types\Game.cs" />
     <Compile Include="Classes\Types\GameObject.cs" />
