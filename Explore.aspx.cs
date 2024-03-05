@@ -178,10 +178,11 @@ namespace DungeonMaker
                     if (MapTypesCBL.Items[2].Selected) query = query.Insert(newIndex, "Maps.mapType = 'steampunk' ");
                 }
                 else 
-                { //Doesn't work??????????????????
+                {
                     MapsDataList.DataSource = null;
                     MapsDataList.DataBind();
                     BindDLCheck(MapsDataList, true);
+                    return;
                 }
             }
             query = query.Insert(index, SearchBar.Text); //Add user search input
