@@ -16,11 +16,12 @@
     <main></main>
     <form id="form1" runat="server">
         <div>
-            <asp:TextBox ID="TB1" runat="server" hidden="true" Text="blank"></asp:TextBox>
-            <asp:TextBox ID="TB2" runat="server" hidden="true" Text="20"></asp:TextBox>
+            <asp:TextBox ID="TB1" runat="server" hidden="true"></asp:TextBox>
+            <asp:TextBox ID="TB2" runat="server" hidden="true"></asp:TextBox>
             <asp:TextBox ID="TB3" runat="server" hidden="true"></asp:TextBox>
             <asp:TextBox ID="TB4" runat="server" hidden="true"></asp:TextBox>
             <asp:TextBox ID="TB5" runat="server" hidden="true"></asp:TextBox>
+            <%-- ↑ For transferring data to javascript ↑ --%>
             <asp:Button ID="Submit" class="container" runat="server" OnClientClick="saveMap()"  OnClick="Submit_Click" Text="SAVE & FINISH" BackColor="Green" />
             <asp:TextBox ID="mapName_TextBox" runat="server" placeholder="Name your map"></asp:TextBox>
             <asp:Button ID="Discard" runat="server" Text="QUIT & DISCARD" OnClientClick="confirmDiscard(); return false;" BackColor="Red"/>

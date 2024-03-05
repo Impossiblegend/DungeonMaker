@@ -17,7 +17,7 @@
             <asp:LinkButton ID="StoreButton" runat="server" CssClass="nav-label" Text="Store" OnClick="Menu_Click" CommandArgument="Store" Font-Bold="true" ></asp:LinkButton>
             <asp:LinkButton ID="AchievementsButton" runat="server" CssClass="nav-label" Text="Achievements" OnClick="Menu_Click" CommandArgument="Achievements" Font-Bold="true" ></asp:LinkButton>
             <asp:LinkButton ID="GamelogButton" runat="server" CssClass="nav-label" Text="Gamelog" OnClick="Menu_Click" CommandArgument="Gamelog" Font-Bold="true" >Gamelog</asp:LinkButton>
-            <asp:LinkButton ID="CreateButton" runat="server"  CssClass="nav-label"  OnClick="Menu_Click" CommandArgument="Create" Font-Bold="true" >Create</asp:LinkButton>
+            <asp:LinkButton ID="CreateButton" runat="server"  CssClass="nav-label"  OnClick="Menu_Click" CommandArgument="MapSelection" Font-Bold="true" >Create</asp:LinkButton>
             <asp:LinkButton ID="AdminButton" runat="server"  CssClass="nav-label"  OnClick="Menu_Click" CommandArgument="Adminpage" ForeColor="Black" Font-Bold="true" Visible="false">Admin</asp:LinkButton>
             <asp:Image ID="imgCredits" runat="server" ImageUrl="assets/ui/coin.png" Width="32px" Height="32px" Visible="false" />
             <asp:Label ID="litCredits" runat="server" CssClass="label-center" ></asp:Label>

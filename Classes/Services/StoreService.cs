@@ -33,6 +33,12 @@ namespace DungeonMaker.Classes.Services
             }
             finally { Conn.Close(); }
         }
+        private static int SafeScalar() 
+        {
+            Conn.Open();
+            try { return Convert.ToInt32(command.ExecuteScalar()); }
+            finally { Conn.Close(); }
+        }
         public static void PurchaseTrapType(User user, string type) 
         {
             command.CommandText = "INSERT INTO OwnedTrapTypes(owner, trapType, dateOfPurchase) VALUES(@buyer, @type, @date)";
@@ -54,27 +60,27 @@ namespace DungeonMaker.Classes.Services
             command.CommandText = "SELECT Count(owner) FROM OwnedTrapTypes WHERE owner = @owner AND trapType = @type";
             command.Parameters.AddWithValue("@owner", user.email);
             command.Parameters.AddWithValue("@type", type);
-            Conn.Open();
-            try { return Convert.ToInt32(command.ExecuteScalar()) > 0; }
-            finally { Conn.Close(); }
+            return SafeScalar() > 0;
         }
         public static bool IsMapPurchased(User user, string type)
         {
             command.CommandText = "SELECT Count(owner) FROM OwnedMapTypes WHERE owner = @owner AND mapType = @type";
             command.Parameters.AddWithValue("@owner", user.email);
             command.Parameters.AddWithValue("@type", type);
-            Conn.Open();
-            try { return Convert.ToInt32(command.ExecuteScalar()) > 0; }
-            finally { Conn.Close(); }
+            return SafeScalar() > 0;
         }
         public static int SumUserPurchases(User user)
         {
             command.CommandText = "SELECT SUM(TT.cost) + SUM(MT.cost) AS TotalCost FROM ((OwnedTrapTypes AS OTT INNER JOIN TrapTypes AS TT ON OTT.trapType = TT.trapType) " +
                 "LEFT JOIN OwnedMapTypes AS OMT ON OTT.owner = OMT.owner) LEFT JOIN MapTypes AS MT ON OMT.mapType = MT.mapType WHERE OTT.owner = ?";
            command.Parameters.AddWithValue("@owner", user.email);
-            Conn.Open();
-            try { return Convert.ToInt32(command.ExecuteScalar()); }
-            finally { Conn.Close(); }
+            return SafeScalar();
+        }
+        public static int GetMapTypeCost(string type) 
+        {
+            command.CommandText = "SELECT cost FROM MapTypes WHERE mapType = ?";
+            command.Parameters.AddWithValue("@mapType", type);
+            return SafeScalar();
         }
     }
 }

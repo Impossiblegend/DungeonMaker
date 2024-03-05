@@ -21,9 +21,9 @@ class MapCreator extends Phaser.Scene {
         super();
     }
     preload() {
-        this.load.image('bg', 'assets/skies/space3stretch.png');
-        this.load.image('bg2', 'assets/sets/west.jpg');
-        this.load.image('street', 'assets/sprites/cyberpunk-street.png');
+        this.load.image('cyberpunk', 'assets/sets/cyberpunk-street.png');
+        this.load.image('steampunk', 'assets/sets/city.jpeg');
+        this.load.image('blank', 'assets/sets/west.jpg');
         //this.load.image('bg3', 'assets/pics/backscroller.png');
         this.load.spritesheet('saw', 'assets/sprites/saws.png', { frameWidth: 548, frameHeight: 548 });
         this.load.image('star', 'assets/sprites/star.png');
@@ -31,7 +31,12 @@ class MapCreator extends Phaser.Scene {
         this.load.image('ground1', 'assets/sets/objects/platform1.png');
         this.load.image('ground2', 'assets/sets/objects/platform2.png');
         this.load.image('ground3', 'assets/sets/objects/platform3.png');
-        this.load.image('ground4', 'assets/sprites/platformBlock.png');
+        this.load.image('ground4', 'assets/sets/objects/brownBlock.png');
+        this.load.image('ground5', 'assets/sets/objects/blackBlock.png');
+        this.load.image('ver-tile', 'assets/sets/objects/ver-tile.png');
+        this.load.image('hor-tile-med', 'assets/sets/objects/hor-tile-med.png');
+        this.load.image('hor-tile-big', 'assets/sets/objects/hor-tile-big.png');
+        this.load.image('hor-tile-small', 'assets/sets/objects/hor-tile-small.png');
         this.load.spritesheet('portalEmpty', 'assets/sprites/portalRings1.png', { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('portalFull', 'assets/sprites/portalRings2.png', { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('dude', 'assets/sprites/dude.png', { frameWidth: 32, frameHeight: 48 });
@@ -40,15 +45,39 @@ class MapCreator extends Phaser.Scene {
         platforms = this.add.group();
         var flag1 = false;
         var flag2 = true;
-        bg = this.add.image(375, 250, 'bg2').setScale(0.52);
         creditsLabel = this.add.text(16, 16, 'Credits left: ' + maxCredits, { fontSize: '14px', fill: '#000' });
-        platforms.create(150, 250, 'ground2');
-        platforms.create(600, 460, 'ground3');
-        platforms.create(600, 175, 'ground2');
-        platforms.create(1000, 175, 'ground2');
-        platforms.create(300, 400, 'ground1')
-        platforms.create(0, 600, 'ground4');
-        platforms.create(500, 600, 'ground4');
+        switch (TB1.value) {
+            case "blank":
+                bg = this.add.image(375, 250, 'blank').setScale(0.52);
+                platforms.create(150, 250, 'ground2');
+                platforms.create(600, 460, 'ground3');
+                platforms.create(600, 175, 'ground2');
+                platforms.create(1000, 175, 'ground2');
+                platforms.create(300, 400, 'ground1')
+                platforms.create(0, 600, 'ground4');
+                platforms.create(500, 600, 'ground4');
+                break;
+            case "cyberpunk":
+                bg = this.add.image(240, 280, 'cyberpunk').setScale(3);
+                platforms.create(150, 250, 'hor-tile-med');
+                platforms.create(600, 500, 'ver-tile');
+                platforms.create(600, 175, 'hor-tile-big');
+                platforms.create(1000, 175, 'ver-tile');
+                platforms.create(300, 400, 'hor-tile-small')
+                platforms.create(0, 600, 'ground5');
+                platforms.create(500, 600, 'ground5');
+                break;
+            case "steampunk":
+                bg = this.add.image(375, 250, 'steampunk');
+                platforms.create(150, 250, 'ground2');
+                platforms.create(600, 460, 'ground3');
+                platforms.create(600, 175, 'ground2');
+                platforms.create(1000, 175, 'ground2');
+                platforms.create(300, 400, 'ground1')
+                platforms.create(0, 600, 'ground4');
+                platforms.create(500, 600, 'ground4');
+                break;
+        }
         const emptyPortal = this.add.sprite(1180, 50, 'portalEmpty').setScale(2);
         const fullPortal = this.add.sprite(1260, 50, 'portalFull').setScale(2);
         const saw = this.add.sprite(1225, 125, 'saw').setScale(0.15);
@@ -109,44 +138,8 @@ class MapCreator extends Phaser.Scene {
             creditsLabel.setText("Credits left: " + Credits)
         }
     }
-    changeMapType() {
-        mapType = "classic";
-        function destroyer(sprite) {
-            sprite.body.destroy();
-        }
-        console.log('log!');
-        console.log(self.platforms);
-        platforms.clear(true, true);
-        platforms.forEach(destroyer);
-        console.log(self.platforms);
-        //stars.forEach(destroyer);
-        traps.forEach(destroyer);
-        switch (mapType) {
-            case "blank":
-                maxCredits = 20;
-                Credits = maxCredits;
-                platforms.create(150, 250, 'ground2');
-                platforms.create(600, 460, 'ground3');
-                platforms.create(600, 175, 'ground2');
-                platforms.create(1000, 175, 'ground2');
-                platforms.create(300, 400, 'ground1')
-                platforms.create(0, 600, 'ground4');
-                platforms.create(500, 600, 'ground4');
-                break;
-            case "classic":
-                maxCredits = 25;
-                Credits = maxCredits;
-                bg.destroy();
-                bg = this.add.image(375, 300, 'bg').setScale(2.34);
-                // ...
-                break;
-        }
-    }
 }
 const mapCreatorInstance = new MapCreator();
-document.getElementById('MapTypesDDL').addEventListener('change', function () {
-    mapCreatorInstance.changeMapType();
-});
 function saveMap() {
     creditsLabel.setText("");
     TB1.value = ""; TB2.value = ""; TB3.value = ""; TB4.value = ""; TB5.value = "";
@@ -179,5 +172,4 @@ const config = {
 };
 const game = new Phaser.Game(config);
 
-//Check if both portals were chosen (dragged in)
 //Add a "Test Map" button that temporarily saves the map, moves to Play.aspx with a special code and deletes it afterwards.

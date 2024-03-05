@@ -24,7 +24,7 @@ namespace DungeonMaker
             user = (User)Session["user"];
             PlayService PS = new PlayService();
             //Default sort: newest. Queries must reset with each postback
-            mapQuery = "SELECT Maps.mapID, Maps.mapName, Users.username, Maps.thumbnail FROM (Users INNER JOIN Maps ON " +
+            mapQuery = "SELECT Maps.mapID, Maps.mapName, Users.username, Maps.thumbnail, Maps.mapType FROM (Users INNER JOIN Maps ON " +
                 "Users.email = Maps.creator) WHERE mapName LIKE '%%' AND isPublic ORDER BY mapID DESC";
             userQuery = "SELECT email, username, profilePicture FROM Users WHERE username LIKE '%%' ORDER BY Users.creationDate";
             if (!IsPostBack)
@@ -120,6 +120,7 @@ namespace DungeonMaker
                         imgStar.ImageUrl = "assets/ui/fullStar.png";
                         imgStar.Width = 20;
                         imgStar.Height = 20;
+                        imgStar.Style["pointer-events"] = "none";
                         starsPlaceHolder.Controls.Add(imgStar);
                     }
                 }
@@ -157,6 +158,32 @@ namespace DungeonMaker
                     if (!BannedCBL.Items[1].Selected) query = query.Insert(index + 2, " AND elevation < 0 ");
                 }
             }
+            if (isDungeons) 
+            { //Filter map types based on selection
+                int SumSelected = 0, newIndex = index + 2;
+                foreach (ListItem item in MapTypesCBL.Items) if (item.Selected) SumSelected++;
+                if (SumSelected > 0)
+                {
+                    query = query.Insert(newIndex, " AND "); newIndex += 5;
+                    if (MapTypesCBL.Items[0].Selected)
+                    {
+                        query = query.Insert(newIndex, "Maps.mapType = 'blank' "); newIndex += 23;
+                        if (SumSelected > 1) { query = query.Insert(newIndex, "OR "); newIndex += 3; }
+                    }
+                    if (MapTypesCBL.Items[1].Selected)
+                    {
+                        query = query.Insert(newIndex, "Maps.mapType = 'cyberpunk' "); newIndex += 27;
+                        if (SumSelected > 2) { query = query.Insert(newIndex, "OR "); newIndex += 3; }
+                    }
+                    if (MapTypesCBL.Items[2].Selected) query = query.Insert(newIndex, "Maps.mapType = 'steampunk' ");
+                }
+                else 
+                { //Doesn't work??????????????????
+                    MapsDataList.DataSource = null;
+                    MapsDataList.DataBind();
+                    BindDLCheck(MapsDataList, true);
+                }
+            }
             query = query.Insert(index, SearchBar.Text); //Add user search input
             //SQL injection is not possible because the first '%' occurs before the search text and IndexOf() returns the index of the first occurrence
             ds = GeneralService.GetDataSetByQuery(query, TableSelect.SelectedValue);
@@ -182,22 +209,23 @@ namespace DungeonMaker
         { //Visual technicalities, optimizes space on screen
             SearchResultsLabel.Visible = show;
             SearchResultsLabel.Text = (dl.Items.Count > 0 ? "SEARCH" : "NO") + " RESULTS";
-            bool flag = dl.Items.Count > 0 && dl.ID == "MapsDataList";
-            statisticsPanel.Style["Width"] = flag ? "13.5%" : "20%";
-            patchNotesPanel.Style["Width"] = flag ? "13.5%" : "20%";
-            patchNotesPanel.Style["left"] = flag ? "86.5%" : "80%";
+            bool minimize = dl.Items.Count > 0 && dl.ID == "MapsDataList";
+            statisticsPanel.Style["Width"] = minimize ? "13.5%" : "20%";
+            patchNotesPanel.Style["Width"] = minimize ? "13.5%" : "20%";
+            patchNotesPanel.Style["left"] = minimize ? "86.5%" : "80%";
         }
 
         protected void TableSelect_SelectedIndexChanged(object sender, EventArgs e)
         { //Changes search objective (users/dungeons)
-            bool flag = TableSelect.SelectedValue == "Dungeons";
-            if (user.IsAdmin()) BannedCBL.Visible = !flag;
-            SortBy.Items[4].Enabled = flag; //most popular
-            SortBy.Items[5].Enabled = flag; //least popular
-            SearchBar.Attributes["placeholder"] = "Search for " + (flag ? "dungeons..." : "users...");
-            DataList dl = flag ? MapsDataList : UsersDataList;
+            bool isDungeons = TableSelect.SelectedValue == "Dungeons";
+            MapTypesCBL.Visible = isDungeons;
+            if (user.IsAdmin()) BannedCBL.Visible = !isDungeons;
+            SortBy.Items[4].Enabled = isDungeons; //most popular
+            SortBy.Items[5].Enabled = isDungeons; //least popular
+            SearchBar.Attributes["placeholder"] = "Search for " + (isDungeons ? "dungeons..." : "users...");
+            DataList dl = isDungeons ? MapsDataList : UsersDataList;
             BindDLCheck(dl, dl.Items.Count > 0);
-            DataListMultiView.ActiveViewIndex = Convert.ToInt32(flag); //false -> 0 -> users, true -> 1 -> dungeons
+            DataListMultiView.ActiveViewIndex = Convert.ToInt32(isDungeons); //false -> 0 -> users, true -> 1 -> dungeons
         }
 
         protected void MapsDataList_ItemCommand(object source, DataListCommandEventArgs e)
@@ -323,7 +351,7 @@ namespace DungeonMaker
         protected void FeedbackDataList_ItemDataBound(object sender, DataListItemEventArgs e)
         { //Truncate long text and make it expandable through js
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            { 
+            {
                 Label body = (Label)e.Item.FindControl("Feedback");
                 if (body.Text.Length > 100) body.Text = "<span class='expandable-text' onclick='expandText(this)'>" + body.Text.Remove(100) + "..." + "</span>" +
                         "<span class='full-text' style='display:none;'>" + body.Text + "</span>";

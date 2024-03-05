@@ -34,6 +34,7 @@ namespace DungeonMaker
                     imgStar.ImageUrl = "assets/ui/fullStar.png";
                     imgStar.Width = 20;
                     imgStar.Height = 20;
+                    imgStar.Style["pointer-events"] = "none";
                     starsPlaceHolder.Controls.Add(imgStar);
                 }
                 if (comment.isFeatured) item.CssClass = "item-template featured";

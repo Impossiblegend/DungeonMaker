@@ -12,17 +12,23 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Data;
 using System.Collections;
+using DungeonMaker.Classes.Services;
 
 namespace DungeonMaker
 {
     public partial class Create : System.Web.UI.Page
     {
-        private string mapType = "blank";
         private User user;
         protected void Page_Load(object sender, EventArgs e)
         {
             user = (User)Session["user"]; 
             if (user.email == null || user.elevation < 1) Response.Redirect("Register.aspx");
+            if (!IsPostBack) 
+            {
+                TB1.Text = Session["mapType"].ToString();
+                StoreService SS = new StoreService();
+                TB2.Text = StoreService.GetMapTypeCost(TB1.Text).ToString();
+            }
         }
         protected void Submit_Click(object sender, EventArgs e)
         { //Saves everything and finishes map creation
@@ -52,7 +58,7 @@ namespace DungeonMaker
                     if (type == "portalFull") portalFull = true;
                     if (type == "portalEmpty") portalEmpty = true;
                 }
-                if (portalFull && portalEmpty) MapService.UploadMap(user.email, mapName + MapService.CountMapsWithName(mapName), mapType);
+                if (portalFull && portalEmpty) MapService.UploadMap(user.email, mapName + MapService.CountMapsWithName(mapName), TB2.Text);
                 else 
                 { 
                     ScriptManager.RegisterStartupScript(this, GetType(), "AlertScript", "alert('You must have both the full and empty portals placed!');", true);

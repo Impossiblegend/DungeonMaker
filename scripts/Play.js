@@ -49,31 +49,59 @@ var canJump = true;
 var gameRuntime;
 
 function preload() {
-    this.load.image('bg2', 'assets/sets/west.jpg');
-    //this.load.image('bg3', 'assets/pics/backscroller.png');
+    this.load.image('cyberpunk', 'assets/sets/cyberpunk-street.png');
+    this.load.image('steampunk', 'assets/sets/city.jpeg');
+    this.load.image('blank', 'assets/sets/west.jpg');
     this.load.spritesheet('saw', 'assets/sprites/saws.png', { frameWidth: 548, frameHeight: 548 });
     this.load.image('star', 'assets/sprites/star.png');
     this.load.image('bluePortal', 'assets/sprites/portal.png');
     this.load.image('ground1', 'assets/sets/objects/platform1.png');
     this.load.image('ground2', 'assets/sets/objects/platform2.png');
     this.load.image('ground3', 'assets/sets/objects/platform3.png');
-    this.load.image('ground4', 'assets/sprites/platformBlock.png');
+    this.load.image('ground4', 'assets/sets/objects/brownBlock.png');
+    this.load.image('ground5', 'assets/sets/objects/blackBlock.png');
+    this.load.image('ver-tile', 'assets/sets/objects/ver-tile.png');
+    this.load.image('hor-tile-med', 'assets/sets/objects/hor-tile-med.png');
+    this.load.image('hor-tile-big', 'assets/sets/objects/hor-tile-big.png');
+    this.load.image('hor-tile-small', 'assets/sets/objects/hor-tile-small.png');
     this.load.spritesheet('portalEmpty', 'assets/sprites/portalRings1.png', { frameWidth: 32, frameHeight: 32 });
     this.load.spritesheet('portalFull', 'assets/sprites/portalRings2.png', { frameWidth: 32, frameHeight: 32 });
     this.load.spritesheet('dude', 'assets/sprites/dude.png', { frameWidth: 32, frameHeight: 48 });
 }
 
 function create() {
-    this.add.image(375, 250, 'bg2').setScale(0.52);
     platforms = this.physics.add.staticGroup();
-    if (MAPTYPE.value === "blank") {
-        platforms.create(150, 250, 'ground2');
-        platforms.create(600, 460, 'ground3');
-        platforms.create(600, 175, 'ground2');
-        platforms.create(1000, 175, 'ground2');
-        platforms.create(300, 400, 'ground1')
-        platforms.create(0, 600, 'ground4');
-        platforms.create(500, 600, 'ground4');
+    switch (MAPTYPE.value) {
+        case "blank":
+            bg = this.add.image(375, 250, 'blank').setScale(0.52);
+            platforms.create(150, 250, 'ground2');
+            platforms.create(600, 460, 'ground3');
+            platforms.create(600, 175, 'ground2');
+            platforms.create(1000, 175, 'ground2');
+            platforms.create(300, 400, 'ground1')
+            platforms.create(0, 600, 'ground4');
+            platforms.create(500, 600, 'ground4');
+            break;
+        case "cyberpunk":
+            bg = this.add.image(240, 280, 'cyberpunk').setScale(3);
+            platforms.create(150, 250, 'hor-tile-med');
+            platforms.create(600, 500, 'ver-tile');
+            platforms.create(600, 175, 'hor-tile-big');
+            platforms.create(1000, 175, 'ver-tile');
+            platforms.create(300, 400, 'hor-tile-small')
+            platforms.create(0, 600, 'ground5');
+            platforms.create(500, 600, 'ground5');
+            break;
+        case "steampunk":
+            bg = this.add.image(375, 250, 'steampunk');
+            platforms.create(150, 250, 'ground2');
+            platforms.create(600, 460, 'ground3');
+            platforms.create(600, 175, 'ground2');
+            platforms.create(1000, 175, 'ground2');
+            platforms.create(300, 400, 'ground1')
+            platforms.create(0, 600, 'ground4');
+            platforms.create(500, 600, 'ground4');
+            break;
     }
     for (let i = 0; i < TRAPX.length; i++) {
         if (TRAPTYPE[i] === "portalEmpty") {

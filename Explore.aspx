@@ -24,6 +24,11 @@
                 <asp:ListItem Value="Banned" Selected="True"> Banned </asp:ListItem>
                 <asp:ListItem Value="Unbanned" Selected="True"> Unbanned </asp:ListItem>
             </asp:CheckBoxList>
+            <asp:CheckBoxList ID="MapTypesCBL" runat="server" Visible="false">
+                <asp:ListItem Value="default" Selected="True"> default </asp:ListItem>
+                <asp:ListItem Value="cyberpunk" Selected="True"> cyberpunk </asp:ListItem>
+                <asp:ListItem Value="steampunk" Selected="True"> steampunk </asp:ListItem>
+            </asp:CheckBoxList>
         </div>
     </div>
     <asp:Label ID="SearchResultsLabel" runat="server" Text="SEARCH RESULTS" CssClass="search-label" Visible="false"></asp:Label>
