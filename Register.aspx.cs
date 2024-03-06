@@ -40,7 +40,11 @@ namespace DungeonMaker
                 Session["user"] = user;
                 Session["userPage"] = user;
                 string[] freeTraps = new string[] { "saw", "portalFull", "portalEmpty" };
-                foreach (string trap in freeTraps) StoreService.PurchaseTrapType(user, trap);
+                foreach (string trap in freeTraps)
+                {
+                    StoreService SS = new StoreService();
+                    StoreService.PurchaseTrapType(user, trap);
+                }
                 StoreService.PurchaseMapType(user, "blank");
                 Response.Redirect("Explore.aspx");
             }

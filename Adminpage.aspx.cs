@@ -86,6 +86,18 @@ namespace DungeonMaker
                     ImageButton btn = (ImageButton)e.Item.FindControl("LockButton");
                     btn.ImageUrl = "assets/ui/" + (btn.ImageUrl == "assets/ui/lock.png" ? "unlock.png" : "lock.png");
                     break;
+                case "EditButton_Click":
+                    Label lbl = (Label)e.Item.FindControl("DescriptionBody"); 
+                    TextBox tb = (TextBox)e.Item.FindControl("EditTextBox");
+                    AchievementService AS = new AchievementService();
+                    if (tb.Visible)
+                    {
+                        AchievementService.ChangeDescription(((Label)e.Item.FindControl("Title")).Text, tb.Text);
+                        lbl.Text = tb.Text;
+                    }
+                    lbl.Visible = !lbl.Visible;
+                    tb.Visible = !tb.Visible;
+                    break;
             }
         }
     }

@@ -29,7 +29,10 @@
                     <div class="maps-template">
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <asp:ImageButton ID="LockButton" runat="server" CssClass="lock-button" ImageUrl="assets/ui/" CommandName="LockButton_Click" Width="27px" Height="40px" />
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <asp:ImageButton ID="EditButton" runat="server" CssClass="lock-button" ImageUrl="assets/ui/pencil.png" CommandName="EditButton_Click" Width="33px" Height="40px" />
+                        <asp:TextBox ID="EditTextBox" runat="server" Visible="false"></asp:TextBox>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <asp:Label ID="Title" runat="server" Text='<%# Bind("achievementTitle") %>' Font-Bold="true" CssClass="other-labels" ></asp:Label>
                         <asp:Label ID="Bar" runat="server" Text=" | " CssClass="other-labels"></asp:Label>
                         <asp:Label ID="DescriptionBody" runat="server" Text='<%# Bind("description") %>' CssClass="other-labels"></asp:Label>

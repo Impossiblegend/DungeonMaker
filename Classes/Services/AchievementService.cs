@@ -54,9 +54,7 @@ namespace DungeonMaker.Classes.Services
         { //Negates the validity of an achievement
             command.CommandText = "UPDATE Achievements SET isValid = NOT isValid WHERE achievementTitle = @title";
             command.Parameters.AddWithValue("@title", title);
-            Conn.Open();
-            command.ExecuteNonQuery();
-            Conn.Close();
+            SafeExecute();
         }
         public static bool IsValid(string title) 
         { //Checks if an achievement is valid
@@ -73,6 +71,13 @@ namespace DungeonMaker.Classes.Services
             DataTable table = GeneralService.GetDataSetByQuery("SELECT achievement FROM UserAchievements WHERE awardee = '" + user.email + "'", "Achievements").Tables[0];
             foreach (DataRow row in table.Rows) achievements.Add(row[0].ToString());
             return achievements;
+        }
+        public static void ChangeDescription(string title, string description) 
+        {
+            command.CommandText = "UPDATE Achievements SET description = ? WHERE achievementTitle = ?";
+            command.Parameters.AddWithValue("@description", description);
+            command.Parameters.AddWithValue("@achievementTitle", title);
+            SafeExecute();
         }
     }
 }

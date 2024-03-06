@@ -36,8 +36,8 @@ namespace DungeonMaker.Classes.Types
             this.estTime = (int)Maps.Rows[0]["estTime"];
             this.thumbnail = Maps.Rows[0]["thumbnail"].ToString();
             this.isValid = (bool)Maps.Rows[0]["isValid"];
-            this.stars = MapService.GetStarsByMapID(mapID);
-            this.traps = MapService.GetTrapsByMapID(mapID);
+            this.stars = GetStars();
+            this.traps = GetTraps();
         }
         public Map(int mapID, bool needLists)
         {
@@ -53,8 +53,8 @@ namespace DungeonMaker.Classes.Types
             this.estTime = (int)map["estTime"];
             this.thumbnail = map["thumbnail"].ToString();
             this.isValid = (bool)map["isValid"];
-            this.stars = needLists ? MapService.GetStarsByMapID(mapID) : new List<GameObject>();
-            this.traps = needLists ? MapService.GetTrapsByMapID(mapID) : new List<Trap>();
+            this.stars = needLists ? GetStars() : new List<GameObject>();
+            this.traps = needLists ? GetTraps() : new List<Trap>();
         }
         public Map(int mapID, User creator, string mapType, DateTime creationDate, string mapName, bool isPublic, int estTime, string thumbnail, List<GameObject> stars, List<Trap> traps, bool isValid)
         {
@@ -76,6 +76,24 @@ namespace DungeonMaker.Classes.Types
             MapService.DeleteByMapID("Maps");
             MapService.DeleteByMapID("Traps");
             MapService.DeleteByMapID("Stars");
+        }
+
+        private List<GameObject> GetStars()
+        { //Returns all records in Stars table with foreign key mapID
+            List<GameObject> stars = new List<GameObject>();
+            string query = "SELECT xpos, ypos FROM Stars WHERE Stars.mapID = " + this.mapID;
+            DataTable StarsTbl = GeneralService.GetDataSetByQuery(query, "Stars").Tables[0];
+            foreach (DataRow dr in StarsTbl.Rows) stars.Add(new GameObject(Convert.ToInt32(dr["xpos"]), Convert.ToInt32(dr["ypos"])));
+            return stars;
+        }
+
+        private List<Trap> GetTraps()
+        { //Returns all records in Traps table with foreign key mapID
+            List<Trap> traps = new List<Trap>();
+            string query = "SELECT xpos, ypos, type FROM Traps WHERE Traps.mapID = " + this.mapID;
+            DataTable TrapsTbl = GeneralService.GetDataSetByQuery(query, "Traps").Tables[0];
+            foreach (DataRow dr in TrapsTbl.Rows) traps.Add(new Trap(Convert.ToInt32(dr["xpos"]), Convert.ToInt32(dr["ypos"]), dr["type"].ToString()));
+            return traps;
         }
     }
 }

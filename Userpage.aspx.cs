@@ -99,94 +99,105 @@ namespace DungeonMaker
         protected void MapsDataList_ItemCommand(object sender, DataListCommandEventArgs e)
         {
             Map map = new Map(int.Parse(((Label)e.Item.FindControl("mapID")).Text));
-            if (e.CommandName == "PlayButton")
+            if (ds == null) ds = (DataSet)Session["ds"];
+            DataTable dt = ds.Tables[0];
+            switch (e.CommandName) 
             {
-                Session["map"] = map;
-                Response.Redirect("Play.aspx");
-            }
-            if (e.CommandName == "PrivacyButton")
-            {
-                Button btn = (Button)e.Item.FindControl("PrivacyButton");
-                btn.Text = (btn.Text == "Public") ? "Private" : "Public";
-                btn.BackColor = (btn.Text == "Public") ? ColorTranslator.FromHtml("#009900") : ColorTranslator.FromHtml("#990000");
-                UserService.ChangePrivacy(map);
-            }
-            if (e.CommandName == "DeleteButton")
-            {
-                if (PlayService.countGames(map.mapID) == 0)
-                {
-                    map.Delete();
-                    DataTable dt = ((DataSet)Session["ds"]).Tables[0];
-                    DataRow rowToDelete = dt.Select("mapID = " + map.mapID).FirstOrDefault();
-                    if (rowToDelete != null) dt.Rows.Remove(rowToDelete);
+                case "PlayButton":
+                    Session["map"] = map;
+                    Response.Redirect("Play.aspx");
+                    break;
+                case "EditButton":
+                    MapsDataList.EditItemIndex = e.Item.ItemIndex;
                     MapsDataList.DataSource = dt;
                     MapsDataList.DataBind();
-                }
-                else
-                {
-                    Button bt = (Button)e.Item.FindControl("DeleteButton");
-                    if (bt.Text == "Disable")
+                    break;
+                case "FinishButton":
+                    MapsDataList.SelectedIndex = e.Item.ItemIndex;
+                    MapsDataList.DataSource = dt;
+                    MapsDataList.DataBind();
+                    break;
+                case "PrivacyButton":
+                    Button btn = (Button)e.Item.FindControl("PrivacyButton");
+                    btn.Text = (btn.Text == "Public") ? "Private" : "Public";
+                    btn.BackColor = (btn.Text == "Public") ? ColorTranslator.FromHtml("#009900") : ColorTranslator.FromHtml("#990000");
+                    UserService.ChangePrivacy(map);
+                    break;
+                case "DeleteButton":
+                    if (PlayService.countGames(map.mapID) == 0)
                     {
-                        ((Button)e.Item.FindControl("PlayButton")).Enabled = false;
-                        bt.Text = "Enable";
+                        map.Delete();
+                        DataRow rowToDelete = dt.Select("mapID = " + map.mapID).FirstOrDefault();
+                        if (rowToDelete != null) dt.Rows.Remove(rowToDelete);
+                        MapsDataList.DataSource = dt;
+                        MapsDataList.DataBind();
                     }
                     else
                     {
-                        ((Button)e.Item.FindControl("PlayButton")).Enabled = true;
-                        bt.Text = "Disable";
+                        Button bt = (Button)e.Item.FindControl("DeleteButton");
+                        bool isDisabled = bt.Text == "Disable";
+                        bt.Text = isDisabled ? "Enable" : "Disable";
+                        ((Button)e.Item.FindControl("PlayButton")).Enabled = isDisabled;
+                        MapService.ChangeValid(map.mapID);
                     }
-                    MapService.ChangeValid(map.mapID);
-                }
-            }
-            if(e.CommandName == "RenameButton") 
-            {
-                TextBox tb = (TextBox)e.Item.FindControl("RenameTextBox");
-                Label title = (Label)e.Item.FindControl("Title");
-                if (!tb.Visible)
-                {
-                    tb.Visible = true;
-                    title.Visible = false;
-                }
-                else 
-                {
-                    tb.Visible = false;
-                    title.Text = tb.Text;
-                    int countMaps = MapService.CountMapsWithName(tb.Text);
-                    MapService.ChangeMapName(map.mapID, tb.Text + countMaps);
-                    File.Move(Server.MapPath(map.thumbnail), Server.MapPath("assets/screenshots/" + tb.Text + countMaps + ".jpg"));
-                    title.Visible = true;
-                }
+                    break;
+                case "RenameButton":
+                    TextBox tb = (TextBox)e.Item.FindControl("RenameTextBox");
+                    Label title = (Label)e.Item.FindControl("Title");
+                    if (!tb.Visible)
+                    {
+                        tb.Visible = true;
+                        title.Visible = false;
+                    }
+                    else
+                    {
+                        tb.Visible = false;
+                        title.Text = tb.Text;
+                        int countMaps = MapService.CountMapsWithName(tb.Text);
+                        MapService.ChangeMapName(map.mapID, tb.Text + countMaps);
+                        File.Move(Server.MapPath(map.thumbnail), Server.MapPath("assets/screenshots/" + tb.Text + countMaps + ".jpg"));
+                        title.Visible = true;
+                    }
+                    break;
+                case "SubmitButton":
+                    FileInfo prev = new FileInfo(Server.MapPath(map.thumbnail));
+                    try { prev.Delete(); }
+                    catch { ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('Deletion error, likely due to physical path.');", true); }
+                    FileUpload fu = (FileUpload)e.Item.FindControl("ThumbnailUploader");
+                    string fileName = Path.GetFileName(fu.PostedFile.FileName),
+                        fileType = fu.PostedFile.ContentType,
+                        filePath = Server.MapPath("~/assets/screenshots/") + fileName;
+                    if (fu.PostedFile.ContentLength < 500000)
+                    {
+                        fu.SaveAs(filePath);
+                        UserService.ChangeProfilePic("assets/screenshots/" + fileName, userpage);
+                    }
+                    else ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('File size too large.');", true);
+                    break;
             }
         }
         protected void MapsDataList_ItemDataBound(object sender, DataListItemEventArgs e)
         {
+            if (user == null) user = (User)Session["user"];
+            if (userpage == null) userpage = (User)Session["userPage"];
+            bool isPublic = (bool)DataBinder.Eval(e.Item.DataItem, "isPublic");
+            if (!isPublic && user.email != userpage.email && !user.IsAdmin()) e.Item.Enabled = false;
+            int mapID = int.Parse(((Label)e.Item.FindControl("mapID")).Text);
+            Map map = new Map(mapID);
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                if (user == null) user = (User)Session["user"];
-                if (userpage == null) userpage = (User)Session["userPage"];
                 Label date = (Label)e.Item.FindControl("CreationDate");
                 date.Text = date.Text.Remove(date.Text.IndexOf(' '));
-                bool isPublic = (bool)DataBinder.Eval(e.Item.DataItem, "isPublic");
-                if (user.email == userpage.email || user.IsAdmin())
-                { //Initializes privacyButton if this is the user's userpage
-                    Button btn = (Button)e.Item.FindControl("PrivacyButton");
-                    btn.Text = isPublic ? "Public" : "Private";
-                    btn.BackColor = isPublic ? ColorTranslator.FromHtml("#009900") : ColorTranslator.FromHtml("#990000");
-                    btn.Visible = true;
-                    ((Button)e.Item.FindControl("RenameButton")).Visible = true;
-                    int mapID = int.Parse(((Label)e.Item.FindControl("mapID")).Text);
-                    Button btn2 = (Button)e.Item.FindControl("DeleteButton");
-                    if (IsExist(mapID))
-                    { //If map exists in Games table, delete button repurposes to an enable/disable button
-                        Map map = new Map(mapID);
-                        btn2.Text = map.isValid ? "Disable" : "Enable";
-                        ((Button)e.Item.FindControl("PlayButton")).Enabled = map.isValid;
-                    }
-                    btn2.Visible = true;
-                }
-                else if (!isPublic) e.Item.Enabled = false;
                 string title = ((Label)e.Item.FindControl("Title")).Text;
                 ((Label)e.Item.FindControl("Title")).Text = title.Remove(title.Length - 1);
+                ((Button)e.Item.FindControl("PlayButton")).Enabled = map.isValid;
+            }
+            if (e.Item.ItemType == ListItemType.EditItem) 
+            {
+                Button btn = (Button)e.Item.FindControl("PrivacyButton");
+                btn.Text = isPublic ? "Public" : "Private";
+                btn.BackColor = isPublic ? ColorTranslator.FromHtml("#009900") : ColorTranslator.FromHtml("#990000");
+                if (IsExist(mapID)) ((Button)e.Item.FindControl("DeleteButton")).Text = map.isValid ? "Disable" : "Enable";
             }
         }
         private bool IsExist(int mapID)
@@ -215,6 +226,7 @@ namespace DungeonMaker
                 AvatarUploader.SaveAs(filePath);
                 UserService.ChangeProfilePic("assets/profiles/" + fileName, userpage);
             }
+            else ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('File size too large.');", true);
             Avatar.ImageUrl = filePath;
             if (Master is Site && user.email == userpage.email) 
                 ((Site)Master).ImageUrl = filePath;

@@ -35,9 +35,6 @@
                     <div class="copyright">
                         &copy; <%: DateTime.Now.Year %> Dungeon Maker. All rights reserved.
                     </div>
-                    <div class="additional-links">
-                        <!-- Add additional links or content here -->
-                    </div>
                 </asp:ContentPlaceHolder>
             </footer>
         </div>
