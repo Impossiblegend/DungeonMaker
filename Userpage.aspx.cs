@@ -22,11 +22,9 @@ namespace DungeonMaker
         protected void Page_Load(object sender, EventArgs e)
         {
             if (userpage == null) userpage = (User)Session["userPage"];
+            if (userpage.elevation == 0) Response.Redirect("Register.aspx");
             if (user == null) user = (User)Session["user"];
-            if (user.elevation == 0) Response.Redirect("Register.aspx");
-            UserService US = new UserService();
-            PlayService PS = new PlayService();
-            AchievementService AS = new AchievementService();
+            UserService US = new UserService(); PlayService PS = new PlayService(); AchievementService AS = new AchievementService();
             if (!IsPostBack)
             {
                 string query = "SELECT mapID, mapName, Maps.creationDate, thumbnail, isPublic FROM Maps WHERE creator = '" + userpage.email + "' ORDER BY mapID DESC";
@@ -39,16 +37,11 @@ namespace DungeonMaker
                 Avatar.ImageUrl = userpage.profilePicture;
                 UsernameLabel.Text = userpage.username;
                 AvatarUploader.Attributes.Add("accept", ".jpg,.png");
-                DataTable dataTable;
-                DataRow row;
+                DataTable dataTable; DataRow row;
                 if (user == userpage || user.IsAdmin())
                 {
-                    dataTable = new DataTable();
-                    dataTable.Columns.Add("Username");
-                    dataTable.Columns.Add("Password");
-                    dataTable.Columns.Add("Email");
-                    dataTable.Columns.Add("Date");
-                    dataTable.Columns.Add("CreditsText");
+                    dataTable = new DataTable(); dataTable.Columns.Add("Username"); dataTable.Columns.Add("Password");
+                    dataTable.Columns.Add("Email"); dataTable.Columns.Add("Date"); dataTable.Columns.Add("CreditsText");
                     row = dataTable.NewRow();
                     row["Username"] = userpage.username;
                     row["Password"] = userpage.GetRedactedPassword();
@@ -64,14 +57,8 @@ namespace DungeonMaker
                 }
                 else StatsGridView.Style["bottom"] = "40%";
                 if (user.email == null && userpage.email == null) Response.Redirect("Register.aspx");
-                dataTable = new DataTable();
-                dataTable.Columns.Add("Maps Created");
-                dataTable.Columns.Add("Games Played");
-                dataTable.Columns.Add("Achievements");
-                dataTable.Columns.Add("Stars Collected");
-                dataTable.Columns.Add("Deaths");
-                dataTable.Columns.Add("Total Time Played");
-                dataTable.Columns.Add("Since Joined");
+                dataTable = new DataTable(); dataTable.Columns.Add("Maps Created"); dataTable.Columns.Add("Games Played"); dataTable.Columns.Add("Achievements"); 
+                dataTable.Columns.Add("Stars Collected"); dataTable.Columns.Add("Deaths"); dataTable.Columns.Add("Total Time Played"); dataTable.Columns.Add("Since Joined");
                 row = dataTable.NewRow();
                 row["Maps Created"] = "x" + GeneralService.GetStringByQuery("SELECT COUNT(mapID) FROM Maps WHERE creator = '" + userpage.email + "'");
                 row["Games Played"] = "x" + GeneralService.GetStringByQuery("SELECT COUNT(gameID) FROM Games WHERE player = '" + userpage.email + "'");
@@ -96,6 +83,7 @@ namespace DungeonMaker
             try { return int.Parse(GeneralService.GetStringByQuery("SELECT SUM(" + field + ") FROM Games WHERE player = '" + userpage.email + "'")); }
             catch { return 0; }
         }
+        private void alert(string alert) { ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + alert + "');", true); }
         protected void MapsDataList_ItemCommand(object sender, DataListCommandEventArgs e)
         {
             Map map = new Map(int.Parse(((Label)e.Item.FindControl("mapID")).Text));
@@ -108,13 +96,10 @@ namespace DungeonMaker
                     Response.Redirect("Play.aspx");
                     break;
                 case "EditButton":
-                    MapsDataList.EditItemIndex = e.Item.ItemIndex;
-                    MapsDataList.DataSource = dt;
-                    MapsDataList.DataBind();
-                    break;
-                case "FinishButton":
-                    MapsDataList.SelectedIndex = e.Item.ItemIndex;
-                    MapsDataList.DataSource = dt;
+                    bool edit = Convert.ToBoolean(e.CommandArgument);
+                    MapsDataList.EditItemIndex = edit ? e.Item.ItemIndex : -1;
+                    MapsDataList.Style["box-shadow"] = edit ? "0 2px 4px rgba(0, 0, 0, 0.3)" : "0";
+                    MapsDataList.DataSource = GeneralService.GetDataSetByQuery("SELECT mapID, mapName, Maps.creationDate, thumbnail, isPublic FROM Maps WHERE creator = '" + userpage.email + "' ORDER BY mapID DESC", "Maps");
                     MapsDataList.DataBind();
                     break;
                 case "PrivacyButton":
@@ -137,7 +122,6 @@ namespace DungeonMaker
                         Button bt = (Button)e.Item.FindControl("DeleteButton");
                         bool isDisabled = bt.Text == "Disable";
                         bt.Text = isDisabled ? "Enable" : "Disable";
-                        ((Button)e.Item.FindControl("PlayButton")).Enabled = isDisabled;
                         MapService.ChangeValid(map.mapID);
                     }
                     break;
@@ -160,19 +144,24 @@ namespace DungeonMaker
                     }
                     break;
                 case "SubmitButton":
-                    FileInfo prev = new FileInfo(Server.MapPath(map.thumbnail));
-                    try { prev.Delete(); }
-                    catch { ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('Deletion error, likely due to physical path.');", true); }
                     FileUpload fu = (FileUpload)e.Item.FindControl("ThumbnailUploader");
-                    string fileName = Path.GetFileName(fu.PostedFile.FileName),
-                        fileType = fu.PostedFile.ContentType,
-                        filePath = Server.MapPath("~/assets/screenshots/") + fileName;
-                    if (fu.PostedFile.ContentLength < 500000)
+                    if (!fu.HasFile) alert("Please choose a new thumbnail before submitting it.");
+                    else
                     {
-                        fu.SaveAs(filePath);
-                        UserService.ChangeProfilePic("assets/screenshots/" + fileName, userpage);
+                        FileInfo prev = new FileInfo(Server.MapPath(map.thumbnail));
+                        try { prev.Delete(); }
+                        catch { alert("Deletion error, likely due to physical path."); }
+                        string fileName = Path.GetFileName(fu.PostedFile.FileName),
+                            fileType = fu.PostedFile.ContentType,
+                            filePath = Server.MapPath("~/assets/screenshots/") + fileName;
+                        if (fu.PostedFile.ContentLength < 500000)
+                        {
+                            try { fu.SaveAs(filePath); }
+                            catch { alert("Upload error."); }
+                            MapService.ChangeThumbnail(map.mapID, "assets/screenshots/" + fileName);
+                        }
+                        else alert("File size too large.");
                     }
-                    else ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('File size too large.');", true);
                     break;
             }
         }
@@ -184,12 +173,13 @@ namespace DungeonMaker
             if (!isPublic && user.email != userpage.email && !user.IsAdmin()) e.Item.Enabled = false;
             int mapID = int.Parse(((Label)e.Item.FindControl("mapID")).Text);
             Map map = new Map(mapID);
+            Label title = (Label)e.Item.FindControl("Title");
+            title.Text = title.Text.Remove(title.Text.Length - 1);
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
+                ((Button)e.Item.FindControl("EditButton")).Visible = user.IsAdmin() || user.email == userpage.email;
                 Label date = (Label)e.Item.FindControl("CreationDate");
                 date.Text = date.Text.Remove(date.Text.IndexOf(' '));
-                string title = ((Label)e.Item.FindControl("Title")).Text;
-                ((Label)e.Item.FindControl("Title")).Text = title.Remove(title.Length - 1);
                 ((Button)e.Item.FindControl("PlayButton")).Enabled = map.isValid;
             }
             if (e.Item.ItemType == ListItemType.EditItem) 
@@ -202,11 +192,10 @@ namespace DungeonMaker
         }
         private bool IsExist(int mapID)
         {
-            foreach (Map map in (List<Map>)Cache["playedMaps"])
-                if (map.mapID == mapID)
-                    return true;
+            foreach (Map map in (List<Map>)Cache["playedMaps"]) if (map.mapID == mapID) return true;
             return false;
         }
+
         [WebMethod]
         public static void AvatarUpload() 
         { //AJAX call
@@ -217,7 +206,7 @@ namespace DungeonMaker
         { //Updates user avatar in database, current userpage and masterpage (if applicable)
             FileInfo prev = new FileInfo(Server.MapPath(userpage.profilePicture));
             try { prev.Delete(); }
-            catch { ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('Deletion error, likely due to physical path.');", true); }
+            catch { alert("Deletion error, likely due to physical path."); }
             string fileName = Path.GetFileName(AvatarUploader.PostedFile.FileName),
                 fileType = AvatarUploader.PostedFile.ContentType,
                 filePath = Server.MapPath("~/assets/profiles/") + fileName;
@@ -226,11 +215,12 @@ namespace DungeonMaker
                 AvatarUploader.SaveAs(filePath);
                 UserService.ChangeProfilePic("assets/profiles/" + fileName, userpage);
             }
-            else ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('File size too large.');", true);
+            else alert("File size too large.");
             Avatar.ImageUrl = filePath;
             if (Master is Site && user.email == userpage.email) 
                 ((Site)Master).ImageUrl = filePath;
         }
+
         [WebMethod]
         public static void TextChanged(string column, string newValue)
         { //AJAX call
@@ -245,13 +235,13 @@ namespace DungeonMaker
                 UserService.UpdateFieldByEmail("username", value, userpage);
                 ((User)Session["userPage"]).username = value;
             }
-            else ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('Username change failed. It must only consist of (latin) letters and numbers. If not applicable, this username may already exist.');", true);
-            if (column == 1 && value.Length > 3 && value.Length < 13) 
-            { 
-                UserService.UpdateFieldByEmail("userPassword", value, userpage); 
-                ((User)Session["userPage"]).userPassword = value; 
+            else alert("Username change failed. It must only consist of (latin) letters and numbers. If not applicable, this username may already exist.");
+            if (column == 1 && value.Length > 3 && value.Length < 13)
+            {
+                UserService.UpdateFieldByEmail("userPassword", value, userpage);
+                ((User)Session["userPage"]).userPassword = value;
             }
-            else ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('Password change failed. It must be between 3 and 13 characters.');", true);
+            else alert("Password change failed. It must be between 3 and 13 characters.");
         }
     }
 }

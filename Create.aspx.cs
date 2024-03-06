@@ -30,6 +30,7 @@ namespace DungeonMaker
                 TB2.Text = StoreService.GetMapTypeCost(TB1.Text).ToString();
             }
         }
+        private void alert(string alert) { ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + alert + "');", true); }
         protected void Submit_Click(object sender, EventArgs e)
         { //Saves everything and finishes map creation
             //Random rand = new Random();
@@ -38,7 +39,7 @@ namespace DungeonMaker
                 //If (a) map(s) with the same name exist(s), adds count to name [0,1,2...], circumventing naming override problem. Analogous to the ticks solution.
                 imagePath = "~/assets/screenshots/" + mapName + MapService.CountMapsWithName(mapName_TextBox.Text) + ".jpg",
                 filePath = Server.MapPath(imagePath);
-            if (string.IsNullOrEmpty(mapName)) ScriptManager.RegisterStartupScript(this, GetType(), "AlertScript", "alert('You must name your map!');", true);
+            if (string.IsNullOrEmpty(mapName)) alert("You must name your dungeon.");
             else
             {
                 Point SourcePoint = new Point(0, 100);
@@ -58,13 +59,13 @@ namespace DungeonMaker
                     if (type == "portalFull") portalFull = true;
                     if (type == "portalEmpty") portalEmpty = true;
                 }
-                if (portalFull && portalEmpty) MapService.UploadMap(user.email, mapName + MapService.CountMapsWithName(mapName), TB2.Text);
+                if (portalFull && portalEmpty) MapService.UploadMap(user.email, mapName + MapService.CountMapsWithName(mapName), Session["mapType"].ToString());
                 else 
-                { 
-                    ScriptManager.RegisterStartupScript(this, GetType(), "AlertScript", "alert('You must have both the full and empty portals placed!');", true);
+                {
+                    alert("You must have both the full and empty portals placed.");
                     FileInfo thumbnail = new FileInfo(filePath);
                     try { thumbnail.Delete(); }
-                    catch { ScriptManager.RegisterStartupScript(this, GetType(), "AlertScript", "console.log('Deletion error, likely due to physical path.');", true);  }
+                    catch { alert("Deletion error, likely due to physical path.");  }
                     return;
                 }
                 Thread.Sleep(5);

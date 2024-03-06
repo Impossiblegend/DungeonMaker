@@ -75,7 +75,7 @@ namespace DungeonMaker
             OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
             OleDbCommand command = new OleDbCommand();            
             command.CommandText = "INSERT INTO Maps(creator, mapType, creationDate, mapName, isPublic, estTime, thumbnail, isValid) " +
-                "VALUES(@creator, @mapType, @date, @mapName, False, 0, @thumbnail, True)";
+                "VALUES(@creator, @mapType, @date, @mapName, True, 0, @thumbnail, True)";
             command.Parameters.AddWithValue("@creator", email);
             command.Parameters.AddWithValue("@mapType", mapType);
             command.Parameters.AddWithValue("@date", DateTime.Today);
@@ -122,16 +122,25 @@ namespace DungeonMaker
         }
         public static void ChangeMapName(int mapID, string mapName) //mapName must include serial autonumber --- CountMapsWithName()
         { //Changes map name and thumbnail accordingly
+            ChangeThumbnail(mapID, "assets/screenshots/" + mapName + ".jpg");
             OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
-            OleDbCommand command = new OleDbCommand(), command2 = new OleDbCommand();
-            command.Connection = Conn; command2.Connection = Conn;
+            OleDbCommand command = new OleDbCommand();
+            command.Connection = Conn;
             command.CommandText = "UPDATE Maps SET mapName = @mapName WHERE mapID = " + mapID;
-            command2.CommandText = "UPDATE Maps SET thumbnail = @thumbnail WHERE mapID = " + mapID;
             command.Parameters.AddWithValue("@mapName", mapName);
-            command2.Parameters.AddWithValue("@thumbnail", "assets/screenshots/" + mapName + ".jpg");
             Conn.Open();
             command.ExecuteNonQuery();
-            command2.ExecuteNonQuery();
+            Conn.Close();
+        }
+        public static void ChangeThumbnail(int mapID, string path) 
+        {
+            OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
+            OleDbCommand command = new OleDbCommand();
+            command.Connection = Conn;
+            command.CommandText = "UPDATE Maps SET thumbnail = @thumbnail WHERE mapID = " + mapID;
+            command.Parameters.AddWithValue("@thumbnail", path);
+            Conn.Open();
+            command.ExecuteNonQuery();
             Conn.Close();
         }
     }
