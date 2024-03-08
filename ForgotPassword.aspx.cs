@@ -46,10 +46,10 @@ namespace DungeonMaker
             string pass = ChangePassword_TextBox.Text;
             if (string.IsNullOrEmpty(pass) || string.IsNullOrEmpty(ConfirmPassword_TextBox.Text)) IsPasswordChanged.Text = "A field is blank.";
             else if (pass.Length < 4 || pass.Length > 12) IsPasswordChanged.Text = "Password must be between 4 and 12 characters long. Yours is " + pass.Length + ".";
-            else if (ChangePassword_TextBox.Text != ConfirmPassword_TextBox.Text) IsPasswordChanged.Text = "Password confirmation failed, no match.";
+            else if (pass != ConfirmPassword_TextBox.Text) IsPasswordChanged.Text = "Password confirmation failed, no match.";
             else
             {
-                UserService.ChangePassword(ChangePassword_TextBox.Text, user);
+                UserService.ChangePassword(pass, user);
                 Response.Redirect("Login.aspx");
             }
         }
