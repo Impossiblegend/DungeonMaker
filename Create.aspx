@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title></title>
     <link rel="stylesheet" href="assets/styles/Create.css" />
-    <script src="scripts/phaser.js"></script>
+    <script src="scripts/phaser.min.js"></script>
     <script src="scripts/jquery-3.7.1.js"></script>
 </head>
 <body>

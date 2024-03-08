@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-    <script src="scripts/phaser.js"></script>
+    <script src="scripts/phaser.min.js"></script>
     <script src="scripts/jquery-3.7.1.js"></script>
 </head>
 <body>
