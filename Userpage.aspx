@@ -50,23 +50,25 @@
             <ItemTemplate>
                 <div class="maps-template">
                     <asp:Label ID="Title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
-                    <asp:Label ID="CreationDate" runat="server" CssClass="item-label" Text='<%# Bind("creationDate") %>' ></asp:Label> <br />
+                    <asp:Label ID="CreationDate" runat="server" CssClass="item-label" Text='<%# Bind("creationDate") %>' ToolTip="Date map was created" ></asp:Label> <br />
                     <asp:Label ID="MapID" runat="server" Visible="false" Text='<%# Bind("mapID") %>' ></asp:Label>
                     <asp:Image ID="Thumbnail" runat="server" Width="225px" CssClass="item-image" Height="110px" ImageUrl='<%# Bind("thumbnail") %>'/>
                     <asp:Button ID="PlayButton" runat="server" Text="Play" Height="25px" Width="72px" CssClass="item-button" CommandName="PlayButton" BackColor="#c0c0c0"/>
-                    <asp:Button ID="EditButton" runat="server" Text="Edit" Height="25px" Width="72px" CssClass="item-button" CommandName="EditButton" CommandArgument="true" BackColor="#c0c0c0"/>
+                    <asp:Button ID="EditButton" runat="server" Text="Edit" Height="25px" Width="72px" CssClass="item-button" CommandName="EditButton" CommandArgument="true" BackColor="#fede01"/>
                 </div>
             </ItemTemplate>
             <EditItemTemplate>
-                <asp:Label ID="Title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
-                <asp:Label ID="MapID" runat="server" Visible="false" Text='<%# Bind("mapID") %>' ></asp:Label>
-                <asp:Button ID="PrivacyButton" runat="server" Text='<%# Bind("isPublic") %>' Height="25px" Width="72px" CssClass="item-button" CommandName="PrivacyButton"/>
-                <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="25px" Width="72px" CssClass="Delete-Button" CommandName="DeleteButton" BackColor="#000000" />
-                <asp:TextBox ID="RenameTextBox" runat="server" Visible="false"></asp:TextBox>
-                <asp:Button ID="RenameButton" runat="server" Text="Rename" Height="25px" Width="72px" CssClass="item-button" CommandName="RenameButton" BackColor="#c0c0c0"/> <br />
-                <asp:FileUpload ID="ThumbnailUploader" runat="server" ToolTip="Upload new thumbnail" />
-                <asp:Button ID="SubmitButton" runat="server" Text="Submit" Height="25px" Width="72px" CssClass="item-button" CommandName="SubmitButton" BackColor="#c0c0c0" /> <br />
-                <asp:Button ID="FinishButton" runat="server" Text="Finish" Height="25px" Width="72px" CssClass="item-button" CommandName="EditButton" CommandArgument="false" BackColor="#c0c0c0"/>
+                <div class="maps-template">
+                    <asp:Label ID="Title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
+                    <asp:Label ID="MapID" runat="server" Visible="false" Text='<%# Bind("mapID") %>' ></asp:Label>
+                    <asp:Button ID="PrivacyButton" runat="server" Text='<%# Bind("isPublic") %>' Height="25px" Width="72px" CssClass="item-button" CommandName="PrivacyButton"/>
+                    <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="25px" Width="72px" CssClass="Delete-Button" CommandName="DeleteButton" BackColor="#000000" ToolTip="This action cannot be undone" />
+                    <asp:TextBox ID="RenameTextBox" runat="server" Visible="false"></asp:TextBox>
+                    <asp:Button ID="RenameButton" runat="server" Text="Rename" Height="25px" Width="72px" CssClass="item-button" CommandName="RenameButton" BackColor="#c0c0c0"/> <br /> <br />
+                    <asp:FileUpload ID="ThumbnailUploader" runat="server" ToolTip="Upload new thumbnail" />
+                    <asp:Button ID="SubmitButton" runat="server" Text="Submit" Height="25px" Width="72px" CssClass="item-button" CommandName="SubmitButton" BackColor="#c0c0c0" ToolTip="Sumbit new thumbnail" /> <br /> <br />
+                    <asp:Button ID="FinishButton" runat="server" Text="Finish" Height="25px" Width="72px" CssClass="item-button" CommandName="EditButton" CommandArgument="false" BackColor="#fede01" ToolTip="Finish editing"/>
+                </div>
             </EditItemTemplate>
         </asp:DataList>
     </div>

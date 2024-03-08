@@ -138,6 +138,16 @@ input {
     display: none;
     margin-bottom: 0px;
 }
+
+#TosLabel {
+    display: inline-block;
+    vertical-align: middle;
+    font-family: 'Gill Sans', sans-serif;
+    margin-left: 5px;
+    font-size: 14px;
+    font-weight: 300;
+}
+
 @keyframes slideIn {
     0% {
         opacity: 0;

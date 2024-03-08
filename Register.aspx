@@ -23,13 +23,11 @@
             ValidationExpression="^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" CssClass="hidden-validator">
         </asp:RegularExpressionValidator>
         <asp:Label ID="Password_Label" class="container" runat="server" Text="Password"></asp:Label>
-        <asp:TextBox ID="Password_TextBox" class="container" runat="server" TabIndex="7" autocomplete="off" Height="45px" Width="330px" TextMode="Password"></asp:TextBox>
+        <asp:TextBox ID="Password_TextBox" class="container" runat="server" TabIndex="7" autocomplete="off" Height="45px" Width="330px" TextMode="Password"></asp:TextBox> <br />
         <asp:CheckBox ID="ToSCheckBox" runat="server" style="display: inline-block;"/>
-        <asp:Label ID="TosLabel" runat="server" Text="I agree to the terms of service" style="display: inline-block; vertical-align: middle;"></asp:Label>
+        <asp:Label ID="TosLabel" runat="server" Text="I agree to the terms of service" ></asp:Label>
         <asp:Label ID="IsSignUp" class="container" runat="server" Text=""></asp:Label>
-        <a href="Login.aspx">
-            <asp:Label ID="Login_Label" runat="server" Text="Login"></asp:Label>
-        </a>
+        <a href="Login.aspx"> <asp:Label ID="Login_Label" runat="server" Text="Login"></asp:Label> </a>
         <asp:Button ID="SignUp_Button" class="container" runat="server" OnClick="SignUp_Button_Click" OnClientClick="attachValidationHandlers()" Text="Register" Enabled="false" />
     </form>
     <script>

@@ -33,6 +33,7 @@ namespace DungeonMaker
                     if (PlayService.CountStars(game.player) >= 100 && AchievementService.IsValid("Tycoon") && !existing.Contains("Tycoon")) achievements.Add("Tycoon");
                     string jsArray = "[" + string.Join(",", achievements.Select(a => "'" + a + "'")) + "]";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ShowAchievements", "window.onload = function() { showAchievements(" + jsArray + "); };", true);
+                    foreach (string title in achievements) { AS = new AchievementService(); AchievementService.Achieve(title, game.player); }
                 }
             }
         }

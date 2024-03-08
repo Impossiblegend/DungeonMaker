@@ -173,7 +173,7 @@ namespace DungeonMaker
                     if (MapTypesCBL.Items[1].Selected)
                     {
                         query = query.Insert(newIndex, "Maps.mapType = 'cyberpunk' "); newIndex += 27;
-                        if (SumSelected > 2) { query = query.Insert(newIndex, "OR "); newIndex += 3; }
+                        if (MapTypesCBL.Items[2].Selected) { query = query.Insert(newIndex, "OR "); newIndex += 3; }
                     }
                     if (MapTypesCBL.Items[2].Selected) query = query.Insert(newIndex, "Maps.mapType = 'steampunk' ");
                 }

@@ -11,13 +11,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh; /* Cover the viewport height */
+    height: 100vh;
     margin: 0;
     background-image: url(DungeonMakerBG2.jpg);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center center;
-    overflow: hidden; /* Prevent scrollbars */
+    overflow: hidden;
 }
 
 .background {

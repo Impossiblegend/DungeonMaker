@@ -96,9 +96,7 @@ namespace DungeonMaker
                     Response.Redirect("Play.aspx");
                     break;
                 case "EditButton":
-                    bool edit = Convert.ToBoolean(e.CommandArgument);
-                    MapsDataList.EditItemIndex = edit ? e.Item.ItemIndex : -1;
-                    MapsDataList.Style["box-shadow"] = edit ? "0 2px 4px rgba(0, 0, 0, 0.3)" : "0";
+                    MapsDataList.EditItemIndex = Convert.ToBoolean(e.CommandArgument) ? e.Item.ItemIndex : -1;
                     MapsDataList.DataSource = GeneralService.GetDataSetByQuery("SELECT mapID, mapName, Maps.creationDate, thumbnail, isPublic FROM Maps WHERE creator = '" + userpage.email + "' ORDER BY mapID DESC", "Maps");
                     MapsDataList.DataBind();
                     break;
@@ -171,8 +169,7 @@ namespace DungeonMaker
             if (userpage == null) userpage = (User)Session["userPage"];
             bool isPublic = (bool)DataBinder.Eval(e.Item.DataItem, "isPublic");
             if (!isPublic && user.email != userpage.email && !user.IsAdmin()) e.Item.Enabled = false;
-            int mapID = int.Parse(((Label)e.Item.FindControl("mapID")).Text);
-            Map map = new Map(mapID);
+            Map map = new Map(int.Parse(((Label)e.Item.FindControl("mapID")).Text));
             Label title = (Label)e.Item.FindControl("Title");
             title.Text = title.Text.Remove(title.Text.Length - 1);
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
@@ -187,7 +184,12 @@ namespace DungeonMaker
                 Button btn = (Button)e.Item.FindControl("PrivacyButton");
                 btn.Text = isPublic ? "Public" : "Private";
                 btn.BackColor = isPublic ? ColorTranslator.FromHtml("#009900") : ColorTranslator.FromHtml("#990000");
-                if (IsExist(mapID)) ((Button)e.Item.FindControl("DeleteButton")).Text = map.isValid ? "Disable" : "Enable";
+                if (IsExist(map.mapID))
+                {
+                    btn = (Button)e.Item.FindControl("DeleteButton");
+                    btn.Text = map.isValid ? "Disable" : "Enable";
+                    btn.ToolTip = "Disabling still shows your map publicly, but prevents it from being played";
+                }
             }
         }
         private bool IsExist(int mapID)

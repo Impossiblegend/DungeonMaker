@@ -16,7 +16,7 @@
                 <asp:Label ID="UserName_Label" class="container" runat="server" Text="Username"></asp:Label>
                 <asp:TextBox ID="UserName_TextBox" class="container" runat="server"></asp:TextBox>
                 <asp:Label ID="Email_Label" class="container" runat="server" Text="Email"></asp:Label>
-                <asp:TextBox ID="Email_TextBox" class="container" runat="server"></asp:TextBox> <br />
+                <asp:TextBox ID="Email_TextBox" class="container" runat="server"></asp:TextBox> <br /> <br />
                 <asp:Button ID="CheckAccount_Button" class="container" runat="server" OnClick="CheckAccount_Button_Click" Text="Check Account" />
             </asp:View>
             <asp:View ID="ChangePasswordView" runat="server">
