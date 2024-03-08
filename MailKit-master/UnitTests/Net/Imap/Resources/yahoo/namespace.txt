@@ -1,2 +1,0 @@
-* NAMESPACE (("" "/")) NIL NIL
-A######## OK Namespace completed.

@@ -1,1 +1,0 @@
-* PREAUTH IMAP4rev1 server logged in as Smith

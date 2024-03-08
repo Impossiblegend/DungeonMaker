@@ -10,19 +10,25 @@
 <body>
 
     <form id="form1" runat="server">
-        <asp:Label ID="Title_Label" class="container" runat="server" Text="Forgot Password" Visible="true"></asp:Label>
-        <asp:Label ID="UserName_Label" class="container" runat="server" Text="Username" Visible="true"></asp:Label>
-        <asp:TextBox ID="UserName_TextBox" class="container" runat="server" Visible="true"></asp:TextBox>
-        <asp:Label ID="Email_Label" class="container" runat="server" Text="Email" Visible="true"></asp:Label>
-        <asp:TextBox ID="Email_TextBox" class="container" runat="server" Visible="true"></asp:TextBox>
-        <asp:Label ID="ChangePassword_Label" class="container" runat="server" Text="Enter New Password" Visible="False"></asp:Label>
-        <asp:TextBox ID="ChangePassword_TextBox" class="container" runat="server" Visible="false"></asp:TextBox>
+        <asp:MultiView ID="FPMultiView" runat="server">
+            <asp:View ID="EmailConfirmView" runat="server">
+                <asp:Label ID="Title_Label" class="container" runat="server" Text="Forgot Password"></asp:Label>
+                <asp:Label ID="UserName_Label" class="container" runat="server" Text="Username"></asp:Label>
+                <asp:TextBox ID="UserName_TextBox" class="container" runat="server"></asp:TextBox>
+                <asp:Label ID="Email_Label" class="container" runat="server" Text="Email"></asp:Label>
+                <asp:TextBox ID="Email_TextBox" class="container" runat="server"></asp:TextBox> <br />
+                <asp:Button ID="CheckAccount_Button" class="container" runat="server" OnClick="CheckAccount_Button_Click" Text="Check Account" />
+            </asp:View>
+            <asp:View ID="ChangePasswordView" runat="server">
+                <asp:Label ID="ChangePassword_Label" class="container" runat="server" Text="Enter a new password" ></asp:Label>
+                <asp:TextBox ID="ChangePassword_TextBox" class="container" runat="server" ></asp:TextBox>
+                <asp:Label ID="ConfirmPassword_Label" class="container" runat="server" Text="Confirm new password" ></asp:Label>
+                <asp:TextBox ID="ConfirmPassword_TextBox" class="container" runat="server" ></asp:TextBox> <br /> <br />
+                <asp:Button ID="ChangePassword_Button" class="container" runat="server" OnClick="ChangePassword_Button_Click" Text="Change Password" />
+            </asp:View>
+        </asp:MultiView>
         <asp:Label ID="IsPasswordChanged" class="container" runat="server" Text="" Visible="true"></asp:Label>
-        <asp:Button ID="CheckAccount_Button" class="container" runat="server" OnClick="CheckAccount_Button_Click" Text="Check Account"  Visible="true"/>
-        <asp:Button ID="ChangePassword_Button" class="container" runat="server" OnClick="ChangePassword_Button_Click" Text="Change Password"  Visible="False"/>
-        <a href="Login.aspx">
-            <asp:Label ID="BackToLogin_Label" runat="server" Text="Back to Login"></asp:Label>
-        </a>
+        <a href="Login.aspx"> <asp:Label ID="BackToLogin_Label" runat="server" Text="Back to Login"></asp:Label> </a>
     </form>
 
 </body>

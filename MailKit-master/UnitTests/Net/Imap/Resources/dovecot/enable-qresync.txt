@@ -1,2 +1,0 @@
-* ENABLED QRESYNC CONDSTORE
-A######## OK Enabled (0.000 + 0.000 secs).

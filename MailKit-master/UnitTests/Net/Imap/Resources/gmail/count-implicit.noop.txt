@@ -1,2 +1,0 @@
-* 1 EXPUNGE
-A######## OK NOOP completed

@@ -1,2 +1,0 @@
-* LIST (\HasNoChildren) "/" "Archived Messages"
-A######## OK Success

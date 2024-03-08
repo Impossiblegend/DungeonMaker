@@ -1,2 +1,0 @@
-* 8 FETCH (UID 8 MODSEQ (5))
-A######## OK Store completed (0.001 + 0.000 secs).

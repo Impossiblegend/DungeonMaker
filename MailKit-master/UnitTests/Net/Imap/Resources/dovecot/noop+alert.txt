@@ -1,2 +1,0 @@
-* OK [ALERT] System shutdown in 10 minutes
-A######## OK NOOP complete.

@@ -1,2 +1,0 @@
-* 16 EXISTS
-A######## OK [APPENDUID 23 16] (Success)

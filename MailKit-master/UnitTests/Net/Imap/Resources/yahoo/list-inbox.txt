@@ -1,2 +1,0 @@
-* LIST (\HasNoChildren) "/" "Inbox"
-A######## OK LIST completed

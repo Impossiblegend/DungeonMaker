@@ -43,25 +43,20 @@ namespace DungeonMaker
         }
         protected void ConfirmButton_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(FromDateTB.Text) && !string.IsNullOrEmpty(ToDateTB.Text))
+            DateTime fromDate = DateTime.Parse(FromDateTB.Text), toDate = DateTime.Parse(ToDateTB.Text);
+            DataRow[] filteredRows = ((DataSet)Session["ds"]).Tables[0].Select(
+                "datePlayed >= #" + fromDate.ToString("MM/dd/yyyy") + "# AND datePlayed <= #" + toDate.ToString("MM/dd/yyyy") + "#");
+            if (string.IsNullOrEmpty(FromDateTB.Text) || string.IsNullOrEmpty(ToDateTB.Text)) ErrorMsg("Please provide both From and To dates.");
+            else if (toDate < fromDate) ErrorMsg("To date should be after or equal to From date.");
+            else if (filteredRows.Length == 0) ErrorMsg("No games found within the specified date range.");
+            else
             {
-                DateTime fromDate = DateTime.Parse(FromDateTB.Text), toDate = DateTime.Parse(ToDateTB.Text);
-                if (toDate >= fromDate)
-                {
-                    DataRow[] filteredRows = ((DataSet)Session["ds"]).Tables[0].Select("datePlayed >= #" + fromDate.ToString("MM/dd/yyyy") + "# AND datePlayed <= #" + toDate.ToString("MM/dd/yyyy") + "#");
-                    if (filteredRows.Length > 0)
-                    {
-                        DataTable filteredTable = ((DataSet)Session["ds"]).Tables[0].Clone();
-                        foreach (DataRow row in filteredRows) filteredTable.ImportRow(row);
-                        GamesDataList.DataSource = filteredTable;
-                        GamesDataList.DataBind();
-                        EmptyLabel.Text = "";
-                    }
-                    else ErrorMsg("No games found within the specified date range.");
-                }
-                else ErrorMsg("To date should be after or equal to From date.");
+                DataTable filteredTable = ((DataSet)Session["ds"]).Tables[0].Clone();
+                foreach (DataRow row in filteredRows) filteredTable.ImportRow(row);
+                GamesDataList.DataSource = filteredTable;
+                GamesDataList.DataBind();
+                EmptyLabel.Text = "";
             }
-            else ErrorMsg("Please provide both From and To dates.");
         }
         private void ErrorMsg(string msg) 
         {

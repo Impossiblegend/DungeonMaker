@@ -24,6 +24,24 @@ namespace DungeonMaker
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
+        /// FPMultiView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.MultiView FPMultiView;
+
+        /// <summary>
+        /// EmailConfirmView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View EmailConfirmView;
+
+        /// <summary>
         /// Title_Label control.
         /// </summary>
         /// <remarks>
@@ -69,6 +87,24 @@ namespace DungeonMaker
         protected global::System.Web.UI.WebControls.TextBox Email_TextBox;
 
         /// <summary>
+        /// CheckAccount_Button control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button CheckAccount_Button;
+
+        /// <summary>
+        /// ChangePasswordView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View ChangePasswordView;
+
+        /// <summary>
         /// ChangePassword_Label control.
         /// </summary>
         /// <remarks>
@@ -87,22 +123,22 @@ namespace DungeonMaker
         protected global::System.Web.UI.WebControls.TextBox ChangePassword_TextBox;
 
         /// <summary>
-        /// IsPasswordChanged control.
+        /// ConfirmPassword_Label control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label IsPasswordChanged;
+        protected global::System.Web.UI.WebControls.Label ConfirmPassword_Label;
 
         /// <summary>
-        /// CheckAccount_Button control.
+        /// ConfirmPassword_TextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button CheckAccount_Button;
+        protected global::System.Web.UI.WebControls.TextBox ConfirmPassword_TextBox;
 
         /// <summary>
         /// ChangePassword_Button control.
@@ -112,6 +148,15 @@ namespace DungeonMaker
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button ChangePassword_Button;
+
+        /// <summary>
+        /// IsPasswordChanged control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label IsPasswordChanged;
 
         /// <summary>
         /// BackToLogin_Label control.

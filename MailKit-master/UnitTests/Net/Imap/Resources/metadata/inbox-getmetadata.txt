@@ -1,2 +1,0 @@
-* METADATA "INBOX" (/private/comment "this is a comment")
-A######## OK GETMETADATA complete

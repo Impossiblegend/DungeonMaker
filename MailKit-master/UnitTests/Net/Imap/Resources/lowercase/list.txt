@@ -1,3 +1,0 @@
-* List (\HasNoChildren) "/" "INBOX"
-* List (\HasNoChildren \Trash) "/" "Trash"
-A######## OK List

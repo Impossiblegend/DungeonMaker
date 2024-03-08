@@ -1,4 +1,0 @@
-[COPYUID 55 31 6]
-* 1 EXPUNGE
-* 0 EXISTS
-A######## OK MOVE completed.

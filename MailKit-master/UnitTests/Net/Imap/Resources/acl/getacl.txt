@@ -1,2 +1,0 @@
-* ACL INBOX Fred rwipslxetad Chris lrswi
-A######## OK GETACL completed.

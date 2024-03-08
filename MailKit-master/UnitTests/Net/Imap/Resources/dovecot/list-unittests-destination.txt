@@ -1,2 +1,0 @@
-* LIST (\HasNoChildren) "." UnitTests.Destination
-A######## OK List completed (0.000 + 0.000 secs).

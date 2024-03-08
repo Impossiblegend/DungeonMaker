@@ -1,3 +1,0 @@
-* QUOTAROOT "INBOX" ""
-* QUOTA "" (STORAGE 3783 15728640)
-A######## OK Success

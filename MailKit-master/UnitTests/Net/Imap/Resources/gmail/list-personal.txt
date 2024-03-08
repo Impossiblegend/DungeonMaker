@@ -1,3 +1,0 @@
-* LIST (\HasNoChildren) "/" "INBOX"
-* LIST (\Noselect \HasChildren) "/" "[Gmail]"
-A######## OK Success
