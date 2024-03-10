@@ -2,7 +2,6 @@
 var traps = [];
 var tempPlat = [];
 var sprites = [];
-var mapType = "blank";
 var maxCredits = 20;
 var creditsLabel;
 var Credits = maxCredits;
@@ -14,6 +13,7 @@ var TB2 = document.getElementById("TB2");
 var TB3 = document.getElementById("TB3");
 var TB4 = document.getElementById("TB4");
 var TB5 = document.getElementById("TB5");
+var TB6 = document.getElementById("TB6");
 var bg;
 
 class MapCreator extends Phaser.Scene {
@@ -24,9 +24,9 @@ class MapCreator extends Phaser.Scene {
         this.load.image('cyberpunk', 'assets/sets/cyberpunk-street.png');
         this.load.image('steampunk', 'assets/sets/city.jpeg');
         this.load.image('blank', 'assets/sets/west.jpg');
-        //this.load.image('bg3', 'assets/pics/backscroller.png');
         this.load.spritesheet('saw', 'assets/sprites/saws.png', { frameWidth: 548, frameHeight: 548 });
         this.load.image('star', 'assets/sprites/star.png');
+        this.load.image('spikes', 'assets/sprites/spikes.png');
         this.load.image('bluePortal', 'assets/sprites/portal.png');
         this.load.image('ground1', 'assets/sets/objects/platform1.png');
         this.load.image('ground2', 'assets/sets/objects/platform2.png');
@@ -37,6 +37,7 @@ class MapCreator extends Phaser.Scene {
         this.load.image('hor-tile-med', 'assets/sets/objects/hor-tile-med.png');
         this.load.image('hor-tile-big', 'assets/sets/objects/hor-tile-big.png');
         this.load.image('hor-tile-small', 'assets/sets/objects/hor-tile-small.png');
+        this.load.image('copper', 'assets/sets/objects/copper.png');
         this.load.spritesheet('portalEmpty', 'assets/sprites/portalRings1.png', { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('portalFull', 'assets/sprites/portalRings2.png', { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('dude', 'assets/sprites/dude.png', { frameWidth: 32, frameHeight: 48 });
@@ -45,7 +46,6 @@ class MapCreator extends Phaser.Scene {
         platforms = this.add.group();
         var flag1 = false;
         var flag2 = true;
-        creditsLabel = this.add.text(16, 16, 'Credits left: ' + maxCredits, { fontSize: '14px', fill: '#000' });
         switch (TB1.value) {
             case "blank":
                 bg = this.add.image(375, 250, 'blank').setScale(0.52);
@@ -68,22 +68,27 @@ class MapCreator extends Phaser.Scene {
                 platforms.create(500, 600, 'ground5');
                 break;
             case "steampunk":
-                bg = this.add.image(375, 250, 'steampunk');
-                platforms.create(150, 250, 'ground2');
-                platforms.create(600, 460, 'ground3');
-                platforms.create(600, 175, 'ground2');
-                platforms.create(1000, 175, 'ground2');
-                platforms.create(300, 400, 'ground1')
-                platforms.create(0, 600, 'ground4');
-                platforms.create(500, 600, 'ground4');
+                bg = this.add.image(570, 350, 'steampunk').setScale(1.485);
+                platforms.create(150, 250, 'copper');
+                platforms.create(600, 460, 'copper');
+                platforms.create(600, 175, 'copper');
+                platforms.create(1000, 175, 'copper');
+                platforms.create(300, 400, 'copper')
+                platforms.create(0, 600, 'ground5');
+                platforms.create(500, 600, 'ground5');
                 break;
+            default: break;
         }
+        creditsLabel = this.add.text(16, 16, 'Credits left: ' + maxCredits, { fontSize: '14px', fill: '#000' });
         const emptyPortal = this.add.sprite(1180, 50, 'portalEmpty').setScale(2);
         const fullPortal = this.add.sprite(1260, 50, 'portalFull').setScale(2);
         const saw = this.add.sprite(1225, 125, 'saw').setScale(0.15);
         const star = this.add.sprite(1225, 200, 'star').setScale(0.5);
+        var trapTypes = TB6.value.split("_");
+        var spikes = null;
+        if (trapTypes.includes("spikes")) spikes = this.add.sprite(1225, 240, 'spikes').setScale(0.5);
         var sp;
-        sprites = [saw, star, emptyPortal, fullPortal];
+        sprites = [saw, star, emptyPortal, fullPortal, spikes];
         sprites.forEach(setter);
         function setter(sprite) {
             sprite.setInteractive({ draggable: true });
@@ -91,6 +96,7 @@ class MapCreator extends Phaser.Scene {
         this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
             switch (gameObject.texture.key) {
                 case "saw": cost = 5; break;
+                case "spikes": cost = 2; break;
                 default: cost = 0; break;
             }
             if (gameObject.x < 1150 && dragX < 1150) cost = 0;
@@ -111,8 +117,19 @@ class MapCreator extends Phaser.Scene {
                 if (gameObject.x > 1150) {
                     addCredits(cost);
                     gameObject.destroy();
-                    if (gameObject.texture.key === "portalEmpty") emptyPortal = this.add.sprite(1180, 50, 'portalEmpty').setScale(2); emptyPortal.setInteractive({ draggable: true }); traps.push(emptyPortal);
-                    if (gameObject.texture.key === "portalFull") fullPortal = this.add.sprite(1260, 50, 'portalFull').setScale(2); fullPortal.setInteractive({ draggable: true }); traps.push(fullPortal);
+                    switch (gameObject.texture.key) {
+                        case "portalEmpty":
+                            emptyPortal = this.add.sprite(1180, 50, 'portalEmpty').setScale(2);
+                            emptyPortal.setInteractive({ draggable: true });
+                            traps.push(emptyPortal);
+                            break;
+                        case "portalFull":
+                            fullPortal = this.add.sprite(1260, 50, 'portalFull').setScale(2);
+                            fullPortal.setInteractive({ draggable: true });
+                            traps.push(fullPortal);
+                            break;
+                        default: break;
+                    }
                 }
                 else {
                     var oldY = 0;
@@ -123,6 +140,7 @@ class MapCreator extends Phaser.Scene {
                         case "star": oldY = 200; spriteScale = 0.5; break;
                         case "portalEmpty": oldX = 1175; oldY = 50; spriteScale = 2; break;
                         case "portalFull": oldX = 1250; oldY = 50; spriteScale = 2; break;
+                        case "spikes": oldY = 240; spriteScale = 0.5; addCredits(-2); break;
                     }
                     if (gameObject.texture.key != "portalEmpty" && gameObject.texture.key != "portalFull")
                         sp = this.add.sprite(oldX, oldY, gameObject.texture).setScale(spriteScale);
@@ -139,7 +157,9 @@ class MapCreator extends Phaser.Scene {
         }
     }
 }
+
 const mapCreatorInstance = new MapCreator();
+
 function saveMap() {
     creditsLabel.setText("");
     TB1.value = ""; TB2.value = ""; TB3.value = ""; TB4.value = ""; TB5.value = "";

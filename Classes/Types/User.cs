@@ -64,5 +64,12 @@ namespace DungeonMaker.Classes.Types
             AchievementService AS = new AchievementService(); StoreService SS = new StoreService(); PlayService PS = new PlayService();
             return AchievementService.UserCreditsTotal(this) - StoreService.SumUserPurchases(this) + PlayService.CountUserVictories(this) * 5 + PlayService.CountStars(this);
         }
+        public List<string> GetTrapTypes() 
+        {
+            DataSet ds = GeneralService.GetDataSetByQuery("SELECT trapType FROM OwnedTrapTypes WHERE owner = '" + this.email + "'", "OwnedTrapTypes");
+            List<string> traps = new List<string>();
+            foreach (DataRow row in ds.Tables[0].Rows) traps.Add(row[0].ToString());
+            return traps;
+        }
     }
 }

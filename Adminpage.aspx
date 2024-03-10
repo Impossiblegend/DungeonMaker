@@ -15,8 +15,7 @@
                         <asp:Label ID="Feedback" runat="server" CssClass="feedback" Text='<%# Bind("feedbackBody") %>'></asp:Label> <br />
                         <asp:Label ID="feedbackID" runat="server" Text='<%# Bind("feedbackID") %>' Visible="false"></asp:Label>
                         <asp:PlaceHolder ID="starsPlaceHolder" runat="server"></asp:PlaceHolder> <br />
-                        <asp:ImageButton ID="Checkmark" runat="server" ImageUrl="assets/ui/check.png" Width="27px" Height="25px" CommandName="Checkmark_Click" />
-                        <asp:ImageButton ID="Cross" runat="server" ImageUrl="assets/ui/cross.png" Width="25px" Height="25px" CommandName="Cross_Click"/>
+                        <asp:CheckBox ID="IsFeaturedCB" runat="server" Checked='<%# Bind("isFeatured") %>' OnCheckedChanged="IsFeaturedCB_CheckedChanged" AutoPostBack="true" />
                     </div>
                 </ItemTemplate>
             </asp:DataList>
@@ -31,7 +30,7 @@
                         <asp:ImageButton ID="LockButton" runat="server" CssClass="lock-button" ImageUrl="assets/ui/" CommandName="LockButton_Click" Width="27px" Height="40px" />
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <asp:ImageButton ID="EditButton" runat="server" CssClass="lock-button" ImageUrl="assets/ui/pencil.png" CommandName="EditButton_Click" Width="33px" Height="40px" />
-                        <asp:TextBox ID="EditTextBox" runat="server" Visible="false"></asp:TextBox>
+                        <asp:TextBox ID="EditTextBox" runat="server" Text='<%# Bind("description") %>' Visible="false"></asp:TextBox>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <asp:Label ID="Title" runat="server" Text='<%# Bind("achievementTitle") %>' Font-Bold="true" CssClass="other-labels" ></asp:Label>
                         <asp:Label ID="Bar" runat="server" Text=" | " CssClass="other-labels"></asp:Label>

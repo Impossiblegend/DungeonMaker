@@ -41,10 +41,9 @@ namespace DungeonMaker.Classes.Services
             command.Parameters.AddWithValue("@dateSent", DateTime.Today);
             SafeExecute();
         }
-        public static void ChangeFeatured(Comment comment) 
+        public static void ChangeFeatured(int ID) 
         { //Negates the featured state of a comment
-            command.CommandText = "UPDATE Feedback SET isFeatured = @f WHERE feedbackID = " + comment.feedbackID;
-            command.Parameters.AddWithValue("@f", comment.isFeatured);
+            command.CommandText = "UPDATE Feedback SET isFeatured = NOT isFeatured WHERE feedbackID = " + ID;
             SafeExecute();
         }
         public static bool CanUpload(User user)

@@ -37,8 +37,6 @@ namespace DungeonMaker
                     imgStar.Style["pointer-events"] = "none";
                     starsPlaceHolder.Controls.Add(imgStar);
                 }
-                if (comment.isFeatured) item.CssClass = "item-template featured";
-                else item.CssClass = "item-template transparent";
             }
         }
         protected void FeedbackDataList_ItemDataBound(object sender, DataListItemEventArgs e)
@@ -47,23 +45,11 @@ namespace DungeonMaker
             {
                 Label body = (Label)e.Item.FindControl("Feedback");
                 if (body.Text.Length > 100) body.Text = "<span class='expandable-text' onclick='expandText(this)'>" +  body.Text.Remove(100) + "..." + "</span>" +
-                        "<span class='full-text' style='display:none;'>" + body.Text + "</span>";
+                    "<span class='full-text' style='display:none;'>" + body.Text + "</span>";
             }
         }
         protected void FeedbackDataList_ItemCommand(object source, DataListCommandEventArgs e)
         {
-            Comment comment = new Comment(int.Parse(((Label)e.Item.FindControl("feedbackID")).Text));
-            if (e.CommandName == "Checkmark_Click") 
-            {
-                comment.isFeatured = true;
-                e.Item.CssClass = "item-template featured";
-            }
-            if (e.CommandName == "Cross_Click")
-            {
-                comment.isFeatured = false;
-                e.Item.CssClass = "item-template transparent";
-            }
-            CommentService.ChangeFeatured(comment);
             //ScriptManager.RegisterStartupScript(this, GetType(), "TriggerPostBack", "__doPostBack('', '');", true);
         }
         protected void AchievementsDataList_ItemDataBound(object sender, DataListItemEventArgs e)
@@ -99,6 +85,13 @@ namespace DungeonMaker
                     tb.Visible = !tb.Visible;
                     break;
             }
+        }
+
+        protected void IsFeaturedCB_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox CB = (CheckBox)sender;
+            DataListItem item = (DataListItem)CB.NamingContainer;
+            CommentService.ChangeFeatured(int.Parse(((Label)item.FindControl("feedbackID")).Text));
         }
     }
 }

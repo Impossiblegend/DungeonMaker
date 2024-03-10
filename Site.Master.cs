@@ -17,7 +17,7 @@ namespace DungeonMaker
             set { ProfilePic.ImageUrl = value; }
         }
         public bool CoinVisible { set { imgCredits.Style["display"] = value ? "block" : "none"; } }
-        public int UserCredits 
+        public int UserCredits
         {
             get { return int.Parse(litCredits.Text); }
             set { litCredits.Text = value.ToString(); }

@@ -54,6 +54,7 @@ function preload() {
     this.load.image('blank', 'assets/sets/west.jpg');
     this.load.spritesheet('saw', 'assets/sprites/saws.png', { frameWidth: 548, frameHeight: 548 });
     this.load.image('star', 'assets/sprites/star.png');
+    this.load.image('spikes', 'assets/sprites/spikes.png');
     this.load.image('bluePortal', 'assets/sprites/portal.png');
     this.load.image('ground1', 'assets/sets/objects/platform1.png');
     this.load.image('ground2', 'assets/sets/objects/platform2.png');
@@ -93,7 +94,7 @@ function create() {
             platforms.create(500, 600, 'ground5');
             break;
         case "steampunk":
-            bg = this.add.image(375, 250, 'steampunk');
+            bg = this.add.image(375, 250, 'steampunk').setScale(2);
             platforms.create(150, 250, 'ground2');
             platforms.create(600, 460, 'ground3');
             platforms.create(600, 175, 'ground2');
@@ -170,22 +171,28 @@ function create() {
     }
     traps.children.iterate(function (trap) {
         trap.body.setAllowGravity(false);
-        if (trap.texture.key === "saw") {
-            trap.setScale(0.15);
-            trap.setCollideWorldBounds(true);
-            goLeft(0);
-            function goLeft(counter) {
-                if (!stopThis) {
-                    trap.setVelocityX(-200);
-                    setTimeout(goRight, 2000, counter);
+        switch (trap.texture.key) {
+            case "saw":
+                trap.setScale(0.15);
+                trap.setCollideWorldBounds(true);
+                goLeft(0);
+                function goLeft(counter) {
+                    if (!stopThis) {
+                        trap.setVelocityX(-200);
+                        setTimeout(goRight, 2000, counter);
+                    }
                 }
-            }
-            function goRight(counter) {
-                if (!stopThis) {
-                    trap.setVelocityX(200);
-                    setTimeout(goLeft, 2000, (counter + 1) % 4);
+                function goRight(counter) {
+                    if (!stopThis) {
+                        trap.setVelocityX(200);
+                        setTimeout(goLeft, 2000, (counter + 1) % 4);
+                    }
                 }
-            }
+                break;
+            case "spikes":
+                trap.setScale(0.5);
+                break;
+            default: break;
         }
     });
     scoreText = this.add.text(16, 16, 'Stars collected: 0', { fontSize: '14px', fill: '#000' });
@@ -198,8 +205,8 @@ function create() {
     this.physics.add.overlap(player, traps, hitTrap, null, this);
 }
 
-
 let vx = 0;
+
 function update(time) {
     gameRuntime = time * 0.001 - 1; //Converted to Seconds
     timeText.setText("Time Elapsed: " + Math.round(gameRuntime) + " s");
