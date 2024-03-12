@@ -60,5 +60,16 @@ footer.footer-section {
 }
 
 .content-wrapper {
-    padding-bottom: 29.5%;
+    padding-bottom: 335px;
+}
+
+.no-padding-bottom {
+    padding-bottom: 20px !important;
+}
+
+.radioButtonListContainer {
+    margin-top: 2%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

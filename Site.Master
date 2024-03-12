@@ -13,15 +13,14 @@
     <form id="form1" runat="server">
         <div id="navigation">
             <asp:ImageButton ID="Logo" runat="server" ImageUrl="assets/Logo.jpg" OnClick="Menu_Click" CommandArgument="Explore" Width="55px" Height="55px"/>
-            <asp:LinkButton ID="AboutButton" runat="server" CssClass="nav-label" Text="About" OnClick="Menu_Click" CommandArgument="About" Font-Bold="true" ></asp:LinkButton>
-            <asp:LinkButton ID="StoreButton" runat="server" CssClass="nav-label" Text="Store" OnClick="Menu_Click" CommandArgument="Store" Font-Bold="true" ></asp:LinkButton>
-            <asp:LinkButton ID="AchievementsButton" runat="server" CssClass="nav-label" Text="Achievements" OnClick="Menu_Click" CommandArgument="Achievements" Font-Bold="true" ></asp:LinkButton>
-            <asp:LinkButton ID="GamelogButton" runat="server" CssClass="nav-label" Text="Gamelog" OnClick="Menu_Click" CommandArgument="Gamelog" Font-Bold="true" >Gamelog</asp:LinkButton>
+            <asp:LinkButton ID="AboutButton" runat="server" CssClass="nav-label" OnClick="Menu_Click" CommandArgument="About" Font-Bold="true" >About</asp:LinkButton>
+            <asp:LinkButton ID="StoreButton" runat="server" CssClass="nav-label" OnClick="Menu_Click" CommandArgument="Store" Font-Bold="true" >Store</asp:LinkButton>
+            <asp:LinkButton ID="LogsButton" runat="server"  CssClass="nav-label"  OnClick="Menu_Click" CommandArgument="Logs" Font-Bold="true" >Logs</asp:LinkButton>
             <asp:LinkButton ID="CreateButton" runat="server"  CssClass="nav-label"  OnClick="Menu_Click" CommandArgument="MapSelection" Font-Bold="true" >Create</asp:LinkButton>
             <asp:LinkButton ID="AdminButton" runat="server"  CssClass="nav-label"  OnClick="Menu_Click" CommandArgument="Adminpage" ForeColor="Black" Font-Bold="true" Visible="false">Admin</asp:LinkButton>
             <asp:Image ID="imgCredits" runat="server" ImageUrl="assets/ui/coin.png" Width="32px" Height="32px" Visible="false" />
             <asp:Label ID="litCredits" runat="server" CssClass="label-center" ></asp:Label>
-            <asp:LinkButton ID="LogoutButton" runat="server" CssClass="nav-label" Text="Logout" OnClick="Logout_Click" Font-Bold="true" ></asp:LinkButton>
+            <asp:LinkButton ID="LogoutButton" runat="server" CssClass="nav-label" OnClick="Logout_Click" Font-Bold="true" >Logout</asp:LinkButton>
             <asp:ImageButton ID="ProfilePic" runat="server" OnClick="Menu_Click" CommandArgument="Userpage" Width="55px" Height="55px" />
         </div>
         <div>

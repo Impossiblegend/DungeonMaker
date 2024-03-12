@@ -109,7 +109,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
-    <Content Include="Achievements.aspx" />
     <Content Include="Adminpage.aspx" />
     <Content Include="assets\loremipsum.txt" />
     <Content Include="assets\styles\About.css" />
@@ -130,7 +129,7 @@
     <Content Include="Explore.aspx" />
     <Content Include="ForgotPassword.aspx" />
     <Content Include="Create.aspx" />
-    <Content Include="Gamelog.aspx" />
+    <Content Include="Logs.aspx" />
     <Content Include="MapSelection.aspx" />
     <Content Include="Play.aspx" />
     <Content Include="Register.aspx" />
@@ -151,13 +150,6 @@
     </Compile>
     <Compile Include="About.aspx.designer.cs">
       <DependentUpon>About.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Achievements.aspx.cs">
-      <DependentUpon>Achievements.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Achievements.aspx.designer.cs">
-      <DependentUpon>Achievements.aspx</DependentUpon>
     </Compile>
     <Compile Include="Adminpage.aspx.cs">
       <DependentUpon>Adminpage.aspx</DependentUpon>
@@ -206,12 +198,12 @@
       <DependentUpon>Create.aspx</DependentUpon>
     </Compile>
     <Compile Include="Classes\Services\MapService.cs" />
-    <Compile Include="Gamelog.aspx.cs">
-      <DependentUpon>Gamelog.aspx</DependentUpon>
+    <Compile Include="Logs.aspx.cs">
+      <DependentUpon>Logs.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Gamelog.aspx.designer.cs">
-      <DependentUpon>Gamelog.aspx</DependentUpon>
+    <Compile Include="Logs.aspx.designer.cs">
+      <DependentUpon>Logs.aspx</DependentUpon>
     </Compile>
     <Compile Include="MapSelection.aspx.cs">
       <DependentUpon>MapSelection.aspx</DependentUpon>

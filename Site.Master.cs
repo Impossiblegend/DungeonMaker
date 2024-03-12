@@ -29,11 +29,10 @@ namespace DungeonMaker
             user = (User)Session["user"];
             if (!IsPostBack)
             {
-                if (user.elevation == 0)
+                if (user.IsBanned())
                 {
                     CreateButton.Visible = false;
-                    AchievementsButton.Visible = false;
-                    GamelogButton.Visible = false;
+                    LogsButton.Visible = false;
                     LogoutButton.Text = "Login";
                 }
                 else
@@ -56,9 +55,9 @@ namespace DungeonMaker
         protected void Menu_Click(object sender, EventArgs e) 
         {
             Session["userPage"] = user;
-            imgCredits.Style["display"] = "block";
-            IButtonControl btn = (IButtonControl)sender; //LinkButton and ImageButton both implement/inherit IButtonControl
-            Response.Redirect(btn.CommandArgument + ".aspx");
+            CoinVisible = true;
+            //Both LinkButton and ImageButton implement IButtonControl
+            Response.Redirect(((IButtonControl)sender).CommandArgument + ".aspx");
         }
     }
 }
