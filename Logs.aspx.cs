@@ -15,29 +15,27 @@ namespace DungeonMaker
         {
             if (!IsPostBack)
             {
+                LogsMultiView.ActiveViewIndex = 0;
                 string query = "SELECT * FROM Achievements INNER JOIN UserAchievements ON Achievements.achievementTitle = UserAchievements.achievement " +
                     "WHERE Achievements.isValid AND UserAchievements.awardee = '" + ((User)Session["userPage"]).email + "' ORDER BY UserAchievements.dateReceived";
                 DataSet ds = GeneralService.GetDataSetByQuery(query, "Achievements");
                 AchievementsDataList.DataSource = ds;
                 Session["achievements"] = ds;
                 AchievementsDataList.DataBind();
-                if (AchievementsDataList.Items.Count == 0)
-                    EmptyLabel.Text = ((User)Session["user"]).IsAdmin() ? "This user has not achieved anything yet." : "Play some games to get achievements!";
+                int count = AchievementsDataList.Items.Count;
+                if (count == 0) EmptyLabel.Text = ((User)Session["user"]).IsAdmin() ? "This user has not achieved anything yet." : "Play some games to get achievements!";
+                if (count > 5) wrapper.Attributes["class"] = "content-wrapper no-padding-bottom";
                 query = "SELECT Games.*, Maps.mapName FROM Maps INNER JOIN Games ON Games.mapID = Maps.mapID WHERE Games.player = '" + ((User)Session["userPage"]).email + "'";
                 ds = GeneralService.GetDataSetByQuery(query, "Games");
                 Session["gamelogs"] = ds;
                 GamesDataList.DataSource = ds;
                 GamesDataList.DataBind();
-                int count = GamesDataList.Items.Count;
+                count = GamesDataList.Items.Count;
                 if (count == 0) EmptyLabel.Text = ((User)Session["user"]).IsAdmin() ? "This user has not played any games yet." : "Play some games for them appear here!";
-                if (count > 5) ScriptManager.RegisterStartupScript(this, GetType(), "Padding", "changePadding();", true);
+                if (count > 5) wrapper.Attributes["class"] = "content-wrapper no-padding-bottom";
             }
         }
-        protected void TableSelect_SelectedIndexChanged(object sender, EventArgs e) 
-        {
-            wrapper.Attributes["class"] = "content-wrapper no-padding-bottom";
-            LogsMultiView.ActiveViewIndex = TableSelect.SelectedIndex; 
-        }
+        protected void TableSelect_SelectedIndexChanged(object sender, EventArgs e)  { LogsMultiView.ActiveViewIndex = TableSelect.SelectedIndex; }
         protected void AchievementsDataList_ItemDataBound(object sender, DataListItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
@@ -70,13 +68,19 @@ namespace DungeonMaker
         }
         protected void ConfirmButton_Click(object sender, EventArgs e)
         {
-            DataList DL = (DataList)((Button)sender).NamingContainer;
+            DataList DL = null;
+            string ds = null, date = null;
+            switch (TableSelect.SelectedIndex )
+            {
+                case 0: DL = GamesDataList; ds = "gamelogs"; date = "datePlayed"; break;
+                case 1:  DL = AchievementsDataList; ds = "achievements"; date = "dateReceived"; break;
+                //case 2: DL = PurchasesDataList; ds = "purchases"; date = "datePurchased"; break;
+            }
+            if (string.IsNullOrEmpty(FromDateTB.Text) || string.IsNullOrEmpty(ToDateTB.Text)) { ErrorMsg("Please provide both From and To dates.", DL); return; }
             DateTime fromDate = DateTime.Parse(FromDateTB.Text), toDate = DateTime.Parse(ToDateTB.Text);
-            string ds = DL.ID == "GamesDataList" ? "gamelogs" : (DL.ID == "AchievementsDataList" ? "achievements" : "purchases");
-            DataRow[] filteredRows = ((DataSet)Session[ds]).Tables[0].Select(
-                "dateReceived >= #" + fromDate.ToString("MM/dd/yyyy") + "# AND dateReceived <= #" + toDate.ToString("MM/dd/yyyy") + "#");
-            if (string.IsNullOrEmpty(FromDateTB.Text) || string.IsNullOrEmpty(ToDateTB.Text)) ErrorMsg("Please provide both From and To dates.", DL);
-            else if (toDate < fromDate) ErrorMsg("To date should be after or equal to From date.", DL);
+            DataRow[] filteredRows = ((DataSet)Session[ds]).Tables[0].Select(date +
+                " >= #" + fromDate.ToString("MM/dd/yyyy") + "# AND " + date +  " <= #" + toDate.ToString("MM/dd/yyyy") + "#");
+            if (toDate < fromDate) ErrorMsg("To date should be after or equal to From date.", DL);
             else if (filteredRows.Length == 0) ErrorMsg("No achievements received within the specified date range.", DL);
             else
             {
@@ -90,8 +94,11 @@ namespace DungeonMaker
         private void ErrorMsg(string msg, DataList DL)
         {
             EmptyLabel.Text = msg;
-            DL.DataSource = null;
-            DL.DataBind();
+            if (DL != null)
+            {
+                DL.DataSource = null;
+                DL.DataBind();
+            }
         }
     }
 }
