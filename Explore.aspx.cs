@@ -300,7 +300,7 @@ namespace DungeonMaker
                     break;
                 case "Logs_Click":
                     Session["userPage"] = userpage;
-                    Response.Redirect("Gamelog.aspx");
+                    Response.Redirect("Logs.aspx");
                     break;
             }
         }

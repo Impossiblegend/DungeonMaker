@@ -46,12 +46,27 @@
                         <ItemTemplate>
                             <div class="maps-template">
                                 &nbsp; &nbsp;
-                                <asp:Label ID="Title" runat="server" Text='<%# Bind("achievement") %>' Font-Bold="true" CssClass="other-labels" ></asp:Label> <br /> <br />
+                                <asp:Label ID="Title" runat="server" Text='<%# Bind("achievement") %>' Font-Bold="true" CssClass="other-labels" ></asp:Label>
                                 <asp:Literal ID="Bar" runat="server" Text="<b>|</b>&nbsp;"></asp:Literal>
-                                <asp:Label ID="DescriptionBody" runat="server" Text='<%# Bind("description") %>' CssClass="other-labels"></asp:Label> <br /> <br />
-                                <asp:Label ID="dateReceived" runat="server" Text='<%# Bind("dateReceived") %>' CssClass="other-labels"></asp:Label> <br />
+                                <asp:Label ID="DescriptionBody" runat="server" Text='<%# Bind("description") %>' CssClass="other-labels"></asp:Label>
+                                <asp:Label ID="dateReceived" runat="server" Text='<%# Bind("dateReceived") %>' CssClass="other-labels"></asp:Label>
                                 <asp:Image ID="Coin" runat="server" ImageUrl="assets/ui/coin.png" Width="32px" Height="32px" CssClass="other-labels"/>
-                                <asp:Label ID="Credits" runat="server" Text='<%# Bind("creditsWorth") %>' CssClass="other-labels"></asp:Label> <br />
+                                <asp:Label ID="Credits" runat="server" Text='<%# Bind("creditsWorth") %>' CssClass="other-labels"></asp:Label>
+                            </div>
+                        </ItemTemplate>
+                    </asp:DataList>
+                </div>
+            </asp:View>
+            <asp:View ID="PurchasesView" runat="server">
+                <div class="datalist-container">
+                    <asp:DataList ID="PurchasesDataList" runat="server"  >
+                        <ItemTemplate>
+                            <div class="maps-template">
+                                &nbsp; &nbsp;
+                                <asp:Label ID="Title" runat="server" Text='<%# Bind("achievement") %>' Font-Bold="true" CssClass="other-labels" ></asp:Label>
+                                <asp:Literal ID="Bar" runat="server" Text="<b>|</b>&nbsp;"></asp:Literal>
+                                <asp:Label ID="DateOfPurchase" runat="server" Text='<%# Bind("dateOfPurchase") %>' CssClass="other-labels"></asp:Label>
+                                <asp:Label ID="Cost" runat="server" Text='<%# Bind("cost") %>' CssClass="other-labels"></asp:Label>
                             </div>
                         </ItemTemplate>
                     </asp:DataList>

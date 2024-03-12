@@ -11,6 +11,8 @@ namespace DungeonMaker
 {
     public partial class Logs : System.Web.UI.Page
     {
+        private DataList DL;
+        private string ds, date;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -35,7 +37,19 @@ namespace DungeonMaker
                 if (count > 5) wrapper.Attributes["class"] = "content-wrapper no-padding-bottom";
             }
         }
-        protected void TableSelect_SelectedIndexChanged(object sender, EventArgs e)  { LogsMultiView.ActiveViewIndex = TableSelect.SelectedIndex; }
+        protected void TableSelect_SelectedIndexChanged(object sender, EventArgs e)  
+        {
+            int index = TableSelect.SelectedIndex;
+            switch (index)
+            {
+                case 0: DL = GamesDataList; ds = "gamelogs"; date = "datePlayed"; break;
+                case 1: DL = AchievementsDataList; ds = "achievements"; date = "dateReceived"; break;
+                case 2: DL = PurchasesDataList; ds = "purchases"; date = "datePurchased"; break;
+            }
+            wrapper.Attributes["class"] = "content-wrapper";
+            if (DL.Items.Count > 5) wrapper.Attributes["class"] += " no-padding-bottom";
+            LogsMultiView.ActiveViewIndex = index;
+        }
         protected void AchievementsDataList_ItemDataBound(object sender, DataListItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
@@ -68,20 +82,12 @@ namespace DungeonMaker
         }
         protected void ConfirmButton_Click(object sender, EventArgs e)
         {
-            DataList DL = null;
-            string ds = null, date = null;
-            switch (TableSelect.SelectedIndex )
-            {
-                case 0: DL = GamesDataList; ds = "gamelogs"; date = "datePlayed"; break;
-                case 1:  DL = AchievementsDataList; ds = "achievements"; date = "dateReceived"; break;
-                //case 2: DL = PurchasesDataList; ds = "purchases"; date = "datePurchased"; break;
-            }
-            if (string.IsNullOrEmpty(FromDateTB.Text) || string.IsNullOrEmpty(ToDateTB.Text)) { ErrorMsg("Please provide both From and To dates.", DL); return; }
+            if (string.IsNullOrEmpty(FromDateTB.Text) || string.IsNullOrEmpty(ToDateTB.Text)) { ErrorMsg("Please provide both From and To dates."); return; }
             DateTime fromDate = DateTime.Parse(FromDateTB.Text), toDate = DateTime.Parse(ToDateTB.Text);
             DataRow[] filteredRows = ((DataSet)Session[ds]).Tables[0].Select(date +
                 " >= #" + fromDate.ToString("MM/dd/yyyy") + "# AND " + date +  " <= #" + toDate.ToString("MM/dd/yyyy") + "#");
-            if (toDate < fromDate) ErrorMsg("To date should be after or equal to From date.", DL);
-            else if (filteredRows.Length == 0) ErrorMsg("No achievements received within the specified date range.", DL);
+            if (toDate < fromDate) ErrorMsg("To date should be after or equal to From date.");
+            else if (filteredRows.Length == 0) ErrorMsg("No achievements received within the specified date range.");
             else
             {
                 DataTable filteredTable = ((DataSet)Session[ds]).Tables[0].Clone();
@@ -91,7 +97,7 @@ namespace DungeonMaker
                 EmptyLabel.Text = "";
             }
         }
-        private void ErrorMsg(string msg, DataList DL)
+        private void ErrorMsg(string msg)
         {
             EmptyLabel.Text = msg;
             if (DL != null)

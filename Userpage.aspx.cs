@@ -84,11 +84,6 @@ namespace DungeonMaker
             catch { return 0; }
         }
         private void alert(string alert) { ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + alert + "');", true); }
-        protected void Menu_Click(object sender, EventArgs e)
-        {
-            ((Site)Master).CoinVisible = true;
-            Response.Redirect(((LinkButton)sender).CommandArgument + ".aspx");
-        }
         protected void MapsDataList_ItemCommand(object sender, DataListCommandEventArgs e)
         {
             Map map = new Map(int.Parse(((Label)e.Item.FindControl("mapID")).Text));
