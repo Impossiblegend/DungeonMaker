@@ -41,7 +41,7 @@ namespace DungeonMaker
                         "<b>Result</b> " + (game.victory ? "victory" : "defeat") + nbsp +
                         "<b>Deaths</b> x" + game.deaths + nbsp +
                         "<b>Stars</b> x" + game.stars + nbsp +
-                        "<b>Time</b> " + Connect.SecToMin(game.time) + nbsp +
+                        "<b>Time</b> " + Calculations.SecToMin(game.time) + nbsp +
                         "<b>Map</b> " + game.map.mapName.Remove(game.map.mapName.Length - 1); //Remove map name handler suffix
                     ScriptManager.RegisterStartupScript(this, GetType(), "Display", "document.getElementById('prevList').style.display = 'block';", true);
                     if (!user.IsBanned())
@@ -110,19 +110,16 @@ namespace DungeonMaker
             //Stars are generated in runtime so must be recreated with each postback after the first
             foreach (DataListItem item in FeedbackDataList.Items)
             {
-                Label starRating = (Label)item.FindControl("starRating");
+                Comment comment = new Comment(int.Parse(((Label)item.FindControl("feedbackID")).Text));
                 PlaceHolder starsPlaceHolder = (PlaceHolder)item.FindControl("starsPlaceHolder");
-                if (int.TryParse(starRating.Text, out int rating))
+                for (int i = 0; i < comment.starRating; i++)
                 {
-                    for (int i = 0; i < rating; i++)
-                    {
-                        Image imgStar = new Image();
-                        imgStar.ImageUrl = "assets/ui/fullStar.png";
-                        imgStar.Width = 20;
-                        imgStar.Height = 20;
-                        imgStar.Style["pointer-events"] = "none";
-                        starsPlaceHolder.Controls.Add(imgStar);
-                    }
+                    Image imgStar = new Image();
+                    imgStar.ImageUrl = "assets/ui/fullStar.png";
+                    imgStar.Width = 20;
+                    imgStar.Height = 20;
+                    imgStar.Style["pointer-events"] = "none";
+                    starsPlaceHolder.Controls.Add(imgStar);
                 }
             }
         }
@@ -350,12 +347,12 @@ namespace DungeonMaker
         }
 
         protected void FeedbackDataList_ItemDataBound(object sender, DataListItemEventArgs e)
-        { //Truncate long text and make it expandable through js
+        {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 Label body = (Label)e.Item.FindControl("Feedback");
                 if (body.Text.Length > 100) body.Text = "<span class='expandable-text' onclick='expandText(this)'>" + body.Text.Remove(100) + "..." + "</span>" +
-                        "<span class='full-text' style='display:none;'>" + body.Text + "</span>";
+                    "<span class='full-text' style='display:none;'>" + body.Text + "</span>";
             }
         }
     }

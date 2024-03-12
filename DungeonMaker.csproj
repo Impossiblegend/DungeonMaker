@@ -117,7 +117,7 @@
     <Content Include="assets\styles\Explore.css" />
     <Content Include="assets\styles\ForgotPassword.css" />
     <Content Include="assets\styles\Create.css" />
-    <Content Include="assets\styles\Gamelog.css" />
+    <Content Include="assets\styles\Logs.css" />
     <Content Include="assets\styles\Login.css" />
     <Content Include="assets\styles\MapSelection.css" />
     <Content Include="assets\styles\Master.css" />
@@ -158,6 +158,7 @@
     <Compile Include="Adminpage.aspx.designer.cs">
       <DependentUpon>Adminpage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Classes\Calculations.cs" />
     <Compile Include="Classes\Connect.cs" />
     <Compile Include="Classes\Services\AchievementService.cs" />
     <Compile Include="Classes\Services\CommentService.cs" />

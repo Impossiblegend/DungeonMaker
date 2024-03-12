@@ -60,9 +60,11 @@ namespace DungeonMaker.Classes.Types
         public bool IsAdmin() { return this.elevation == 2; }
         public bool IsBanned() { return this.elevation <= 0; }
         public int GetCredits() 
-        { //Returns a user's calculated credit total
+        { 
             AchievementService AS = new AchievementService(); StoreService SS = new StoreService(); PlayService PS = new PlayService();
-            return AchievementService.UserCreditsTotal(this) - StoreService.SumUserPurchases(this) + PlayService.CountUserVictories(this) * 5 + PlayService.CountStars(this);
+            int sum = AchievementService.UserCreditsTotal(this) - StoreService.SumUserPurchases(this) + PlayService.CountUserVictories(this) * 5 + PlayService.CountStars(this);
+            SS = new StoreService();
+            return sum + StoreService.SumCreditPurchases(this);
         }
         public List<string> GetTrapTypes() 
         {

@@ -138,15 +138,15 @@
             <li>Fixed bugs</li>
         </ul>
     </asp:Panel>
-    <asp:Panel ID="FeaturedFeedback" runat="server" CssClass="datalist-container">
-        <asp:DataList ID="FeedbackDataList" runat="server" RepeatColumns="4" CellPadding="4" RepeatDirection="Horizontal" OnItemDataBound="FeedbackDataList_ItemDataBound">
+    <asp:Panel ID="FeedbackPanel" runat="server" CssClass="datalist-container">
+        <asp:DataList ID="FeedbackDataList" runat="server" RepeatColumns="4" CellPadding="4" RepeatDirection="Horizontal" OnItemDataBound="FeedbackDataList_ItemDataBound" >
             <ItemTemplate>
                 <div class="item-template">
                     <asp:Label ID="Sender" runat="server" CssClass="item-label" Text='<%# Bind("username") %>'></asp:Label> <br />
-                    <asp:Image ID="ProfilePicture" runat="server" Width="75px" Height="75px" CssClass="profilePicture" ImageUrl='<%# Bind("profilePicture") %>' /> <br />
+                    <asp:Image ID="ProfilePicture" runat="server" Width="75px" Height="75px" CssClass="profilePicture" ImageUrl='<%# Bind("profilePicture") %>' /><br />
                     <asp:Label ID="Feedback" runat="server" CssClass="feedback" Text='<%# Bind("feedbackBody") %>'></asp:Label> <br />
-                    <asp:Label ID="starRating" runat="server" CssClass="item-label" Text='<%# Bind("starRating") %>' Visible="false"></asp:Label>
-                    <asp:PlaceHolder ID="starsPlaceHolder" runat="server"></asp:PlaceHolder>
+                    <asp:Label ID="feedbackID" runat="server" Text='<%# Bind("feedbackID") %>' Visible="false"></asp:Label>
+                    <asp:PlaceHolder ID="starsPlaceHolder" runat="server"></asp:PlaceHolder> <br />
                 </div>
             </ItemTemplate>
         </asp:DataList>

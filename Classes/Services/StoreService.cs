@@ -74,7 +74,15 @@ namespace DungeonMaker.Classes.Services
             command.CommandText = "SELECT SUM(TT.cost) + SUM(MT.cost) AS TotalCost FROM ((OwnedTrapTypes AS OTT INNER JOIN TrapTypes AS TT ON OTT.trapType = TT.trapType) " +
                 "LEFT JOIN OwnedMapTypes AS OMT ON OTT.owner = OMT.owner) LEFT JOIN MapTypes AS MT ON OMT.mapType = MT.mapType WHERE OTT.owner = ?";
            command.Parameters.AddWithValue("@owner", user.email);
-            return SafeScalar();
+            try { return SafeScalar(); }
+            catch { return 0; }
+        }
+        public static int SumCreditPurchases(User user) 
+        {
+            command.CommandText = "SELECT SUM(CreditBundles.creditAmount) FROM CreditBundles INNER JOIN CreditPurchases ON CreditPurchases.bundle = CreditBundles.bundleName WHERE CreditPurchases.customer = ?";
+            command.Parameters.AddWithValue("@customer", user.email);
+            try { return SafeScalar(); }
+            catch { return 0; }
         }
         public static int GetMapTypeCost(string type) 
         {

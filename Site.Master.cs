@@ -17,11 +17,7 @@ namespace DungeonMaker
             set { ProfilePic.ImageUrl = value; }
         }
         public bool CoinVisible { set { imgCredits.Style["display"] = value ? "block" : "none"; } }
-        public int UserCredits
-        {
-            get { return int.Parse(litCredits.Text); }
-            set { litCredits.Text = value.ToString(); }
-        }
+        public string UserCredits { set { litCredits.Text = value.ToString(); } }
         private User user;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -37,9 +33,13 @@ namespace DungeonMaker
                 }
                 else
                 {
-                    AchievementService AS = new AchievementService();
-                    StoreService SS = new StoreService();
-                    litCredits.Text = user.IsAdmin() ? "<p style='font-size:35px;'><b>&#8734;</b></p>" : user.GetCredits().ToString();
+                    AchievementService AS = new AchievementService(); StoreService SS = new StoreService();
+                    litCredits.Text = user.IsAdmin() ? "<p style='font-size:35px;'><b>&#8734;</b></p>" : Calculations.DecimalCommas(user.GetCredits().ToString());
+                    if (litCredits.Text.Length > 3) 
+                    {
+                        litCredits.Style["left"] = "83.75%";
+                        imgCredits.Style["left"] = "80.75%";
+                    }
                     imgCredits.Visible = true;
                 }
                 ProfilePic.ImageUrl = user.profilePicture;

@@ -48,10 +48,6 @@ namespace DungeonMaker
                     "<span class='full-text' style='display:none;'>" + body.Text + "</span>";
             }
         }
-        protected void FeedbackDataList_ItemCommand(object source, DataListCommandEventArgs e)
-        {
-            //ScriptManager.RegisterStartupScript(this, GetType(), "TriggerPostBack", "__doPostBack('', '');", true);
-        }
         protected void AchievementsDataList_ItemDataBound(object sender, DataListItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)

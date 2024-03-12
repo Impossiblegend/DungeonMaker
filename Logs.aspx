@@ -2,7 +2,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <link rel="stylesheet" href="assets/styles/Gamelog.css" />
+    <link rel="stylesheet" href="assets/styles/Logs.css" />
     <script src="scripts/jquery-3.7.1.js"></script>
     <div class="content-wrapper" runat="server" id="wrapper">
         <div class="radioButtonListContainer">
@@ -17,7 +17,7 @@
             <asp:TextBox ID="FromDateTB" runat="server" TextMode="Date"></asp:TextBox> &nbsp;
             <asp:Label ID="To" runat="server" Text="to"></asp:Label> &nbsp;
             <asp:TextBox ID="ToDateTB" runat="server" TextMode="Date"></asp:TextBox> &nbsp;
-            <asp:Button ID="ConfirmButton" runat="server" Text="Confirm" OnClick="ConfirmButton_Click" /> <br />
+            <asp:Button ID="ConfirmButton" runat="server" Text="Confirm" OnClick="ConfirmButton_Click" /> <br /> <br />
             <asp:Label ID="EmptyLabel" runat="server" CssClass="label"></asp:Label>
         </div>
         <asp:MultiView ID="LogsMultiView" runat="server">
@@ -59,13 +59,14 @@
             </asp:View>
             <asp:View ID="PurchasesView" runat="server">
                 <div class="datalist-container">
-                    <asp:DataList ID="PurchasesDataList" runat="server"  >
+                    <asp:DataList ID="PurchasesDataList" runat="server" OnItemDataBound="PurchasesDataList_ItemDataBound" >
                         <ItemTemplate>
                             <div class="maps-template">
                                 &nbsp; &nbsp;
-                                <asp:Label ID="Title" runat="server" Text='<%# Bind("achievement") %>' Font-Bold="true" CssClass="other-labels" ></asp:Label>
-                                <asp:Literal ID="Bar" runat="server" Text="<b>|</b>&nbsp;"></asp:Literal>
+                                <asp:Label ID="ProductName" runat="server" Text='<%# Bind("productName") %>' Font-Bold="true" CssClass="other-labels" ></asp:Label>
+                                <asp:Literal ID="Bar1" runat="server" Text="<b>|</b>&nbsp;"></asp:Literal>
                                 <asp:Label ID="DateOfPurchase" runat="server" Text='<%# Bind("dateOfPurchase") %>' CssClass="other-labels"></asp:Label>
+                                <asp:Literal ID="Bar2" runat="server" Text="<b>|</b>&nbsp;"></asp:Literal>
                                 <asp:Label ID="Cost" runat="server" Text='<%# Bind("cost") %>' CssClass="other-labels"></asp:Label>
                             </div>
                         </ItemTemplate>

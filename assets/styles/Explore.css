@@ -73,12 +73,11 @@
 }
 
 .feedback {
-    width: 50px;
+    width: 100%;
     margin-right: 10px;
     text-align: center;
     white-space: normal;
     overflow-wrap: break-word;
-    pointer-events: none;
 }
 
 .item-image {
@@ -101,7 +100,6 @@
     width: 200px;
     height: 100%;
     margin-right: 10px;
-    margin-bottom: 10px;
     animation: slideIn 1s ease forwards;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

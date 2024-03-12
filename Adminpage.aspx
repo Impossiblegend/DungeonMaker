@@ -23,7 +23,7 @@
         <script src="scripts/ExpandText.js"></script>
         <asp:Panel ID="AchievementsPanel" runat="server" CssClass="achievements-panel">
             <asp:Label ID="AchievementsLabel" runat="server" Text="Achievements created:" CssClass="title" Font-Bold="true" ></asp:Label>
-            <asp:DataList ID="AchievementsDataList" runat="server" OnItemDataBound="AchievementsDataList_ItemDataBound" OnItemCommand="AchievementsDataList_ItemCommand" >
+            <asp:DataList ID="AchievementsDataList" runat="server" OnItemDataBound="AchievementsDataList_ItemDataBound" >
                 <ItemTemplate>
                     <div class="maps-template">
                         &nbsp;&nbsp;&nbsp;&nbsp;

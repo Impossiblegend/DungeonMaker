@@ -6,44 +6,19 @@
     <div class="container">
         <!-- Game Credits -->
         <h1>Game Credits</h1>
-        <div class="bundles-container">
-            <div class="bundle">
-                <div class="bundle-content">
-                    <asp:Label ID="Heaplbl" runat="server" Text="500 CREDITS"></asp:Label> <br /> <br />
-                    <asp:Image ID="HeapImg" runat="server" ImageUrl="assets/ui/heap.png" Width="110px" Height="80px" />
+        <asp:DataList ID="dlCredits" runat="server" CssClass="bundles-container" RepeatDirection="Horizontal" OnItemDataBound="dlCredits_ItemDataBound">
+            <ItemTemplate>
+                <div class="bundle">
+                    <div class="bundle-content">
+                        <asp:Label ID="creditAmount" runat="server" Text='<%# Eval("creditAmount") %>'></asp:Label> <br />
+                        <asp:Image ID="imgBundle" runat="server" ImageUrl='<%# Eval("asset") %>' Width="120px" Height="100px" /> <br />
+                        <asp:Label ID="extraText" runat="server" Text='<%# Eval("extraText") %>'></asp:Label>
+                    </div>
+                    <p><asp:Label ID="costLabel" runat="server" Text='<%# Eval("cost") %>' Font-Bold="true"></asp:Label></p>
+                    <asp:Button ID="btnMapPurchase" runat="server" Text="Purchase" OnClick="btnPurchase_Click" CommandName="Credits" CommandArgument='<%# Eval("cost") %>' CssClass="btnPurchase" />
                 </div>
-                <br /> 
-                <p><b>$</b><asp:Label ID="lblPrice1" runat="server" Text="4.99" Font-Bold="true"></asp:Label></p>
-                <asp:Button ID="btnPurchase1" runat="server" Text="Purchase" OnClick="btnPurchase_Click" CommandName="$" CommandArgument="4.99" CssClass="btnPurchase" />
-            </div>
-            <div class="bundle">
-                <div class="bundle-content">
-                    <asp:Label ID="BundleLbl" runat="server" Text="1,000 CREDITS"></asp:Label>
-                    <asp:Image ID="BundleImg" runat="server" ImageUrl="assets/ui/bundle.png" Width="130px" Height="100px" /> <br />
-                    <asp:Label ID="SaleLbl10" runat="server" Text="10% OFF"></asp:Label>
-                </div>
-                <p><b>$</b><asp:Label ID="lblPrice2" runat="server" Text="8.99" Font-Bold="true"></asp:Label></p>
-                <asp:Button ID="btnPurchase2" runat="server" Text="Purchase" OnClick="btnPurchase_Click" CommandName="$" CommandArgument="8.99" CssClass="btnPurchase" />
-            </div>
-            <div class="bundle">
-                <div class="bundle-content">
-                    <asp:Label ID="TroveLbl" runat="server" Text="5,000 CREDITS"></asp:Label>
-                    <asp:Image ID="TroveImg" runat="server" ImageUrl="assets/ui/trove.png" Width="110px" Height="90px" /> <br />
-                    <asp:Label ID="SaleLbl20" runat="server" Text="20% OFF"></asp:Label>
-                </div>
-                <p><b>$</b><asp:Label ID="lblPrice3" runat="server" Text="39.99" Font-Bold="true"></asp:Label></p>
-                <asp:Button ID="btnPurchase3" runat="server" Text="Purchase" OnClick="btnPurchase_Click" CommandName="$" CommandArgument="39.99" CssClass="btnPurchase" />
-            </div>
-            <div class="bundle">
-                <div class="bundle-content">
-                    <asp:Label ID="ChestLbl" runat="server" Text="25,000 CREDITS"></asp:Label>
-                    <asp:Image ID="ChestImg" runat="server" ImageUrl="assets/ui/chest.png" Width="130px" Height="100px" /> <br />
-                    <asp:Label ID="SaleLbl40" runat="server" Text="40% OFF"></asp:Label>
-                </div>
-                <p><b>$</b><asp:Label ID="lblPrice4" runat="server" Text="149.99" Font-Bold="true"></asp:Label></p>
-                <asp:Button ID="btnPurchase4" runat="server" Text="Purchase" OnClick="btnPurchase_Click" CommandName="$" CommandArgument="149.99" CssClass="btnPurchase" />
-            </div>
-        </div>
+            </ItemTemplate>
+        </asp:DataList>
 
         <!-- Map Types -->
         <h1>Map Types</h1>

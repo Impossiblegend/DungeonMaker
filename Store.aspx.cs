@@ -13,17 +13,21 @@ namespace DungeonMaker
     {
         private User user;
         private StoreService SS;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (user == null) user = (User)Session["user"];
             if (!IsPostBack) 
             {
+                dlCredits.DataSource = GeneralService.GetDataSetByQuery("SELECT * FROM CreditBundles", "CreditBundles");
+                dlCredits.DataBind();
                 dlMapTypes.DataSource = GeneralService.GetDataSetByQuery("SELECT * FROM MapTypes", "MapTypes");
                 dlMapTypes.DataBind();
                 dlTrapTypes.DataSource = GeneralService.GetDataSetByQuery("SELECT * FROM TrapTypes WHERE trapType <> 'portalFull' AND trapType <> 'portalEmpty'", "TrapTypes");
                 dlTrapTypes.DataBind();
             }
         }
+
         protected void btnPurchase_Click(object sender, EventArgs e)
         {
             if (!user.IsBanned() && sender is Button btn)
@@ -31,13 +35,13 @@ namespace DungeonMaker
                 Session["price"] = btn.CommandArgument;
                 if (btn.CommandName == "Credits") Response.Redirect("Payment.aspx");
                 int credits = Convert.ToInt32(Session["price"]);
-                if (((Site)Master).UserCredits < credits) ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('You have insufficient credits for this item.');", true);
+                if (user.GetCredits() < credits) ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('You have insufficient credits for this item.');", true);
                 else
                 {
                     SS = new StoreService();
                     if (btn.CommandName == "Map") StoreService.PurchaseMapType(user, GeneralService.GetStringByQuery("SELECT mapType FROM MapTypes WHERE cost = " + credits));
                     if (btn.CommandName == "Trap") StoreService.PurchaseTrapType(user, GeneralService.GetStringByQuery("SELECT trapType FROM TrapTypes WHERE cost = " + credits));
-                    ((Site)Master).UserCredits -= credits;
+                    ((Site)Master).UserCredits = Calculations.DecimalCommas(user.GetCredits().ToString());
                     DisableButton(btn);
                 }
             }
@@ -60,6 +64,7 @@ namespace DungeonMaker
                     DisableButton((Button)e.Item.FindControl("btnMapPurchase"));
             }
         }
+
         protected void dlTrapTypes_ItemDataBound(object sender, DataListItemEventArgs e)
         {
             if (user.elevation > 0)
@@ -68,6 +73,13 @@ namespace DungeonMaker
                 if (StoreService.IsTrapPurchased(user, ((Label)e.Item.FindControl("lblTrapType")).Text))
                     DisableButton((Button)e.Item.FindControl("btnTrapPurchase"));
             }
+        }
+
+        protected void dlCredits_ItemDataBound(object sender, DataListItemEventArgs e)
+        {
+            Label cost = (Label)e.Item.FindControl("costLabel"), credits = (Label)e.Item.FindControl("creditAmount");
+            cost.Text = "$" + (int.Parse(cost.Text) - 0.01);
+            credits.Text = Calculations.DecimalCommas(credits.Text) + " CREDITS";
         }
     }
 }

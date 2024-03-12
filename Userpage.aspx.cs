@@ -48,7 +48,7 @@ namespace DungeonMaker
                     row["Email"] = userpage.email;
                     row["Date"] = userpage.creationDate.ToShortDateString();
                     StoreService SS = new StoreService();
-                    row["CreditsText"] = userpage.IsAdmin() ? "<p style='font-size:30px;'>&#8734;</p>" : userpage.GetCredits().ToString();
+                    row["CreditsText"] = userpage.IsAdmin() ? "<p style='font-size:30px;'>&#8734;</p>" : Calculations.DecimalCommas(userpage.GetCredits().ToString());
                     dataTable.Rows.Add(row);
                     UserGridView.DataSource = dataTable;
                     UserGridView.DataBind();
@@ -65,7 +65,7 @@ namespace DungeonMaker
                 row["Achievements"] = "x" + GeneralService.GetStringByQuery("SELECT COUNT(achievement) FROM UserAchievements WHERE awardee = '" + userpage.email + "'");
                 row["Stars Collected"] = "x" + SumGamesField("starsCollected");
                 row["Deaths"] = "x" + SumGamesField("deathCount");
-                row["Total Time Played"] = Connect.SecToMin(SumGamesField("timeElapsed"));
+                row["Total Time Played"] = Calculations.SecToMin(SumGamesField("timeElapsed"));
                 row["Since Joined"] = GeneralService.GetStringByQuery("SELECT DATEDIFF('d', creationDate, Date()) FROM Users WHERE email = '" + userpage.email + "'") + " days";
                 dataTable.Rows.Add(row);
                 StatsGridView.DataSource = dataTable;
