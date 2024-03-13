@@ -22,7 +22,7 @@ namespace DungeonMaker
         protected void Page_Load(object sender, EventArgs e)
         {
             if (userpage == null) userpage = (User)Session["userPage"];
-            if (userpage.elevation == 0) Response.Redirect("Register.aspx");
+            if (userpage.elevation == 0) Response.Redirect("Login.aspx");
             if (user == null) user = (User)Session["user"];
             UserService US = new UserService(); PlayService PS = new PlayService(); AchievementService AS = new AchievementService();
             if (!IsPostBack)

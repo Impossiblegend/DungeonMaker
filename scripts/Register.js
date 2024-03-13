@@ -7,6 +7,7 @@
     });
     toggleButtonHoverEffect(signUpButton.disabled);
 }
+
 function toggleButtonHoverEffect(isDisabled) {
     var signUpButton = document.getElementById("SignUp_Button");
     if (isDisabled) {
@@ -15,12 +16,13 @@ function toggleButtonHoverEffect(isDisabled) {
         signUpButton.classList.remove('disabled-hover');
     }
 }
+
 function attachValidationHandlers() {
     var Gmail_Validator = document.getElementById("Gmail_Validator");
     var Username_Validator = document.getElementById("Username_Validator");
     if (!Gmail_Validator.isValid) {
         Gmail_Validator.style.display = 'block';
-        document.getElementById("Password_Label").style.marginTop = '18px';
+        document.getElementById("PWLabel").style.marginTop = '18px';
     }
     if (!Username_Validator.isValid) {
         Username_Validator.style.display = 'block';

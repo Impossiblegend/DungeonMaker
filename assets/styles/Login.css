@@ -7,17 +7,21 @@
 }
 
 body {
+    font-family: 'Gill Sans', sans-serif;
     background-color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
     margin: 0;
-    background-image: url(DungeonMakerBG2.jpg);
+    background-image: url('DungeonMakerBG2.jpg');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center center;
-    overflow: hidden;
+}
+
+.container {
+    font-family: 'Gill Sans', sans-serif;
 }
 
 .background {
@@ -36,9 +40,9 @@ body {
         border-radius: 50%;
     }
 
-form {
-    height: 520px;
-    width: 400px;
+.form-container {
+    height: 530px;
+    width: 410px;
     background-color: rgba(255, 255, 255, 0.13);
     position: absolute;
     left: 50%;
@@ -52,39 +56,36 @@ form {
     padding: 50px 35px;
 }
 
-    form * {
+    .form-container * {
         color: #000000;
         letter-spacing: 0.5px;
         outline: none;
         border: none;
     }
 
-    form h3 {
+    .form-container h3 {
         font-size: 32px;
         font-weight: 500;
         line-height: 42px;
         text-align: center;
     }
 
-#UserName_Label, #Password_Label {
-    font-family: 'Gill Sans', sans-serif;
+.input-label {
     display: block;
-    margin-top: 32px;
+    margin-top: 25px;
     font-size: 16px;
     font-weight: 600;
 }
 
-#IsLogIn {
-    font-family: 'Gill Sans', sans-serif;
+.error-message {
     color: red;
     display: block;
-    margin-top: 20px;
-    font-size: 12px;
+    margin-top: 25px;
+    font-size: 13px;
     font-weight: 200;
 }
 
-#Title_Label {
-    font-family: 'Gill Sans', sans-serif;
+.title-label {
     display: block;
     margin-top: 0px;
     font-size: 35px;
@@ -92,48 +93,37 @@ form {
     text-align: center;
 }
 
-#Create_account_label, #Forgot_Password_Label, #Guest_Login {
-    font-family: 'Gill Sans', sans-serif;
-    color: blue;
-    display: inline-block;
-    margin: 3px 13px;
-    font-size: 12px;
-    font-weight: 200;
-    vertical-align: middle;
-    line-height: 1;
-}
-
-#Forgot_Password_Label {
-    float: right;
-}
-
-.guest-link {
+.link {
     text-decoration: none;
+    display: inline-block;
+    margin: 0 10px;
+    font-size: 13px;
+    font-weight: 200;
     color: blue;
 }
 
-input {
+.input-field {
     display: block;
-    height: 50px;
-    width: 100%;
     background-color: rgba(0, 0, 0, 0.07);
     border-radius: 3px;
     padding: 0 10px;
     margin-top: 8px;
     font-size: 14px;
     font-weight: 500;
+    width: 330px;
+    height: 45px;
 }
 
-::placeholder {
-    color: #999999;
-}
+    .input-field::placeholder {
+        color: #999999;
+    }
 
-#LogIn_Button {
-    margin-top: 50px;
+.submit-button {
+    margin-top: 10px;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.07);
     color: #000000;
-    padding: 15px 0;
+    padding: 13px 0;
     font-size: 18px;
     font-weight: 600;
     border-radius: 5px;
@@ -141,10 +131,33 @@ input {
     transition: background-color 0.3s, color 0.3s;
 }
 
-    #LogIn_Button:hover {
+    .submit-button:hover {
         background-color: rgba(0, 0, 0, 0.17);
         color: #000000;
     }
+
+#SignUp_Button {
+    margin-top: 10px;
+}
+
+.disabled-hover:hover {
+    background-color: rgba(0, 0, 0, 0.17);
+    color: #000000;
+    cursor: not-allowed;
+}
+
+.hidden-validator {
+    display: none;
+    margin-bottom: 0px;
+}
+
+.tos-label {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
+    font-size: 14px;
+    font-weight: 300;
+}
 
 @keyframes slideIn {
     0% {

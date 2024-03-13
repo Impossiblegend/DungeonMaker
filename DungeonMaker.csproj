@@ -115,28 +115,25 @@
     <Content Include="assets\styles\Adminpage.css" />
     <Content Include="assets\styles\Endscreen.css" />
     <Content Include="assets\styles\Explore.css" />
-    <Content Include="assets\styles\ForgotPassword.css" />
     <Content Include="assets\styles\Create.css" />
     <Content Include="assets\styles\Logs.css" />
     <Content Include="assets\styles\Login.css" />
     <Content Include="assets\styles\MapSelection.css" />
     <Content Include="assets\styles\Master.css" />
-    <Content Include="assets\styles\Register.css" />
     <Content Include="assets\styles\Store.css" />
     <Content Include="assets\styles\Userpage.css" />
     <Content Include="Endscreen.aspx" />
     <Content Include="Error.html" />
     <Content Include="Explore.aspx" />
-    <Content Include="ForgotPassword.aspx" />
     <Content Include="Create.aspx" />
     <Content Include="Logs.aspx" />
     <Content Include="MapSelection.aspx" />
     <Content Include="Play.aspx" />
-    <Content Include="Register.aspx" />
     <Content Include="scripts\DataListAnimation.js" />
     <Content Include="scripts\ExpandText.js" />
     <Content Include="scripts\Play.js" />
     <Content Include="scripts\Create.js" />
+    <Content Include="scripts\Register.js" />
     <Content Include="scripts\Userpage.js" />
     <Content Include="Store.aspx" />
     <Content Include="Userpage.aspx" />
@@ -184,13 +181,6 @@
     <Compile Include="Explore.aspx.designer.cs">
       <DependentUpon>Explore.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ForgotPassword.aspx.cs">
-      <DependentUpon>ForgotPassword.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ForgotPassword.aspx.designer.cs">
-      <DependentUpon>ForgotPassword.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Create.aspx.cs">
       <DependentUpon>Create.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -227,13 +217,6 @@
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Register.aspx.cs">
-      <DependentUpon>Register.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Register.aspx.designer.cs">
-      <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
     <Compile Include="Classes\Services\GeneralService.cs" />
     <Compile Include="Classes\Services\UserService.cs" />

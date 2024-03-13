@@ -92,7 +92,7 @@ namespace DungeonMaker
             {
                 SS = new StoreService();
                 if (StoreService.IsPurchased(user, ((Label)e.Item.FindControl("lblSkin")).Text))
-                    DisableButton((Button)e.Item.FindControl("btnSkin"));
+                    DisableButton((Button)e.Item.FindControl("btnSkinPurchase"));
             }
             if (cost.Text == "0") cost.Text = "FREE";
             else cost.Text += " CREDITS";
