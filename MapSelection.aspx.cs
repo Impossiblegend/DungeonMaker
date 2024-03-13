@@ -17,7 +17,7 @@ namespace DungeonMaker
             if (user == null) user = (User)Session["user"];
             if (!IsPostBack) 
             {
-                MapTypeDataList.DataSource = GeneralService.GetDataSetByQuery("SELECT mapType, asset FROM MapTypes", "MapTypes");
+                MapTypeDataList.DataSource = GeneralService.GetDataSetByQuery("SELECT type, asset FROM Products WHERE class = 'map'", "Products");
                 MapTypeDataList.DataBind();
             }
         }
@@ -36,7 +36,7 @@ namespace DungeonMaker
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 StoreService SS = new StoreService();
-                bool isOwned = StoreService.IsMapPurchased(user, ((Label)e.Item.FindControl("MapTypeName")).Text);
+                bool isOwned = StoreService.IsPurchased(user, ((Label)e.Item.FindControl("MapTypeName")).Text);
                 ((ImageButton)e.Item.FindControl("Thumbnail")).CommandArgument = isOwned.ToString();
                 ((Image)e.Item.FindControl("LockImage")).Visible = !isOwned;
             }

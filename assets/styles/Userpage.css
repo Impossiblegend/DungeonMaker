@@ -92,6 +92,11 @@
         .gridview-style td:nth-child(4) { 
             width: 250px; 
         }
+
+        .gridview-style td:nth-child(5) {
+            width: 250px;
+        }
+
         .gridview-style td:hover {
             background-color: #e0e0e0;
             cursor: pointer;

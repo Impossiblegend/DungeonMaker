@@ -22,10 +22,8 @@ namespace DungeonMaker
                 string userpage = ((User)Session["userPage"]).email,
                     query = "SELECT CreditPurchases.bundle AS productName, CreditBundles.cost, CreditPurchases.dateOfPurchase FROM CreditPurchases INNER JOIN CreditBundles " +
                     "ON CreditPurchases.bundle = CreditBundles.bundleName WHERE CreditPurchases.customer = '" + userpage + "' AND CreditBundles.cost > 0 " +
-                    "UNION ALL SELECT MapTypes.mapType AS productName, MapTypes.cost, OwnedMapTypes.dateOfPurchase FROM MapTypes INNER JOIN OwnedMapTypes " +
-                    "ON MapTypes.mapType = OwnedMapTypes.mapType WHERE OwnedMapTypes.owner = '" + userpage + "' AND MapTypes.cost > 0 " +
-                    "UNION ALL SELECT TrapTypes.trapType AS productName, TrapTypes.cost, OwnedTrapTypes.dateOfPurchase FROM TrapTypes INNER JOIN OwnedTrapTypes " +
-                    "ON TrapTypes.trapType = OwnedTrapTypes.trapType WHERE OwnedTrapTypes.owner = '" + userpage + "' AND TrapTypes.cost > 0";
+                    "UNION ALL SELECT Products.type AS productName, Products.cost, Purchases.dateOfPurchase FROM Products INNER JOIN Purchases " +
+                    "ON Products.type = Purchases.type WHERE Purchases.owner = '" + userpage + "' AND Products.cost > 0 ";
                 DataSet ds = GeneralService.GetDataSetByQuery(query, "Purchases");
                 PurchasesDataList.DataSource = ds;
                 Session["purchases"] = ds;

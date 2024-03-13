@@ -21,11 +21,16 @@ namespace DungeonMaker
             {
                 dlCredits.DataSource = GeneralService.GetDataSetByQuery("SELECT * FROM CreditBundles", "CreditBundles");
                 dlCredits.DataBind();
-                dlMapTypes.DataSource = GeneralService.GetDataSetByQuery("SELECT * FROM MapTypes", "MapTypes");
-                dlMapTypes.DataBind();
-                dlTrapTypes.DataSource = GeneralService.GetDataSetByQuery("SELECT * FROM TrapTypes WHERE trapType <> 'portalFull' AND trapType <> 'portalEmpty'", "TrapTypes");
-                dlTrapTypes.DataBind();
+                SetClass(dlMapTypes, "map");
+                SetClass(dlTrapTypes, "trap");
+                SetClass(dlSkins, "skin");
             }
+        }
+
+        private void SetClass(DataList DL, string className)
+        {
+            DL.DataSource = GeneralService.GetDataSetByQuery("SELECT * FROM Products WHERE class = '" + className + "' ORDER BY type", "Products");
+            DL.DataBind();
         }
 
         protected void btnPurchase_Click(object sender, EventArgs e)
@@ -39,8 +44,7 @@ namespace DungeonMaker
                 else
                 {
                     SS = new StoreService();
-                    if (btn.CommandName == "Map") StoreService.PurchaseMapType(user, GeneralService.GetStringByQuery("SELECT mapType FROM MapTypes WHERE cost = " + credits));
-                    if (btn.CommandName == "Trap") StoreService.PurchaseTrapType(user, GeneralService.GetStringByQuery("SELECT trapType FROM TrapTypes WHERE cost = " + credits));
+                    StoreService.Purchase(user, GeneralService.GetStringByQuery("SELECT type FROM Products WHERE cost = " + credits));
                     ((Site)Master).UserCredits = Calculations.DecimalCommas(user.GetCredits().ToString());
                     DisableButton(btn);
                 }
@@ -57,22 +61,41 @@ namespace DungeonMaker
 
         protected void dlMapTypes_ItemDataBound(object sender, DataListItemEventArgs e)
         {
+            Label cost = (Label)e.Item.FindControl("costLabel");
             if (user.elevation > 0)
             {
                 SS = new StoreService();
-                if (StoreService.IsMapPurchased(user, ((Label)e.Item.FindControl("lblMapType")).Text))
+                if (StoreService.IsPurchased(user, ((Label)e.Item.FindControl("lblMapType")).Text)) 
                     DisableButton((Button)e.Item.FindControl("btnMapPurchase"));
             }
+            if (cost.Text == "0") cost.Text = "FREE";
+            else cost.Text += " CREDITS";
         }
 
         protected void dlTrapTypes_ItemDataBound(object sender, DataListItemEventArgs e)
         {
+            Label cost = (Label)e.Item.FindControl("costLabel");
             if (user.elevation > 0)
             {
                 SS = new StoreService();
-                if (StoreService.IsTrapPurchased(user, ((Label)e.Item.FindControl("lblTrapType")).Text))
+                if (StoreService.IsPurchased(user, ((Label)e.Item.FindControl("lblTrapType")).Text))
                     DisableButton((Button)e.Item.FindControl("btnTrapPurchase"));
             }
+            if (cost.Text == "0") cost.Text = "FREE";
+            else cost.Text += " CREDITS";
+        }
+
+        protected void dlSkins_ItemDataBound(object sender, DataListItemEventArgs e)
+        {
+            Label cost = (Label)e.Item.FindControl("costLabel");
+            if (user.elevation > 0)
+            {
+                SS = new StoreService();
+                if (StoreService.IsPurchased(user, ((Label)e.Item.FindControl("lblSkin")).Text))
+                    DisableButton((Button)e.Item.FindControl("btnSkin"));
+            }
+            if (cost.Text == "0") cost.Text = "FREE";
+            else cost.Text += " CREDITS";
         }
 
         protected void dlCredits_ItemDataBound(object sender, DataListItemEventArgs e)

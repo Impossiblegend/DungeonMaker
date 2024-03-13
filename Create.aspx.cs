@@ -27,7 +27,7 @@ namespace DungeonMaker
             {
                 TB1.Text = Session["mapType"].ToString();
                 StoreService SS = new StoreService();
-                TB2.Text = StoreService.GetMapTypeCost(TB1.Text).ToString();
+                TB2.Text = StoreService.GetTypeCost(TB1.Text).ToString();
                 foreach (string st in user.GetTrapTypes()) TB6.Text += st + "_";
             }
         }

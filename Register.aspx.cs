@@ -23,8 +23,7 @@ namespace DungeonMaker
                     CdnPath = "https://code.jquery.com/jquery-3.7.1.min.js", 
                     CdnDebugPath = "https://code.jquery.com/jquery-3.7.1.js" 
                 });
-                UserService US = new UserService();
-                PlayService PS = new PlayService();
+                UserService US = new UserService(); PlayService PS = new PlayService();
             } 
         }
 
@@ -39,15 +38,9 @@ namespace DungeonMaker
                 User user = new User(UserName_TextBox.Text, Password_TextBox.Text);
                 Session["user"] = user;
                 Session["userPage"] = user;
-                string[] freeTraps = new string[] { "saw", "portalFull", "portalEmpty" };
-                StoreService SS;
-                foreach (string trap in freeTraps)
-                {
-                    SS = new StoreService();
-                    StoreService.PurchaseTrapType(user, trap);
-                }
-                SS = new StoreService();
-                StoreService.PurchaseMapType(user, "blank");
+                string[] freeProducts = new string[] { "saw", "portalFull", "portalEmpty", "blank" };
+                StoreService SS = new StoreService();
+                foreach (string product in freeProducts) { StoreService.Purchase(user, product); SS = new StoreService(); }
                 Response.Redirect("Explore.aspx");
             }
             else IsSignUp.Text = "User already exists.";

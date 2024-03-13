@@ -10,7 +10,7 @@
                 <div class="item">
                     <asp:ImageButton ID="Thumbnail" runat="server" ImageUrl='<%# Bind("asset") %>' Width="400px" Height="250px" />
                     <asp:Image ID="LockImage" runat="server" CssClass="overlay-image" ImageUrl="assets/ui/lock2.png" Width="54px" Height="80px" />
-                    <asp:Label ID="MapTypeName" runat="server" Text='<%# Bind("mapType") %>' CssClass="name"></asp:Label>
+                    <asp:Label ID="MapTypeName" runat="server" Text='<%# Bind("type") %>' CssClass="name"></asp:Label>
                 </div>
             </ItemTemplate>
         </asp:DataList>

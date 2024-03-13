@@ -68,7 +68,8 @@ namespace DungeonMaker.Classes.Types
         }
         public List<string> GetTrapTypes() 
         {
-            DataSet ds = GeneralService.GetDataSetByQuery("SELECT trapType FROM OwnedTrapTypes WHERE owner = '" + this.email + "'", "OwnedTrapTypes");
+            DataSet ds = GeneralService.GetDataSetByQuery("SELECT Products.type FROM Purchases INNER JOIN Products ON Purchases.type = Products.type WHERE owner = '" + this.email + 
+                "' AND class = 'trap' OR class = 'misc'", "Purchases");
             List<string> traps = new List<string>();
             foreach (DataRow row in ds.Tables[0].Rows) traps.Add(row[0].ToString());
             return traps;
