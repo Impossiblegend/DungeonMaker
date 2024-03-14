@@ -22,8 +22,5 @@ namespace DungeonMaker
             for (int i = 3; i < st.Length; i += 4) st = st.Insert(st.Length - i, ",");
             return st;
         }
-
-        //DataSet ds = GeneralService.GetDataSetByQuery("SELECT email FROM Users", "Users");
-        //foreach (DataRow row in ds.Tables[0].Rows) { StoreService SS = new StoreService(); StoreService.Purchase(new User(row[0].ToString()),"INSERT_NEW_PRODUCT_HERE"); }
     }
 }

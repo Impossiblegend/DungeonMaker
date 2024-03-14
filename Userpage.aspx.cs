@@ -83,7 +83,7 @@ namespace DungeonMaker
             try { return int.Parse(GeneralService.GetStringByQuery("SELECT SUM(" + field + ") FROM Games WHERE player = '" + userpage.email + "'")); }
             catch { return 0; }
         }
-        private void alert(string alert) { ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + alert + "');", true); }
+        private void Alert(string alert) { ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + alert + "');", true); }
         protected void MapsDataList_ItemCommand(object sender, DataListCommandEventArgs e)
         {
             Map map = new Map(int.Parse(((Label)e.Item.FindControl("mapID")).Text));
@@ -143,22 +143,22 @@ namespace DungeonMaker
                     break;
                 case "SubmitButton":
                     FileUpload fu = (FileUpload)e.Item.FindControl("ThumbnailUploader");
-                    if (!fu.HasFile) alert("Please choose a new thumbnail before submitting it.");
+                    if (!fu.HasFile) Alert("Please choose a new thumbnail before submitting it.");
                     else
                     {
                         FileInfo prev = new FileInfo(Server.MapPath(map.thumbnail));
                         try { prev.Delete(); }
-                        catch { alert("Deletion error, likely due to physical path."); }
+                        catch { Alert("Deletion error, likely due to physical path."); }
                         string fileName = Path.GetFileName(fu.PostedFile.FileName),
                             fileType = fu.PostedFile.ContentType,
                             filePath = Server.MapPath("~/assets/screenshots/") + fileName;
                         if (fu.PostedFile.ContentLength < 500000)
                         {
                             try { fu.SaveAs(filePath); }
-                            catch { alert("Upload error."); }
+                            catch { Alert("Upload error."); }
                             MapService.ChangeThumbnail(map.mapID, "assets/screenshots/" + fileName);
                         }
-                        else alert("File size too large.");
+                        else Alert("File size too large.");
                     }
                     break;
             }
@@ -208,7 +208,7 @@ namespace DungeonMaker
         { //Updates user avatar in database, current userpage and masterpage (if applicable)
             FileInfo prev = new FileInfo(Server.MapPath(userpage.profilePicture));
             try { prev.Delete(); }
-            catch { alert("Deletion error, likely due to physical path."); }
+            catch { Alert("Deletion error, likely due to physical path."); }
             string fileName = Path.GetFileName(AvatarUploader.PostedFile.FileName),
                 fileType = AvatarUploader.PostedFile.ContentType,
                 filePath = Server.MapPath("~/assets/profiles/") + fileName;
@@ -217,7 +217,7 @@ namespace DungeonMaker
                 AvatarUploader.SaveAs(filePath);
                 UserService.ChangeProfilePic("assets/profiles/" + fileName, userpage);
             }
-            else alert("File size too large.");
+            else Alert("File size too large.");
             Avatar.ImageUrl = filePath;
             if (Master is Site && user.email == userpage.email) 
                 ((Site)Master).ImageUrl = filePath;
@@ -237,13 +237,13 @@ namespace DungeonMaker
                 UserService.UpdateFieldByEmail("username", value, userpage);
                 ((User)Session["userPage"]).username = value;
             }
-            else alert("Username change failed. It must only consist of (latin) letters and numbers. If not applicable, this username may already exist.");
+            else Alert("Username change failed. It must only consist of (latin) letters and numbers. If not applicable, this username may already exist.");
             if (column == 1 && value.Length > 3 && value.Length < 13)
             {
                 UserService.UpdateFieldByEmail("userPassword", value, userpage);
                 ((User)Session["userPage"]).userPassword = value;
             }
-            else alert("Password change failed. It must be between 3 and 13 characters.");
+            else Alert("Password change failed. It must be between 3 and 13 characters.");
         }
     }
 }

@@ -24,7 +24,7 @@ namespace DungeonMaker
             user = (User)Session["user"];
             PlayService PS = new PlayService();
             //Default sort: newest. Queries must reset with each postback
-            mapQuery = "SELECT Maps.mapID, Maps.mapName, Users.username, Maps.thumbnail, Maps.mapType FROM (Users INNER JOIN Maps ON " +
+            mapQuery = "SELECT Maps.mapID, Maps.mapName, Users.username, Maps.thumbnail, Maps.mapType, Maps.isValid FROM (Users INNER JOIN Maps ON " +
                 "Users.email = Maps.creator) WHERE mapName LIKE '%%' AND isPublic ORDER BY mapID DESC";
             userQuery = "SELECT email, username, profilePicture FROM Users WHERE username LIKE '%%' ORDER BY Users.creationDate";
             if (!IsPostBack)
@@ -46,7 +46,7 @@ namespace DungeonMaker
                     ScriptManager.RegisterStartupScript(this, GetType(), "Display", "document.getElementById('prevList').style.display = 'block';", true);
                     if (!user.IsBanned())
                     {
-                        string RecentMapsQuery = "SELECT TOP 5 Maps.mapID, Maps.mapName, Maps.thumbnail FROM ((Games INNER JOIN Users ON Games.player = Users.email) " +
+                        string RecentMapsQuery = "SELECT TOP 5 Maps.mapID, Maps.mapName, Maps.thumbnail, Maps.isValid FROM ((Games INNER JOIN Users ON Games.player = Users.email) " +
                             "INNER JOIN Maps ON Games.mapID = Maps.mapID) WHERE Games.player = '" + user.email + "' ORDER BY Games.gameID DESC";
                         DataTable table = GeneralService.GetDataSetByQuery(RecentMapsQuery, "Maps").Tables[0], distinctDataTable = table.Clone();
                         //DISTINCT does not work with ORDER BY in Access, so the following code selects distinct items programatically
@@ -75,13 +75,13 @@ namespace DungeonMaker
                     if (PlayService.countGames(Convert.ToInt32(row["mapID"])) > 0)
                         playedMaps.Add(new Map(Convert.ToInt32(row["mapID"])));
                 Cache["playedMaps"] = playedMaps;
-                string query = "SELECT Maps.mapID, Maps.mapName, Maps.thumbnail, COUNT(Games.mapID) AS playCount, Users.username AS creatorUsername " +
+                string query = "SELECT Maps.mapID, Maps.mapName, Maps.thumbnail, Maps.isValid, COUNT(Games.mapID) AS playCount, Users.username AS creatorUsername " +
                     "FROM (Maps LEFT JOIN Games ON Maps.mapID = Games.mapID) LEFT JOIN Users ON Maps.creator = Users.email WHERE isPublic " +
-                    "GROUP BY Maps.mapID, Maps.mapName, Maps.thumbnail, Users.username ORDER BY COUNT(Games.mapID) DESC";
+                    "GROUP BY Maps.mapID, Maps.mapName, Maps.thumbnail, Maps.isValid, Users.username ORDER BY COUNT(Games.mapID) DESC";
                 PopularMapsDataList.DataSource = GeneralService.GetDataSetByQuery(query, "Maps").Tables[0].AsEnumerable().Take(5).CopyToDataTable();
                 // ↑ Equivalent to SQL "TOP 5" which didn't work for me in this query ↑
                 PopularMapsDataList.DataBind();
-                query = "SELECT TOP 5 mapID, mapName, username, thumbnail FROM Users INNER JOIN Maps ON Users.email = Maps.creator WHERE isPublic ORDER BY mapID DESC";
+                query = "SELECT TOP 5 mapID, mapName, username, thumbnail, isValid FROM Users INNER JOIN Maps ON Users.email = Maps.creator WHERE isPublic ORDER BY mapID DESC";
                 NewestMapsDataList.DataSource = GeneralService.GetDataSetByQuery(query, "Maps");
                 NewestMapsDataList.DataBind();
                 query = "SELECT Feedback.*, Users.username, Users.profilePicture FROM Users INNER JOIN Feedback ON Feedback.sender = Users.email WHERE Feedback.isFeatured";
@@ -122,6 +122,8 @@ namespace DungeonMaker
                     starsPlaceHolder.Controls.Add(imgStar);
                 }
             }
+            //DataSet ds = GeneralService.GetDataSetByQuery("SELECT email FROM Users", "Users");
+            //foreach (DataRow row in ds.Tables[0].Rows) { StoreService SS = new StoreService(); StoreService.Purchase(new User(row[0].ToString()),"INSERT_NEW_PRODUCT_HERE"); }
         }
 
         protected void SearchButton_Click(object sender, ImageClickEventArgs e)
@@ -327,12 +329,7 @@ namespace DungeonMaker
                 {
                     int mapID = int.Parse(((Label)e.Item.FindControl("mapID")).Text);
                     Button bt = (Button)e.Item.FindControl("DeleteButton");
-                    if (IsExist(mapID))
-                    { //If map exists in Games table, delete button repurposes to an enable/disable button
-                        Map map = new Map(mapID);
-                        ((Button)e.Item.FindControl("PlayButton")).Enabled = map.isValid;
-                        bt.Text = map.isValid ? "Disable" : "Enable";
-                    }
+                    if (IsExist(mapID)) bt.Text = ((Button)e.Item.FindControl("PlayButton")).Enabled ? "Disable" : "Enable";
                     bt.Visible = true;
                 }
             }

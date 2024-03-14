@@ -53,7 +53,7 @@ namespace DungeonMaker
         }
 
         protected void Guest_Login_Click(object sender, EventArgs e)
-        {
+        { //Back to Explore
             Session["user"] = new User();
             Response.Redirect("Explore.aspx");
         }
@@ -61,7 +61,7 @@ namespace DungeonMaker
         protected void Nav_Click(object sender, EventArgs e)  { PagesMultiView.ActiveViewIndex = int.Parse(((LinkButton)sender).CommandArgument); }
 
         protected void SignUp_Button_Click(object sender, EventArgs e)
-        { //If inputs are valid, completes register
+        { //If inputs are valid, completes signup (for Register)
             int passLen = PWTB.Text.Length;
             if (string.IsNullOrEmpty(UserNameTB.Text) || string.IsNullOrEmpty(Gmail_TextBox.Text) || string.IsNullOrEmpty(PWTB.Text)) IsSignUp.Text = "Please fill in all fields.";
             else if (passLen < 4 || passLen > 12) IsSignUp.Text = "Password length must be 4-12 characters. Yours is " + passLen + ".";
@@ -71,7 +71,7 @@ namespace DungeonMaker
                 User user = new User(UserNameTB.Text, PWTB.Text);
                 Session["user"] = user;
                 Session["userPage"] = user;
-                string[] freeProducts = new string[] { "saw", "portalFull", "portalEmpty", "blank" };
+                string[] freeProducts = new string[] { "saw", "portalFull", "portalEmpty", "blank", "phaser dude" };
                 StoreService SS = new StoreService();
                 foreach (string product in freeProducts) { StoreService.Purchase(user, product); SS = new StoreService(); }
                 Response.Redirect("Explore.aspx");
@@ -80,17 +80,13 @@ namespace DungeonMaker
         }
 
         protected void CheckAccount_Button_Click(object sender, EventArgs e)
-        { //Validates account credentials
+        { //Validates account credentials (for Forgot Password p.1)
             if (string.IsNullOrEmpty(UserNameTextBox.Text) || string.IsNullOrEmpty(Email_TextBox.Text)) IsPasswordChanged.Text = "Please fill in both your username and email.";
             else
             {
                 try { user = new User(Email_TextBox.Text); }
-                catch
-                {
-                    IsPasswordChanged.Text = "Email not registered.";
-                    return;
-                }
-                if (user.username != UserNameTextBox.Text) IsPasswordChanged.Text = "The provided username and email do not match.";
+                catch { IsPasswordChanged.Text = "Email not registered."; return; }
+                if (user.username != UserNameTextBox.Text) IsPasswordChanged.Text = "Email confirmation failed, no match.";
                 else
                 {
                     FPMultiView.ActiveViewIndex = 1;
@@ -101,7 +97,7 @@ namespace DungeonMaker
         }
 
         protected void ChangePassword_Button_Click(object sender, EventArgs e)
-        { //If valid, changes password
+        { //Changes password (for Forgot Password p.2)
             string pass = ChangePassword_TextBox.Text;
             if (string.IsNullOrEmpty(pass) || string.IsNullOrEmpty(ConfirmPassword_TextBox.Text)) IsPasswordChanged.Text = "A field is blank.";
             else if (pass.Length < 4 || pass.Length > 12) IsPasswordChanged.Text = "Password must be between 4 and 12 characters long. Yours is " + pass.Length + ".";

@@ -56,7 +56,7 @@
                         <asp:Label ID="Creator" runat="server" CssClass="item-label" Text='<%# Bind("username") %>'></asp:Label> <br />
                         <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" Width="0px"></asp:Label>
                         <asp:Image ID="Thumbnail" runat="server" Width="200px" CssClass="item-image" Height="100px" ImageUrl='<%# Bind("thumbnail") %>'/>
-                        <asp:Button ID="PlayButton" runat="server" Text="Play" Height="35px" Width="145px" CssClass="item-button"  CommandName="PlayButton"/>
+                        <asp:Button ID="PlayButton" runat="server" Text="Play" Height="35px" Width="145px" CssClass="item-button"  CommandName="PlayButton" Enabled='<%# Bind("isValid") %>' />
                         <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="35px" Width="145px" CssClass="Delete-Button" CommandName="DeleteButton" Visible="false" BackColor="#000000" />
                     </div>
                 </ItemTemplate>
@@ -75,7 +75,7 @@
                         <asp:Label ID="Creator" runat="server" CssClass="item-label"></asp:Label> <br />
                         <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" ></asp:Label>
                         <asp:Image ID="Thumbnail" runat="server" Width="150px" CssClass="item-image" Height="75px" ImageUrl='<%# Bind("thumbnail") %>'/>
-                        <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton"/> <br />
+                        <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton" Enabled='<%# Bind("isValid") %>'/> <br />
                         <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="30px" Width="110px" CssClass="Delete-Button" CommandName="DeleteButton" Visible="false" BackColor="#000000" />
                     </div>
                 </ItemTemplate>
@@ -93,7 +93,7 @@
                         <asp:Label ID="Creator" runat="server" CssClass="item-label" Text='<%# Bind("creatorUsername") %>'></asp:Label> <br />
                         <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" ></asp:Label>
                         <asp:Image ID="Thumbnail" runat="server" Width="150px" CssClass="item-image" Height="75px" ImageUrl='<%# Bind("thumbnail") %>'/>
-                        <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton"/> <br />
+                        <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton" Enabled='<%# Bind("isValid") %>'/> <br />
                         <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="30px" Width="110px" CssClass="Delete-Button" CommandName="DeleteButton" Visible="false" BackColor="#000000" />
                     </div>
                 </ItemTemplate>
@@ -111,7 +111,7 @@
                         <asp:Label ID="Creator" runat="server" CssClass="item-label" Text='<%# Bind("username") %>'></asp:Label> <br />
                         <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" Height="0px"></asp:Label>
                         <asp:Image ID="Thumbnail" runat="server" Width="150px" CssClass="item-image" Height="75px" ImageUrl='<%# Bind("thumbnail") %>'/>
-                        <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton"/> <br />
+                        <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton" Enabled='<%# Bind("isValid") %>'/> <br />
                         <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="30px" Width="110px" CssClass="Delete-Button" CommandName="DeleteButton" Visible="false" BackColor="#000000" />
                     </div>
                 </ItemTemplate>
