@@ -9,6 +9,7 @@
 <body>
     <form id="form1" runat="server" class="form-container">
         <asp:MultiView ID="PagesMultiView" runat="server">
+            <%--Login--%>
             <asp:View ID="LoginView" runat="server">
                 <asp:Label ID="Title_Label" runat="server" Text="Sign In" CssClass="title-label"></asp:Label>
                 <asp:Label ID="UserName_Label" runat="server" Text="Username" CssClass="input-label"></asp:Label>
@@ -21,6 +22,7 @@
                 <asp:LinkButton ID="Guest_Login" runat="server" OnClick="Guest_Login_Click" CssClass="link">Guest Login</asp:LinkButton>
                 <asp:LinkButton ID="CreateAccount" runat="server" OnClick="Nav_Click" CommandArgument="1" CssClass="link">Sign Up</asp:LinkButton>
             </asp:View>
+            <%--Register--%>
             <asp:View ID="RegisterView" runat="server">
                 <asp:ScriptManager ID="ScriptManager1" runat="server"  EnablePageMethods="true" EnablePartialRendering="true"></asp:ScriptManager>
                 <asp:Label ID="SignUpTitleLabel" runat="server" Text="Sign Up" CssClass="title-label"></asp:Label>
@@ -42,8 +44,10 @@
                 <asp:Button ID="SignUp_Button" runat="server" OnClick="SignUp_Button_Click" OnClientClick="attachValidationHandlers()" Text="Register" Enabled="false" CssClass="submit-button" />
                 <asp:LinkButton ID="BackToLoginLabel" runat="server" OnClick="Nav_Click" CommandArgument="0" CssClass="link">Back to Login</asp:LinkButton>
             </asp:View>
+            <%--Forgot/Change Password--%>
             <asp:View ID="ForgotPasswordView" runat="server">
                 <asp:MultiView ID="FPMultiView" runat="server">
+                    <%--Confirm Email--%>
                     <asp:View ID="EmailConfirmView" runat="server">
                         <asp:Label ID="ForgotPasswordTitleLabel" runat="server" Text="Forgot Password" CssClass="title-label"></asp:Label>
                         <asp:Label ID="UserNameLabel" runat="server" Text="Username" CssClass="input-label"></asp:Label>
@@ -53,6 +57,7 @@
                         <asp:Panel ID="BlankSpacePanel" runat="server" Height="80px"></asp:Panel>
                         <asp:Button ID="CheckAccount_Button" runat="server" OnClick="CheckAccount_Button_Click" Text="Check Account" CssClass="submit-button" />
                     </asp:View>
+                    <%--Change Password--%>
                     <asp:View ID="ChangePasswordView" runat="server">
                         <asp:Label ID="ChangePassword_Label" runat="server" Text="Enter a new password" CssClass="input-label"></asp:Label>
                         <asp:TextBox ID="ChangePassword_TextBox" runat="server" CssClass="input-field"></asp:TextBox> <br /> <br />

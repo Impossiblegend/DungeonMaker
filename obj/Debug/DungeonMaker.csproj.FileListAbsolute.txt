@@ -142,11 +142,9 @@ D:\DungeonMaker\bin\roslyn\vbc.rsp
 D:\DungeonMaker\bin\roslyn\VBCSCompiler.exe
 D:\DungeonMaker\bin\roslyn\VBCSCompiler.exe.config
 D:\DungeonMaker\bin\BouncyCastle.Cryptography.dll
-D:\DungeonMaker\bin\MailKit.dll
 D:\DungeonMaker\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 D:\DungeonMaker\bin\Microsoft.Configuration.ConfigurationBuilders.Base.dll
 D:\DungeonMaker\bin\Microsoft.Configuration.ConfigurationBuilders.UserSecrets.dll
-D:\DungeonMaker\bin\MimeKit.dll
 D:\DungeonMaker\bin\System.Buffers.dll
 D:\DungeonMaker\bin\System.Formats.Asn1.dll
 D:\DungeonMaker\bin\System.Memory.dll
@@ -155,14 +153,8 @@ D:\DungeonMaker\bin\System.Runtime.CompilerServices.Unsafe.dll
 D:\DungeonMaker\bin\System.Threading.Tasks.Extensions.dll
 D:\DungeonMaker\bin\System.ValueTuple.dll
 D:\DungeonMaker\bin\BouncyCastle.Cryptography.xml
-D:\DungeonMaker\bin\MailKit.pdb
-D:\DungeonMaker\bin\MailKit.xml
-D:\DungeonMaker\bin\MailKit.dll.config
 D:\DungeonMaker\bin\Microsoft.Configuration.ConfigurationBuilders.Base.xml
 D:\DungeonMaker\bin\Microsoft.Configuration.ConfigurationBuilders.UserSecrets.xml
-D:\DungeonMaker\bin\MimeKit.pdb
-D:\DungeonMaker\bin\MimeKit.xml
-D:\DungeonMaker\bin\MimeKit.dll.config
 D:\DungeonMaker\bin\System.Buffers.xml
 D:\DungeonMaker\bin\System.Formats.Asn1.xml
 D:\DungeonMaker\bin\System.Memory.xml
