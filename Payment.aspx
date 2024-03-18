@@ -24,7 +24,7 @@
             <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                 <ContentTemplate>
                     <asp:Image ID="FlagIcon" runat="server" ImageUrl="assets/flags/default.png" CssClass="flag-icon" />
-                    <asp:TextBox ID="PhoneNumTextBox" runat="server" TextMode="Phone" CssClass="input-field" OnTextChanged="PhoneNumTextBox_TextChanged" AutoPostBack="true"></asp:TextBox>
+                    <asp:TextBox ID="PhoneNumTextBox" runat="server" TextMode="Phone" CssClass="input-field" OnTextChanged="PhoneNumTextBox_TextChanged" AutoPostBack="true" MaxLength="17"></asp:TextBox>
                     <asp:Label ID="CreditcardLabel" runat="server" CssClass="input-label">Credit Card</asp:Label>
                     <asp:Image ID="CardProviderIcon" runat="server" ImageUrl="assets/flags/default.png" CssClass="flag-icon" Width="28px" Height="20px" />
                     <asp:TextBox ID="CreditcardTextBox" runat="server" CssClass="input-field" OnTextChanged="CreditcardTextBox_TextChanged" TextMode="SingleLine" MaxLength="16" AutoPostBack="true"></asp:TextBox> <br />

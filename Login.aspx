@@ -32,7 +32,7 @@
                     ForeColor="Red" ValidationExpression="^[a-zA-Z0-9]*$" CssClass="hidden-validator">
                 </asp:RegularExpressionValidator>
                 <asp:Label ID="Gmail_Label" runat="server" Text="Email" CssClass="input-label"></asp:Label>
-                <asp:TextBox ID="Gmail_TextBox" runat="server" TabIndex="5" autocomplete="off" Height="45px" Width="330px" CssClass="input-field" ></asp:TextBox>
+                <asp:TextBox ID="Gmail_TextBox" runat="server" TabIndex="5" autocomplete="off" Height="45px" Width="330px" CssClass="input-field" TextMode="Email" ></asp:TextBox>
                 <asp:RegularExpressionValidator ID="Gmail_Validator" runat="server" ControlToValidate="Gmail_TextBox" ErrorMessage="Incorrect email format" ForeColor="Red" 
                     ValidationExpression="^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" CssClass="hidden-validator">
                 </asp:RegularExpressionValidator>

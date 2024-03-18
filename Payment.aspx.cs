@@ -35,6 +35,7 @@ namespace DungeonMaker
 
         protected void CreditcardTextBox_TextChanged(object sender, EventArgs e)
         {
+            CardProviderIcon.ImageUrl = "assets/flags/default.png";
             string card = CreditcardTextBox.Text;
             long num = -1;
             try 
@@ -49,7 +50,6 @@ namespace DungeonMaker
                 case 3: CardProviderIcon.ImageUrl = "assets/ui/AmericanExpress.png"; break;
                 case 4: CardProviderIcon.ImageUrl = "assets/ui/Visa.png"; break;
                 case 5: CardProviderIcon.ImageUrl = "assets/ui/Mastercard.png"; break;
-                default: CardProviderIcon.ImageUrl = "assets/flags/default.png"; break;
             }
             EnableButtonState(false, "");
         }
@@ -61,24 +61,27 @@ namespace DungeonMaker
         }
         protected void PhoneNumTextBox_TextChanged(object sender, EventArgs e)
         {
-            ErrorLabel.Text = "";
             FlagIcon.ImageUrl = "assets/flags/default.png";
             string num = PhoneNumTextBox.Text;
             if (num.Length == 0) return;
             if (num[0] != '+') { EnableButtonState(true, "Please enter country dial code (e.g. +1 for the US and Canada)."); return; }
+            EnableButtonState(false, "");
             CheckCountry(num.Substring(1, 5));
         }
+        private string[] imagePaths = null;
         private void CheckCountry(string num) 
         { //Recursive method checking for a country based input dial code
-            if (num == "") return;
-            EnableButtonState(false, "");
-            string[] imageFiles = Directory.GetFiles(Server.MapPath("assets/flags"), "*.png");
-            foreach (string imagePath in imageFiles)
+            if (imagePaths == null) imagePaths = Directory.GetFiles(Server.MapPath("assets/flags"), "*.png");
+            foreach (string imagePath in imagePaths)
             {
                 string imageName = Path.GetFileNameWithoutExtension(imagePath);
-                if (imageName.Equals(num, StringComparison.OrdinalIgnoreCase)) { FlagIcon.ImageUrl = "assets/flags/" + imageName + ".png"; return; }
+                if (imageName.Equals(num, StringComparison.OrdinalIgnoreCase)) 
+                {
+                    FlagIcon.ImageUrl = "assets/flags/" + imageName + ".png"; 
+                    return;
+                }
             }
-            CheckCountry(num.Remove(num.Length - 1));
+            if (num.Length > 1) CheckCountry(num.Remove(num.Length - 1));
         }
         protected void PurchaseButton_Click(object sender, EventArgs e)
         {
