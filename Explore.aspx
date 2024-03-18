@@ -5,7 +5,7 @@
     <div class="search-container">
         <div class="search-input-container">
             <asp:ImageButton ID="SearchButton" runat="server" ImageUrl="assets/ui/search.png" Height="36px" Width="36px" OnClick="SearchButton_Click" />
-            <asp:TextBox ID="SearchBar" placeholder="Search for users..." runat="server" CssClass="search-input" Text=""></asp:TextBox>
+            <asp:TextBox ID="SearchBar" placeholder="Search for users..." runat="server" CssClass="search-input" Text="" TextMode="Search" OnKeyPress="handleKeyPress(event)"></asp:TextBox>
             <asp:DropDownList ID="SortBy" runat="server" Height="42px" Width="108px">
                 <asp:ListItem Selected="True" Value="Newest"> Newest</asp:ListItem>
                 <asp:ListItem Value="Oldest"> Oldest </asp:ListItem>
@@ -151,5 +151,14 @@
             </ItemTemplate>
         </asp:DataList>
     </asp:Panel>
+    <script>
+    //Makes clicking enter trigger a search as intended instead of triggering the site logo image button through the masterpage, needlessly redirecting back to this page
+    function handleKeyPress(e) {
+        if (e.keyCode === 13) {
+            document.getElementById('<%= SearchButton.ClientID %>').click();
+            e.preventDefault();
+        }
+    }
+    </script>
     <script src="scripts/ExpandText.js"></script>
 </asp:Content>

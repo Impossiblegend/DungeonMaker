@@ -47,6 +47,15 @@ namespace DungeonMaker.Classes.Services
             command.Parameters.AddWithValue("@date", DateTime.Today);
             SafeExecute();
         }
+        public static void PurchaseCredits(User user, string bundle, string card)
+        {
+            command.CommandText = "INSERT INTO CreditPurchases(bundle, customer, dateOfPurchase, creditCard) VALUES(@bundle, @customer, @date, @card)";
+            command.Parameters.AddWithValue("@bundle", bundle);
+            command.Parameters.AddWithValue("@customer", user.email);
+            command.Parameters.AddWithValue("@date", DateTime.Today);
+            command.Parameters.AddWithValue("@card", card);
+            SafeExecute();
+        }
         public static bool IsPurchased(User user, string type) 
         {
             command.CommandText = "SELECT Count(owner) FROM Purchases WHERE owner = @owner AND type = @type";

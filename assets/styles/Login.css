@@ -41,8 +41,8 @@ body {
     }
 
 .form-container {
-    height: 530px;
-    width: 410px;
+    height: 550px;
+    width: 420px;
     background-color: rgba(255, 255, 255, 0.13);
     position: absolute;
     left: 50%;
@@ -87,7 +87,8 @@ body {
 
 .title-label {
     display: block;
-    margin-top: 0px;
+    margin-top: 0;
+    margin-bottom: 10px;
     font-size: 35px;
     font-weight: 900;
     text-align: center;
@@ -112,11 +113,22 @@ body {
     font-weight: 500;
     width: 330px;
     height: 45px;
+    position: relative;
+    padding-left: 20px;
+    box-sizing: border-box;
 }
 
     .input-field::placeholder {
         color: #999999;
     }
+
+.flag-icon {
+    position: absolute;
+    right: 17%;
+    top: 38%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
 
 .submit-button {
     margin-top: 10px;
@@ -157,6 +169,44 @@ body {
     margin-left: 5px;
     font-size: 14px;
     font-weight: 300;
+}
+
+.inline-label {
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.inline-input {
+    display: inline-block;
+    background-color: rgba(0, 0, 0, 0.07);
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 8px;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    width: 160px;
+    height: 45px;
+}
+
+#Back_Button {
+    background-color: #aaaaaa;
+    color: #000000;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    position: fixed;
+    top: 10%;
+    left: 5%;
+    margin: 10px;
 }
 
 @keyframes slideIn {
