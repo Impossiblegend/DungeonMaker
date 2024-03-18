@@ -97,7 +97,7 @@ namespace DungeonMaker
                 date.Text = RemoveTime(date) + "<b> | Deaths</b>";
                 deaths.Text = "x" + deaths.Text + "<b> | Stars</b>";
                 stars.Text = "x" + stars.Text + "<b> | Time</b>";
-                time.Text = Calculations.SecToMin(int.Parse(time.Text));
+                time.Text = Utility.SecToMin(int.Parse(time.Text));
             }
         }
 

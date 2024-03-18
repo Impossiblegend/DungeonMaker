@@ -19,7 +19,7 @@ namespace DungeonMaker
         public MapService() { }
         public static void InsertStars(int xpos, int ypos) 
         { //Uploads all stars on screen to the database
-            OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
+            OleDbConnection Conn = new OleDbConnection(Utility.GetConnectionString());
             OleDbCommand command = new OleDbCommand();
             command.Connection = Conn;
             command.CommandText = "SELECT max(mapID) FROM Maps";
@@ -38,7 +38,7 @@ namespace DungeonMaker
         }
         public static void InsertTraps(int xpos, int ypos, string type)
         { //Uploads all traps on screen to the database
-            OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
+            OleDbConnection Conn = new OleDbConnection(Utility.GetConnectionString());
             OleDbCommand command = new OleDbCommand();
             command.CommandText = "SELECT max(mapID) FROM Maps";
             command.Connection = Conn;
@@ -58,7 +58,7 @@ namespace DungeonMaker
         }
         public static void DeleteAllButNewestByTrapType(string type)
         { //Deletes all but the nrewest trap, by type and map. Useful for edge cases.
-            OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
+            OleDbConnection Conn = new OleDbConnection(Utility.GetConnectionString());
             OleDbCommand command = new OleDbCommand();
             command.Connection = Conn;
             command.CommandText = "DELETE FROM Traps WHERE mapID = @mapID AND type = @type " +
@@ -72,7 +72,7 @@ namespace DungeonMaker
         }
         public static void UploadMap(string email, string mapName, string mapType) 
         { //Creates a new map in the database and saves its ID statically
-            OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
+            OleDbConnection Conn = new OleDbConnection(Utility.GetConnectionString());
             OleDbCommand command = new OleDbCommand();            
             command.CommandText = "INSERT INTO Maps(creator, mapType, creationDate, mapName, isPublic, estTime, thumbnail, isValid) " +
                 "VALUES(@creator, @mapType, @date, @mapName, True, 0, @thumbnail, True)";
@@ -90,7 +90,7 @@ namespace DungeonMaker
         }
         public static void DeleteByMapID(string table)
         { //Deletes all records related to the map by table
-            OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
+            OleDbConnection Conn = new OleDbConnection(Utility.GetConnectionString());
             OleDbCommand command = new OleDbCommand();
             command.Connection = Conn;
             command.CommandText = $"DELETE FROM {table} WHERE mapID = @mapID";
@@ -101,7 +101,7 @@ namespace DungeonMaker
         }
         public static int CountMapsWithName(string mapName) 
         { //Returns number of maps with a given name
-            OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
+            OleDbConnection Conn = new OleDbConnection(Utility.GetConnectionString());
             OleDbCommand command = new OleDbCommand();
             command.Connection = Conn;
             command.CommandText = "SELECT Count(mapID) FROM Maps WHERE mapName = '" + mapName + "'";
@@ -112,7 +112,7 @@ namespace DungeonMaker
         }
         public static void ChangeValid(int mapID) 
         { //Negates the validity of a map
-            OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
+            OleDbConnection Conn = new OleDbConnection(Utility.GetConnectionString());
             OleDbCommand command = new OleDbCommand();
             command.Connection = Conn;
             command.CommandText = "UPDATE Maps SET isValid = NOT isValid WHERE mapID = " + mapID;
@@ -123,7 +123,7 @@ namespace DungeonMaker
         public static void ChangeMapName(int mapID, string mapName) //mapName must include serial autonumber --- CountMapsWithName()
         { //Changes map name and thumbnail accordingly
             ChangeThumbnail(mapID, "assets/screenshots/" + mapName + ".jpg");
-            OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
+            OleDbConnection Conn = new OleDbConnection(Utility.GetConnectionString());
             OleDbCommand command = new OleDbCommand();
             command.Connection = Conn;
             command.CommandText = "UPDATE Maps SET mapName = @mapName WHERE mapID = " + mapID;
@@ -134,7 +134,7 @@ namespace DungeonMaker
         }
         public static void ChangeThumbnail(int mapID, string path) 
         {
-            OleDbConnection Conn = new OleDbConnection(Connect.GetConnectionString());
+            OleDbConnection Conn = new OleDbConnection(Utility.GetConnectionString());
             OleDbCommand command = new OleDbCommand();
             command.Connection = Conn;
             command.CommandText = "UPDATE Maps SET thumbnail = @thumbnail WHERE mapID = " + mapID;

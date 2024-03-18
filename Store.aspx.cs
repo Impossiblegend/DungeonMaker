@@ -45,7 +45,7 @@ namespace DungeonMaker
                 {
                     SS = new StoreService();
                     StoreService.Purchase(user, GeneralService.GetStringByQuery("SELECT type FROM Products WHERE cost = " + credits));
-                    ((Site)Master).UserCredits = Calculations.DecimalCommas(user.GetCredits().ToString());
+                    ((Site)Master).UserCredits = Utility.DecimalCommas(user.GetCredits().ToString());
                     DisableButton(btn);
                 }
             }
@@ -102,7 +102,7 @@ namespace DungeonMaker
         {
             Label cost = (Label)e.Item.FindControl("costLabel"), credits = (Label)e.Item.FindControl("creditAmount");
             cost.Text = "$" + (int.Parse(cost.Text) - 0.01);
-            credits.Text = Calculations.DecimalCommas(credits.Text) + " CREDITS";
+            credits.Text = Utility.DecimalCommas(credits.Text) + " CREDITS";
         }
     }
 }

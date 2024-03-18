@@ -34,9 +34,9 @@
                     <asp:AsyncPostBackTrigger ControlID="CreditcardTextBox" EventName="TextChanged" />
                 </Triggers>
             </asp:UpdatePanel>
-            <asp:Label ID="NumsLabel" runat="server" CssClass="inline-label">CVV/CVC</asp:Label>
+            <asp:Label ID="CVVLabel" runat="server" CssClass="inline-label">CVV/CVC</asp:Label>
             <asp:Label ID="ExpDateLabel" runat="server" CssClass="inline-label">Date of Exp.</asp:Label> <br />
-            <asp:TextBox ID="NumsTextBox" runat="server" CssClass="inline-input" TextMode="SingleLine" MaxLength="3"></asp:TextBox>
+            <asp:TextBox ID="CVVTextBox" runat="server" CssClass="inline-input" TextMode="SingleLine" MaxLength="3"></asp:TextBox>
             <asp:TextBox ID="ExpDateTextBox" runat="server" TextMode="Month" CssClass="inline-input"></asp:TextBox> <br />
             <asp:Label ID="AddressLabel" runat="server" CssClass="input-label">Billing Address</asp:Label>
             <asp:TextBox ID="AddressTextBox" runat="server" CssClass="input-field"></asp:TextBox> <br />
@@ -45,7 +45,7 @@
         </div>
     </form>
     <script>
-    function back() { window.location.href = 'Explore.aspx'; }
+    function back() { window.location.href = 'Store.aspx'; }
     function toggleButtonHoverEffect(isDisabled) {
         var signUpButton = document.getElementById("PurchaseButton");
         if (isDisabled) signUpButton.classList.add('disabled-hover');

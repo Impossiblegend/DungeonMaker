@@ -141,13 +141,13 @@ namespace DungeonMaker
         protected global::System.Web.UI.WebControls.TextBox CreditcardTextBox;
 
         /// <summary>
-        /// NumsLabel control.
+        /// CVVLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label NumsLabel;
+        protected global::System.Web.UI.WebControls.Label CVVLabel;
 
         /// <summary>
         /// ExpDateLabel control.
@@ -159,13 +159,13 @@ namespace DungeonMaker
         protected global::System.Web.UI.WebControls.Label ExpDateLabel;
 
         /// <summary>
-        /// NumsTextBox control.
+        /// CVVTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox NumsTextBox;
+        protected global::System.Web.UI.WebControls.TextBox CVVTextBox;
 
         /// <summary>
         /// ExpDateTextBox control.

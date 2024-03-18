@@ -15,7 +15,7 @@ namespace DungeonMaker.Classes.Services
         public AchievementService()
         {
             Conn = new OleDbConnection();
-            Conn.ConnectionString = Connect.GetConnectionString();
+            Conn.ConnectionString = Utility.GetConnectionString();
             command = new OleDbCommand();
             command.Connection = Conn;
         }

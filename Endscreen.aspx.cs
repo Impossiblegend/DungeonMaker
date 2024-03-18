@@ -19,7 +19,7 @@ namespace DungeonMaker
                 Victory.Text = game.victory ? "VICTORY" : "DEFEAT";
                 DeathCounter.Text = "x" + game.deaths;
                 StarCounter.Text = game.stars + "/" + game.map.stars.Count;
-                TimeElapsed.Text = Calculations.SecToMin(game.time);
+                TimeElapsed.Text = Utility.SecToMin(game.time);
                 BG.Style["Width"] = "100%";
                 BG.Style["Height"] = "100%";
                 BG.ImageUrl = game.map.thumbnail;

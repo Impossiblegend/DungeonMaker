@@ -41,7 +41,7 @@ namespace DungeonMaker
                         "<b>Result</b> " + (game.victory ? "victory" : "defeat") + nbsp +
                         "<b>Deaths</b> x" + game.deaths + nbsp +
                         "<b>Stars</b> x" + game.stars + nbsp +
-                        "<b>Time</b> " + Calculations.SecToMin(game.time) + nbsp +
+                        "<b>Time</b> " + Utility.SecToMin(game.time) + nbsp +
                         "<b>Map</b> " + game.map.mapName.Remove(game.map.mapName.Length - 1); //Remove map name handler suffix
                     ScriptManager.RegisterStartupScript(this, GetType(), "Display", "document.getElementById('prevList').style.display = 'block';", true);
                     if (!user.IsBanned())

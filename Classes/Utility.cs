@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 
 namespace DungeonMaker
 {
-    public class Calculations
+    public class Utility
     {
         public static string SecToMin(int sec)
         { //e.g. 128 --> "02:08"
@@ -22,5 +23,7 @@ namespace DungeonMaker
             for (int i = 3; i < st.Length; i += 4) st = st.Insert(st.Length - i, ",");
             return st;
         }
+
+        public static string GetConnectionString() { return ConfigurationManager.ConnectionStrings["DungeonMakerConnectionString"].ConnectionString; }
     }
 }

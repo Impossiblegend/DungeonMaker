@@ -34,7 +34,7 @@ namespace DungeonMaker
                 else
                 {
                     AchievementService AS = new AchievementService(); StoreService SS = new StoreService();
-                    litCredits.Text = user.IsAdmin() ? "<p style='font-size:35px;'><b>&#8734;</b></p>" : Calculations.DecimalCommas(user.GetCredits().ToString());
+                    litCredits.Text = user.IsAdmin() ? "<p style='font-size:35px;'><b>&#8734;</b></p>" : Utility.DecimalCommas(user.GetCredits().ToString());
                     if (litCredits.Text.Length > 3) 
                     {
                         litCredits.Style["left"] = "83.75%";

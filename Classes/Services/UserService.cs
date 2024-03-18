@@ -17,7 +17,7 @@ namespace DungeonMaker
         public UserService()
         {
             Conn = new OleDbConnection();
-            Conn.ConnectionString = Connect.GetConnectionString();
+            Conn.ConnectionString = Utility.GetConnectionString();
             command = new OleDbCommand();
             command.Connection = Conn;
         }

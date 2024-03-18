@@ -425,3 +425,6 @@ C:\Users\cyber\Downloads\DungeonMaker\obj\Debug\DungeonMaker.csproj.CoreCompileI
 C:\Users\cyber\Downloads\DungeonMaker\obj\Debug\DungeonMaker.csproj.CopyComplete
 C:\Users\cyber\Downloads\DungeonMaker\obj\Debug\DungeonMaker.dll
 C:\Users\cyber\Downloads\DungeonMaker\obj\Debug\DungeonMaker.pdb
+D:\DungeonMaker\bin\CreditCardWebService.dll
+D:\DungeonMaker\bin\CreditCardWebService.pdb
+D:\DungeonMaker\bin\CreditCardWebService.dll.config

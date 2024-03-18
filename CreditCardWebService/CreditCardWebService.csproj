@@ -67,14 +67,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CreditService.asmx" />
+    <Content Include="CreditCardService.asmx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreditService.asmx.cs">
-      <DependentUpon>CreditService.asmx</DependentUpon>
+    <Compile Include="Card.cs" />
+    <Compile Include="CreditCardService.asmx.cs">
+      <DependentUpon>CreditCardService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Holder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
