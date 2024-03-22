@@ -324,16 +324,18 @@ namespace DungeonMaker
                 Label title = (Label)e.Item.FindControl("Title");
                 title.Text = title.Text.Remove(title.Text.Length - 1); //Remove thumbnail name handler (map count suffix)
                 Map map = null;
-                foreach (Map played in (List<Map>)Cache["playedMaps"]) //Saves database trip for each map in datalist by saving them all once in Cache at !IsPostBack
-                    if (played.mapID == int.Parse(((Label)e.Item.FindControl("mapID")).Text))
-                        { map = played; goto found; } //Exits foreach loop when map is found
-                found:
-                if ((DataList)sender == RecentlyPlayedDataList) ((Label)e.Item.FindControl("Creator")).Text = map.creator.username;
-                if (user.IsAdmin())
-                {
-                    Button bt = (Button)e.Item.FindControl("DeleteButton");
-                    if (map != null) bt.Text = ((Button)e.Item.FindControl("PlayButton")).Enabled ? "Disable" : "Enable";
-                    bt.Visible = true;
+                if (user.IsAdmin() || (DataList)sender == RecentlyPlayedDataList) 
+                { //No need to scan list if its result won't be used
+                    foreach (Map played in (List<Map>)Cache["playedMaps"]) //Saves database trip for each map in datalist by saving them all once in Cache at !IsPostBack
+                        if (played.mapID == int.Parse(((Label)e.Item.FindControl("mapID")).Text))
+                            { map = played; break; } //Exits loop when map is found
+                    if ((DataList)sender == RecentlyPlayedDataList) ((Label)e.Item.FindControl("Creator")).Text = map.creator.username;
+                    if (user.IsAdmin())
+                    {
+                        Button bt = (Button)e.Item.FindControl("DeleteButton");
+                        if (map != null) bt.Text = ((Button)e.Item.FindControl("PlayButton")).Enabled ? "Disable" : "Enable";
+                        bt.Visible = true;
+                    }
                 }
             }
         }

@@ -28,16 +28,16 @@ namespace DungeonMaker.Classes.Types
             this.mapID = mapID;
             string query = "SELECT * FROM Maps WHERE mapID = " + mapID;
             DataTable Maps = GeneralService.GetDataSetByQuery(query, "Maps").Tables[0];
-            this.creator = new User(Maps.Rows[0]["creator"].ToString());
-            this.mapType = Maps.Rows[0]["mapType"].ToString();
-            this.creationDate = (DateTime)Maps.Rows[0]["creationDate"];
-            this.mapName = Maps.Rows[0]["mapName"].ToString();
-            this.isPublic = (bool)Maps.Rows[0]["isPublic"];
-            this.estTime = (int)Maps.Rows[0]["estTime"];
-            this.thumbnail = Maps.Rows[0]["thumbnail"].ToString();
-            this.isValid = (bool)Maps.Rows[0]["isValid"];
-            this.stars = GetStars();
-            this.traps = GetTraps();
+            creator = new User(Maps.Rows[0]["creator"].ToString());
+            mapType = Maps.Rows[0]["mapType"].ToString();
+            creationDate = (DateTime)Maps.Rows[0]["creationDate"];
+            mapName = Maps.Rows[0]["mapName"].ToString();
+            isPublic = (bool)Maps.Rows[0]["isPublic"];
+            estTime = (int)Maps.Rows[0]["estTime"];
+            thumbnail = Maps.Rows[0]["thumbnail"].ToString();
+            isValid = (bool)Maps.Rows[0]["isValid"];
+            stars = GetStars();
+            traps = GetTraps();
         }
         public Map(int mapID, bool needLists)
         {
@@ -45,18 +45,19 @@ namespace DungeonMaker.Classes.Types
             string query = "SELECT * FROM Maps WHERE mapID = " + mapID;
             DataTable Maps = GeneralService.GetDataSetByQuery(query, "Maps").Tables[0];
             DataRow map = Maps.Rows[0];
-            this.creator = new User(map["creator"].ToString());
-            this.mapType = map["mapType"].ToString();
-            this.creationDate = (DateTime)map["creationDate"];
-            this.mapName = map["mapName"].ToString();
-            this.isPublic = (bool)map["isPublic"];
-            this.estTime = (int)map["estTime"];
-            this.thumbnail = map["thumbnail"].ToString();
-            this.isValid = (bool)map["isValid"];
-            this.stars = needLists ? GetStars() : new List<GameObject>();
-            this.traps = needLists ? GetTraps() : new List<Trap>();
+            creator = new User(map["creator"].ToString());
+            mapType = map["mapType"].ToString();
+            creationDate = (DateTime)map["creationDate"];
+            mapName = map["mapName"].ToString();
+            isPublic = (bool)map["isPublic"];
+            estTime = (int)map["estTime"];
+            thumbnail = map["thumbnail"].ToString();
+            isValid = (bool)map["isValid"];
+            stars = needLists ? GetStars() : new List<GameObject>();
+            traps = needLists ? GetTraps() : new List<Trap>();
         }
-        public Map(int mapID, User creator, string mapType, DateTime creationDate, string mapName, bool isPublic, int estTime, string thumbnail, List<GameObject> stars, List<Trap> traps, bool isValid)
+        public Map(int mapID, User creator, string mapType, DateTime creationDate, string mapName, 
+            bool isPublic, int estTime, string thumbnail, List<GameObject> stars, List<Trap> traps, bool isValid)
         {
             this.mapID = mapID;
             this.creator = creator;

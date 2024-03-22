@@ -16,11 +16,16 @@ namespace DungeonMaker
     public partial class Payment : System.Web.UI.Page
     {
         private User user;
+        private Card card;
+        private CreditCardService CS;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (user == null) user = (User)Session["user"];
             if (!IsPostBack)
             {
+                CS = new CreditCardService();
+                Session["service"] = CS;
+                card = CS.GetCardByEmail(user.email);
                 //Styles that differ from Login.aspx - whose stylesheet I reused here
                 LastNameLabel.Style["margin-left"] = "75px";
                 ExpDateLabel.Style["margin-left"] = "85px";
@@ -33,9 +38,6 @@ namespace DungeonMaker
                     }
                 }
                 CardProviderIcon.Style["top"] = "54.5%";
-                CreditCardService CS = new CreditCardService();
-                Session["service"] = CS;
-                Card card = CS.GetCardByEmail(user.email);
                 if (card != null)
                 { //If customer is known, autofill fields
                     FirstNameTextBox.Text = card.holder.firstName;
@@ -49,6 +51,8 @@ namespace DungeonMaker
                     CheckCountry(card.holder.phoneNumber.Substring(1, 5));
                 }
             }
+            if (card == null) card = CS.GetCardByEmail(user.email);
+            if (CS == null) CS = (CreditCardService)Session["service"];
         }
         private void CheckProvider(long num)
         { //Sets the credit card provider icon accordingly
