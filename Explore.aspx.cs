@@ -33,6 +33,12 @@ namespace DungeonMaker
                 if (Session["game"] != null) game = (Game)Session["game"]; //Saves pulling from database
                 else if (!user.IsBanned()) game = PlayService.GetLastGame(user);
                 DataListMultiView.ActiveViewIndex = 0; //Users view index = 0, Dungeons view index = 1, more TBD
+                DataTable mapsTbl = GeneralService.GetDataSetByQuery("SELECT mapID FROM Maps", "Maps").Tables[0];
+                List<Map> playedMaps = new List<Map>();
+                foreach (DataRow row in mapsTbl.Rows)
+                    if (PlayService.countGames(Convert.ToInt32(row["mapID"])) > 0)
+                        playedMaps.Add(new Map(Convert.ToInt32(row["mapID"])));
+                Cache["playedMaps"] = playedMaps;
                 if (game != null)
                 { //Shows previous game results in stats panel
                     string nbsp = "<br />&nbsp;&nbsp;&nbsp;";
@@ -63,18 +69,10 @@ namespace DungeonMaker
                         }
                         RecentlyPlayedDataList.DataSource = distinctDataTable;
                         RecentlyPlayedDataList.DataBind();
-                        foreach (DataListItem item in RecentlyPlayedDataList.Items)
-                            ((Label)item.FindControl("Creator")).Text = new Map(int.Parse(((Label)item.FindControl("mapID")).Text)).creator.username;
                         RecentlyPlayedLabel.Visible = true;
                         RecentlyPlayedPanel.Visible = true;
                     }
                 }
-                DataTable mapsTbl = GeneralService.GetDataSetByQuery("SELECT mapID FROM Maps", "Maps").Tables[0];
-                List<Map> playedMaps = new List<Map>();
-                foreach (DataRow row in mapsTbl.Rows)
-                    if (PlayService.countGames(Convert.ToInt32(row["mapID"])) > 0)
-                        playedMaps.Add(new Map(Convert.ToInt32(row["mapID"])));
-                Cache["playedMaps"] = playedMaps;
                 string query = "SELECT Maps.mapID, Maps.mapName, Maps.thumbnail, Maps.isValid, COUNT(Games.mapID) AS playCount, Users.username AS creatorUsername " +
                     "FROM (Maps LEFT JOIN Games ON Maps.mapID = Games.mapID) LEFT JOIN Users ON Maps.creator = Users.email WHERE isPublic " +
                     "GROUP BY Maps.mapID, Maps.mapName, Maps.thumbnail, Maps.isValid, Users.username ORDER BY COUNT(Games.mapID) DESC";
@@ -325,22 +323,19 @@ namespace DungeonMaker
             {
                 Label title = (Label)e.Item.FindControl("Title");
                 title.Text = title.Text.Remove(title.Text.Length - 1); //Remove thumbnail name handler (map count suffix)
+                Map map = null;
+                foreach (Map played in (List<Map>)Cache["playedMaps"]) //Saves database trip for each map in datalist by saving them all once in Cache at !IsPostBack
+                    if (played.mapID == int.Parse(((Label)e.Item.FindControl("mapID")).Text))
+                        { map = played; goto found; } //Exits foreach loop when map is found
+                found:
+                if ((DataList)sender == RecentlyPlayedDataList) ((Label)e.Item.FindControl("Creator")).Text = map.creator.username;
                 if (user.IsAdmin())
                 {
-                    int mapID = int.Parse(((Label)e.Item.FindControl("mapID")).Text);
                     Button bt = (Button)e.Item.FindControl("DeleteButton");
-                    if (IsExist(mapID)) bt.Text = ((Button)e.Item.FindControl("PlayButton")).Enabled ? "Disable" : "Enable";
+                    if (map != null) bt.Text = ((Button)e.Item.FindControl("PlayButton")).Enabled ? "Disable" : "Enable";
                     bt.Visible = true;
                 }
             }
-        }
-
-        private bool IsExist(int mapID) 
-        { //Checks if a map was played
-            foreach(Map map in (List<Map>)Cache["playedMaps"]) 
-                if(map.mapID == mapID)
-                        return true;
-            return false;
         }
 
         protected void FeedbackDataList_ItemDataBound(object sender, DataListItemEventArgs e)
