@@ -51,8 +51,8 @@ namespace DungeonMaker
                     CheckCountry(card.holder.phoneNumber.Substring(1, 5));
                 }
             }
-            if (card == null) card = CS.GetCardByEmail(user.email);
             if (CS == null) CS = (CreditCardService)Session["service"];
+            if (card == null) card = CS.GetCardByEmail(user.email);
         }
         private void CheckProvider(long num)
         { //Sets the credit card provider icon accordingly

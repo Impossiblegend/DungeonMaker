@@ -17,19 +17,21 @@ namespace DungeonMaker
             if (user == null) user = (User)Session["user"];
             if (!IsPostBack) 
             {
-                MapTypeDataList.DataSource = GeneralService.GetDataSetByQuery("SELECT type, asset FROM Products WHERE class = 'map'", "Products");
+                MapTypeDataList.DataSource = GeneralService.GetDataSetByQuery("SELECT type, asset, cost FROM Products WHERE class = 'map'", "Products");
                 MapTypeDataList.DataBind();
             }
         }
 
         protected void MapTypeDataList_ItemCommand(object source, DataListCommandEventArgs e)
         {
-            if (Convert.ToBoolean(((ImageButton)e.Item.FindControl("Thumbnail")).CommandArgument))
+            if (!Convert.ToBoolean(((ImageButton)e.Item.FindControl("Thumbnail")).CommandArgument)) Response.Redirect("Store.aspx");
+            Label cost = (Label)e.Item.FindControl("Cost");
+            if (user.GetCredits() >= int.Parse(cost.Text.Remove(cost.Text.IndexOf(' ')))) 
             {
                 Session["mapType"] = ((Label)e.Item.FindControl("MapTypeName")).Text;
                 Response.Redirect("Create.aspx");
             }
-            else Response.Redirect("Store.aspx");
+            else ScriptManager.RegisterStartupScript(this, GetType(), "animate", "animateCostLabel('" + MapTypeDataList.ClientID + "', '" + ((Label)e.Item.FindControl("Cost")).ClientID + "');", true);
         }
         protected void MapTypeDataList_ItemDataBound(object sender, DataListItemEventArgs e)
         {
@@ -39,6 +41,8 @@ namespace DungeonMaker
                 bool isOwned = StoreService.IsPurchased(user, ((Label)e.Item.FindControl("MapTypeName")).Text);
                 ((ImageButton)e.Item.FindControl("Thumbnail")).CommandArgument = isOwned.ToString();
                 ((Image)e.Item.FindControl("LockImage")).Visible = !isOwned;
+                Label cost = (Label)e.Item.FindControl("Cost");
+                cost.Text = (int.Parse(cost.Text) / 100 + 15) + " CREDITS";
             }
         }
     }

@@ -23,7 +23,9 @@ namespace CreditCardWebService
         [WebMethod]
         public Card GetCardByEmail(string email) 
         {
-            DataRow row = GetDataSetByQuery("SELECT * FROM CardHolders, CreditCards WHERE email = '" + email + "'", "").Tables[0].Rows[0];
+            DataRow row = null;
+            try { row = GetDataSetByQuery("SELECT * FROM CardHolders, CreditCards WHERE email = '" + email + "'", "").Tables[0].Rows[0]; }
+            catch { return null; }
             string[] a = row.ItemArray.Select(col => col.ToString()).ToArray();
             try { return new Card(a[6], new Holder(a[0], a[1], a[2], DateTime.Parse(a[3]), a[4], a[5]) , a[8], int.Parse(a[9]), DateTime.Parse(a[10]), int.Parse(a[11]), int.Parse(a[12])); }
             catch { return null; }

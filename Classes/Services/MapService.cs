@@ -104,11 +104,21 @@ namespace DungeonMaker
             OleDbConnection Conn = new OleDbConnection(Utility.GetConnectionString());
             OleDbCommand command = new OleDbCommand();
             command.Connection = Conn;
-            command.CommandText = "SELECT Count(mapID) FROM Maps WHERE mapName = '" + mapName + "'";
+            command.CommandText = "SELECT COUNT(mapID) FROM Maps WHERE mapName = '" + mapName + "'";
             Conn.Open();
-            int count =  (int)command.ExecuteScalar();
-            Conn.Close();
-            return count;
+            try { return Convert.ToInt32(command.ExecuteScalar()); }
+            finally { Conn.Close(); }
+        }
+        public static int SumMapCostsByUser(User user)
+        { //Returns number of maps with a given name
+            OleDbConnection Conn = new OleDbConnection(Utility.GetConnectionString());
+            OleDbCommand command = new OleDbCommand();
+            command.Connection = Conn;
+            command.CommandText = "SELECT SUM((cost / 100) + 15) FROM Maps INNER JOIN Products ON Maps.mapType = Products.type WHERE creator = '" + user.email + "'";
+            Conn.Open();
+            try { return Convert.ToInt32(command.ExecuteScalar()); }
+            catch { return 0; }
+            finally { Conn.Close(); }
         }
         public static void ChangeValid(int mapID) 
         { //Negates the validity of a map

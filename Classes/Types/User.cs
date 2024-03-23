@@ -62,7 +62,11 @@ namespace DungeonMaker.Classes.Types
         public int GetCredits() 
         { 
             AchievementService AS = new AchievementService(); StoreService SS = new StoreService(); PlayService PS = new PlayService();
-            int sum = AchievementService.UserCreditsTotal(this) - StoreService.SumUserPurchases(this) + PlayService.CountUserVictories(this) * 5 + PlayService.CountStars(this);
+            int sum = AchievementService.UserCreditsTotal(this) - 
+                StoreService.SumUserPurchases(this) + 
+                PlayService.CountUserVictories(this) * 5 + 
+                PlayService.CountStars(this) - 
+                MapService.SumMapCostsByUser(this);
             SS = new StoreService();
             return sum + StoreService.SumCreditPurchases(this);
         }

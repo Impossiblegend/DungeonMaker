@@ -40,7 +40,9 @@ namespace DungeonMaker
                 Session["price"] = btn.CommandArgument;
                 if (btn.CommandName == "Credits") Response.Redirect("Payment.aspx");
                 int credits = Convert.ToInt32(Session["price"]);
-                if (user.GetCredits() < credits) ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('You have insufficient credits for this item.');", true);
+                DataListItem item = (DataListItem)btn.NamingContainer;
+                DataList dl = (DataList)item.NamingContainer;
+                if (user.GetCredits() < credits) ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('You have insufficient credits for this item.');", true);
                 else
                 {
                     SS = new StoreService();

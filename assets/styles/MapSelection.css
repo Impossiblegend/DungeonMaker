@@ -40,3 +40,22 @@
     font-weight: bold;
     margin-top: 73px;
 }
+
+.animated-cost {
+    color: red;
+    animation: enlargeAndShrink 2s ease-in-out 2;
+}
+
+@keyframes enlargeAndShrink {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
