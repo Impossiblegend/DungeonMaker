@@ -36,5 +36,14 @@ namespace CreditCardWebService
             this.balance = balance;
             this.limit = limit;
         }
+        public Card(string number, Holder holder, string provider, int CVV, DateTime validity)
+        {
+            this.number = number;
+            this.holder = holder;
+            this.provider = provider;
+            this.CVV = CVV;
+            this.validity = validity;
+        }
+        public bool Equals(Card c) { return number == c.number && provider.Contains(c.provider) && CVV == c.CVV && c.validity == validity; }
     }
 }

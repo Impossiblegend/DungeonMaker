@@ -24,5 +24,6 @@ namespace CreditCardWebService
             this.phoneNumber = phoneNumber;
             this.billingaddress = billingaddress;
         }
+        public bool Equals(Holder h) { return email == h.email && firstName == h.firstName && lastName == h.lastName && phoneNumber == h.phoneNumber && billingaddress == h.billingaddress; }
     }
 }

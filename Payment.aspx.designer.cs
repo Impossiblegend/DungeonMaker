@@ -195,6 +195,24 @@ namespace DungeonMaker
         protected global::System.Web.UI.WebControls.TextBox AddressTextBox;
 
         /// <summary>
+        /// RememberMeCheckBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox RememberMeCheckBox;
+
+        /// <summary>
+        /// RememberMeLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label RememberMeLabel;
+
+        /// <summary>
         /// ErrorLabel control.
         /// </summary>
         /// <remarks>

@@ -40,6 +40,8 @@
             <asp:TextBox ID="ExpDateTextBox" runat="server" TextMode="Month" CssClass="inline-input"></asp:TextBox> <br />
             <asp:Label ID="AddressLabel" runat="server" CssClass="input-label">Billing Address</asp:Label>
             <asp:TextBox ID="AddressTextBox" runat="server" CssClass="input-field"></asp:TextBox> <br />
+            <asp:CheckBox ID="RememberMeCheckBox" runat="server" style="display: inline-block;"/>
+            <asp:Label ID="RememberMeLabel" runat="server" CssClass="tos-label" >Remember this card for future purchases</asp:Label>
             <asp:Label ID="ErrorLabel" runat="server" CssClass="error-message"></asp:Label>
             <asp:Button ID="PurchaseButton" runat="server" OnClick="PurchaseButton_Click" Text="Purchase" CssClass="submit-button" />
         </div>
@@ -54,7 +56,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         var form = document.getElementById('form1');
         if (form) {
-            form.style.height = "600px";
+            form.style.height = "615px";
         }
     });
     </script>

@@ -25,7 +25,7 @@ namespace DungeonMaker
             {
                 CS = new CreditCardService();
                 Session["service"] = CS;
-                card = CS.GetCardByEmail(user.email);
+                card = CS.GetCardByHolder(user.email);
                 //Styles that differ from Login.aspx - whose stylesheet I reused here
                 LastNameLabel.Style["margin-left"] = "75px";
                 ExpDateLabel.Style["margin-left"] = "85px";
@@ -34,7 +34,7 @@ namespace DungeonMaker
                     if (control is WebControl element)
                     {
                         element.Style["margin-top"] = "0";
-                        element.Style["margin-bottom"] = "5px";
+                        element.Style["margin-bottom"] = "2px";
                     }
                 }
                 CardProviderIcon.Style["top"] = "54.5%";
@@ -47,20 +47,21 @@ namespace DungeonMaker
                     CreditcardTextBox.Text = card.number;
                     CVVTextBox.Text = card.CVV.ToString();
                     ExpDateTextBox.Text = card.validity.ToString("yyyy-MM");
-                    CheckProvider(long.Parse(card.number[0].ToString()));
+                    CardProviderIcon.ImageUrl = GetProvider(long.Parse(card.number[0].ToString()));
                     CheckCountry(card.holder.phoneNumber.Substring(1, 5));
                 }
             }
             if (CS == null) CS = (CreditCardService)Session["service"];
-            if (card == null) card = CS.GetCardByEmail(user.email);
+            if (card == null) card = CS.GetCardByHolder(user.email);
         }
-        private void CheckProvider(long num)
+        private string GetProvider(long num)
         { //Sets the credit card provider icon accordingly
             switch (num)
             {
-                case 3: CardProviderIcon.ImageUrl = "assets/ui/AmericanExpress.png"; break;
-                case 4: CardProviderIcon.ImageUrl = "assets/ui/Visa.png"; break;
-                case 5: CardProviderIcon.ImageUrl = "assets/ui/Mastercard.png"; break;
+                case 3: return "assets/ui/AmericanExpress.png";
+                case 4: return "assets/ui/Visa.png";
+                case 5: return "assets/ui/Mastercard.png";
+                default: return "assets/flags/default.png";
             }
         }
         protected void BackButton_Click(object sender, EventArgs e) { Response.Redirect("Store.aspx"); }
@@ -77,15 +78,16 @@ namespace DungeonMaker
             }
             catch { EnableButtonState(true, "Credit card number is invalid."); return; }
             if (card.Length < 15) { EnableButtonState(true, "Credit card number length is incorrect."); return; }
-            CheckProvider(num);
+            CardProviderIcon.ImageUrl = GetProvider(num);
             EnableButtonState(false, "");
         }
         private void EnableButtonState(bool isDisabled, string error) 
         { //Toggles submit button hover style
-            if (isDisabled) ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + error + "');", true);
+            if (isDisabled) Alert(error);
             string isDisabledString = isDisabled.ToString().ToLower();
             ScriptManager.RegisterStartupScript(this, GetType(), "State", "toggleButtonHoverEffect(" + isDisabledString + ");", true); 
         }
+        private void Alert(string alert) { ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + alert + "');", true); }
         protected void PhoneNumTextBox_TextChanged(object sender, EventArgs e)
         { //Performs checks on phone inputted 
             FlagIcon.ImageUrl = "assets/flags/default.png";
@@ -117,12 +119,16 @@ namespace DungeonMaker
                     if (string.IsNullOrEmpty(TB.Text)) 
                         { EnableButtonState(true, "A required field is empty."); return; }
             StoreService SS = new StoreService();
-            //IF USER DOES NOT EXIST (FIELDS NOT AUTO-FILLED), ADD THEM NOW
+            Holder holder = new Holder(user.email, FirstNameTextBox.Text, LastNameTextBox.Text, default(DateTime), PhoneNumTextBox.Text, AddressTextBox.Text);
+            if (this.card.holder != null) if (!holder.Equals(this.card.holder)) { EnableButtonState(true, "Mismatch in one or more required criteria."); return; }
+            Card card;
+            try { card = new Card(CreditcardTextBox.Text, holder, GetProvider(long.Parse(CreditcardTextBox.Text[0].ToString())), int.Parse(CVVTextBox.Text), DateTime.Parse(ExpDateTextBox.Text)); }
+            catch { EnableButtonState(true, "Mismatch in one or more required criteria."); return; }
+            if (!card.Equals(this.card)) CS.NewCard(card, this.card.holder != null, RememberMeCheckBox.Checked);
             bool f = true; //CHECK IF OVER CREDIT CARD LIMIT FROM WEB SERVICE DB, IF TRANSACTION DENIED (ENOUGH BALANCE)
             if (f) StoreService.PurchaseCredits(user, GeneralService.GetStringByQuery(
                 "SELECT bundleName FROM CreditBundles WHERE cost = " + Convert.ToInt32(Session["price"])), CreditcardTextBox.Text);
-            //ADD TRANSACTION SUMMARY TO WEB SERVICE DB AS LOG
-            Response.Redirect("Store.aspx");
+            Alert(CS.TransactionSuccess(card.number, Convert.ToDouble(Session["price"])) ? "Purchase success!" : "Failure. Check card limit and balance.");
         }
     }
 }
