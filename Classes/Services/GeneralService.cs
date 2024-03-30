@@ -44,5 +44,11 @@ namespace DungeonMaker
             catch { return int.MinValue; }
             finally { Conn.Close(); }
         }
+        public static void ExecuteNonQuery(OleDbCommand command, OleDbConnection Conn)
+        { 
+            Conn.Open();
+            command.ExecuteNonQuery();
+            Conn.Close();
+        }
     }
 }

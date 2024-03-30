@@ -19,6 +19,7 @@ namespace CreditCardWebService
     // [System.Web.Script.Services.ScriptService]
     public class CreditCardService : System.Web.Services.WebService
     {
+        private string cardNum;
         public CreditCardService() { }
         [WebMethod]
         public DataSet GetDataSetByQuery(string query, string table)
@@ -45,22 +46,23 @@ namespace CreditCardWebService
             finally { Conn.Close(); }
         }
         [WebMethod]
-        public bool TransactionSuccess(string cardNum, double total) 
+        public bool TransactionSuccess(string cardNum, double total)
         { //Attempts to complete transaction, returns whether successful
+            this.cardNum = cardNum;
+            if (Denied("SUM(limit - " + total + ")") || Denied("DATEDIFF('day', DATE(), validityDate)")) return false;
             OleDbConnection Conn = new OleDbConnection(GetConnectionString());
-            OleDbCommand command = new OleDbCommand("SELECT SUM(limit - " + total + ") FROM CreditCards WHERE creditCardNumber = '" + cardNum + "'", Conn);
-            Conn.Open(); //limit < balance
-            if (Convert.ToDouble(command.ExecuteScalar()) < 0) return false;
-            command = new OleDbCommand("INSERT INTO Transactions(creditCard, total, dateOfPurchase, companyName) VALUES(@creditCard, @total, @date, 'Dungeon Maker')", Conn);
+            OleDbCommand command = new OleDbCommand("INSERT INTO Transactions(creditCard, total, dateOfPurchase, companyName) VALUES(@creditCard, @total, @date, 'Dungeon Maker')", Conn);
             command.Parameters.AddWithValue("@creditCard", cardNum);
             command.Parameters.AddWithValue("@total", total);
             command.Parameters.AddWithValue("@date", DateTime.Today);
+            Conn.Open();
             command.ExecuteNonQuery();
             command = new OleDbCommand("UPDATE CreditCards SET balance = balance - " + total + " WHERE creditCardNumber = '" + cardNum + "'", Conn);
             command.ExecuteNonQuery();
             Conn.Close();
             return true;
         }
+        private bool Denied(string field) { return GetIntByQuery("SELECT " + field + " FROM CreditCards WHERE creditCardNumber = '" + cardNum + "'") < 0; }
         [WebMethod]
         public string GetEmailByHolder(Holder holder) 
         { //Gets email through the rest of the mandatory credentials
@@ -77,9 +79,9 @@ namespace CreditCardWebService
         }
         private string GetConnectionString()
         {
-            string FILE_NAME = "CreditCardDB.accdb";
-            string Location = HttpContext.Current.Server.MapPath("~/CreditCardWebService/App_Data/" + FILE_NAME);
-            string ConnectionString = @"provider=Microsoft.ACE.OLEDB.12.0; data source =" + Location;
+            string FILE_NAME = "CreditCardDB.accdb", 
+                Location = HttpContext.Current.Server.MapPath("~/CreditCardWebService/App_Data/" + FILE_NAME), 
+                ConnectionString = @"provider=Microsoft.ACE.OLEDB.12.0; data source =" + Location;
             return ConnectionString;
         }
     }

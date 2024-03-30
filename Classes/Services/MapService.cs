@@ -20,40 +20,30 @@ namespace DungeonMaker
         public static void InsertStars(int xpos, int ypos) 
         { //Uploads all stars on screen to the database
             OleDbConnection Conn = new OleDbConnection(Utility.GetConnectionString());
-            OleDbCommand command = new OleDbCommand();
-            command.Connection = Conn;
-            command.CommandText = "SELECT max(mapID) FROM Maps";
+            OleDbCommand command = new OleDbCommand("SELECT max(mapID) FROM Maps", Conn);
             Conn.Open();
             OleDbDataReader reader = command.ExecuteReader();
-            if(reader.Read()) 
-                MapService.MapID = reader.GetInt32(0);
-            OleDbCommand command2 = new OleDbCommand();
-            command2.Connection = Conn;
-            command2.CommandText = "INSERT INTO Stars(mapID,xpos,ypos) VALUES(@mapID,@xpos,@ypos)";
-            command2.Parameters.AddWithValue("@mapID", MapService.MapID);
-            command2.Parameters.AddWithValue("@xpos", xpos);
-            command2.Parameters.AddWithValue("@ypos", ypos);
-            command2.ExecuteNonQuery();
+            if(reader.Read()) MapService.MapID = reader.GetInt32(0);
+            command = new OleDbCommand("INSERT INTO Stars(mapID,xpos,ypos) VALUES(@mapID,@xpos,@ypos)", Conn);
+            command.Parameters.AddWithValue("@mapID", MapService.MapID);
+            command.Parameters.AddWithValue("@xpos", xpos);
+            command.Parameters.AddWithValue("@ypos", ypos);
+            command.ExecuteNonQuery();
             Conn.Close();
         }
         public static void InsertTraps(int xpos, int ypos, string type)
         { //Uploads all traps on screen to the database
             OleDbConnection Conn = new OleDbConnection(Utility.GetConnectionString());
-            OleDbCommand command = new OleDbCommand();
-            command.CommandText = "SELECT max(mapID) FROM Maps";
-            command.Connection = Conn;
+            OleDbCommand command = new OleDbCommand("SELECT max(mapID) FROM Maps", Conn);
             Conn.Open();
             OleDbDataReader reader = command.ExecuteReader();
-            if (reader.Read())
-                MapService.MapID = reader.GetInt32(0);
-            OleDbCommand command2 = new OleDbCommand();
-            command2.Connection = Conn;
-            command2.CommandText = "INSERT INTO Traps(type,mapID,xpos,ypos) VALUES(@type,@mapID,@xpos,@ypos)";
-            command2.Parameters.AddWithValue("@type", type);
-            command2.Parameters.AddWithValue("@mapID", MapService.MapID);
-            command2.Parameters.AddWithValue("@xpos", xpos);
-            command2.Parameters.AddWithValue("@ypos", ypos);
-            command2.ExecuteNonQuery();
+            if (reader.Read()) MapService.MapID = reader.GetInt32(0);
+            command = new OleDbCommand("INSERT INTO Traps(type,mapID,xpos,ypos) VALUES(@type,@mapID,@xpos,@ypos)", Conn);
+            command.Parameters.AddWithValue("@type", type);
+            command.Parameters.AddWithValue("@mapID", MapService.MapID);
+            command.Parameters.AddWithValue("@xpos", xpos);
+            command.Parameters.AddWithValue("@ypos", ypos);
+            command.ExecuteNonQuery();
             Conn.Close();
         }
         public static void DeleteAllButNewestByTrapType(string type)
@@ -66,9 +56,7 @@ namespace DungeonMaker
                 "ORDER BY trapNum DESC)";
             command.Parameters.AddWithValue("@mapID", MapService.MapID);
             command.Parameters.AddWithValue("@type", type);
-            Conn.Open();
-            command.ExecuteNonQuery();
-            Conn.Close();
+            GeneralService.ExecuteNonQuery(command, Conn);
         }
         public static void UploadMap(string email, string mapName, string mapType) 
         { //Creates a new map in the database and saves its ID statically
@@ -91,13 +79,9 @@ namespace DungeonMaker
         public static void DeleteByMapID(string table)
         { //Deletes all records related to the map by table
             OleDbConnection Conn = new OleDbConnection(Utility.GetConnectionString());
-            OleDbCommand command = new OleDbCommand();
-            command.Connection = Conn;
-            command.CommandText = $"DELETE FROM {table} WHERE mapID = @mapID";
+            OleDbCommand command = new OleDbCommand($"DELETE FROM {table} WHERE mapID = @mapID", Conn);
             command.Parameters.AddWithValue("@mapID", MapService.MapID);
-            Conn.Open();
-            command.ExecuteNonQuery();
-            Conn.Close();
+            GeneralService.ExecuteNonQuery(command, Conn);
         }
         public static int CountMapsWithName(string mapName) 
         { //Returns number of maps with a given name
@@ -126,32 +110,22 @@ namespace DungeonMaker
             OleDbCommand command = new OleDbCommand();
             command.Connection = Conn;
             command.CommandText = "UPDATE Maps SET isValid = NOT isValid WHERE mapID = " + mapID;
-            Conn.Open();
-            command.ExecuteNonQuery();
-            Conn.Close();
+            GeneralService.ExecuteNonQuery(command, Conn);
         }
         public static void ChangeMapName(int mapID, string mapName) //mapName must include serial autonumber --- CountMapsWithName()
         { //Changes map name and thumbnail accordingly
             ChangeThumbnail(mapID, "assets/screenshots/" + mapName + ".jpg");
             OleDbConnection Conn = new OleDbConnection(Utility.GetConnectionString());
-            OleDbCommand command = new OleDbCommand();
-            command.Connection = Conn;
-            command.CommandText = "UPDATE Maps SET mapName = @mapName WHERE mapID = " + mapID;
+            OleDbCommand command = new OleDbCommand("UPDATE Maps SET mapName = @mapName WHERE mapID = " + mapID, Conn);
             command.Parameters.AddWithValue("@mapName", mapName);
-            Conn.Open();
-            command.ExecuteNonQuery();
-            Conn.Close();
+            GeneralService.ExecuteNonQuery(command, Conn);
         }
         public static void ChangeThumbnail(int mapID, string path) 
         {
             OleDbConnection Conn = new OleDbConnection(Utility.GetConnectionString());
-            OleDbCommand command = new OleDbCommand();
-            command.Connection = Conn;
-            command.CommandText = "UPDATE Maps SET thumbnail = @thumbnail WHERE mapID = " + mapID;
+            OleDbCommand command = new OleDbCommand("UPDATE Maps SET thumbnail = @thumbnail WHERE mapID = " + mapID, Conn);
             command.Parameters.AddWithValue("@thumbnail", path);
-            Conn.Open();
-            command.ExecuteNonQuery();
-            Conn.Close();
+            GeneralService.ExecuteNonQuery(command, Conn);
         }
     }
 }
