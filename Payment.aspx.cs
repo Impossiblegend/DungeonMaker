@@ -25,7 +25,8 @@ namespace DungeonMaker
             {
                 CS = new CreditCardService();
                 Session["service"] = CS;
-                card = CS.GetCardByHolder(user.email);
+                card = GetCardByQuery("SELECT * FROM CardHolders, CreditCards WHERE email = '" + user.email + "' AND rememberMe");
+                Session["card"] = card;
                 //Styles that differ from Login.aspx - whose stylesheet I reused here
                 LastNameLabel.Style["margin-left"] = "75px";
                 ExpDateLabel.Style["margin-left"] = "85px";
@@ -52,7 +53,16 @@ namespace DungeonMaker
                 }
             }
             if (CS == null) CS = (CreditCardService)Session["service"];
-            if (card == null) card = CS.GetCardByHolder(user.email);
+            if (card == null) card = (Card)Session["card"];
+        }
+        private Card GetCardByQuery(string query)
+        {
+            DataRow row = null;
+            try { row = CS.GetDataSetByQuery(query, "CreditCards").Tables[0].Rows[0]; }
+            catch { return null; }
+            string[] a = row.ItemArray.Select(col => col.ToString()).ToArray();
+            try { return new Card(a[6], new Holder(a[0], a[1], a[2], DateTime.Parse(a[3]), a[4], a[5]), a[8], int.Parse(a[9]), DateTime.Parse(a[10]), int.Parse(a[11]), int.Parse(a[12])); }
+            catch { return null; }
         }
         private string GetProvider(long num)
         { //Sets the credit card provider icon accordingly
@@ -119,15 +129,16 @@ namespace DungeonMaker
                     if (string.IsNullOrEmpty(TB.Text)) 
                         { EnableButtonState(true, "A required field is empty."); return; }
             StoreService SS = new StoreService();
-            Holder holder = new Holder(user.email, FirstNameTextBox.Text, LastNameTextBox.Text, default(DateTime), PhoneNumTextBox.Text, AddressTextBox.Text);
-            if (this.card.holder != null) if (!holder.Equals(this.card.holder)) { EnableButtonState(true, "Mismatch in one or more required criteria."); return; }
+            Holder holder = new Holder(FirstNameTextBox.Text, LastNameTextBox.Text, PhoneNumTextBox.Text, AddressTextBox.Text);
+            holder.email = CS.GetEmailByHolder(holder);
             Card card;
+            if (this.card == null) this.card = GetCardByQuery("SELECT * FROM CardHolders, CreditCards WHERE creditCardNumber = '" + CreditcardTextBox.Text + "' AND rememberMe");
+            if (!holder.Equals(this.card.holder)) { EnableButtonState(true, "Mismatch in one or more required criteria."); return; }
             try { card = new Card(CreditcardTextBox.Text, holder, GetProvider(long.Parse(CreditcardTextBox.Text[0].ToString())), int.Parse(CVVTextBox.Text), DateTime.Parse(ExpDateTextBox.Text)); }
-            catch { EnableButtonState(true, "Mismatch in one or more required criteria."); return; }
-            if (!card.Equals(this.card)) CS.NewCard(card, this.card.holder != null, RememberMeCheckBox.Checked);
-            bool f = true; //CHECK IF OVER CREDIT CARD LIMIT FROM WEB SERVICE DB, IF TRANSACTION DENIED (ENOUGH BALANCE)
-            if (f) StoreService.PurchaseCredits(user, GeneralService.GetStringByQuery(
-                "SELECT bundleName FROM CreditBundles WHERE cost = " + Convert.ToInt32(Session["price"])), CreditcardTextBox.Text);
+            catch { EnableButtonState(true, "Incorrect input types."); return; }
+            if (!card.Equals(this.card)) { EnableButtonState(true, "Mismatch in one or more required criteria."); return; }
+            string bundle = GeneralService.GetStringByQuery("SELECT bundleName FROM CreditBundles WHERE cost = " + Convert.ToInt32(Session["price"]));
+            StoreService.PurchaseCredits(user, bundle, CreditcardTextBox.Text);
             Alert(CS.TransactionSuccess(card.number, Convert.ToDouble(Session["price"])) ? "Purchase success!" : "Failure. Check card limit and balance.");
         }
     }

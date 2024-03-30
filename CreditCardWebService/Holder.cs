@@ -24,6 +24,13 @@ namespace CreditCardWebService
             this.phoneNumber = phoneNumber;
             this.billingaddress = billingaddress;
         }
-        public bool Equals(Holder h) { return email == h.email && firstName == h.firstName && lastName == h.lastName && phoneNumber == h.phoneNumber && billingaddress == h.billingaddress; }
+        public Holder(string firstName, string lastName, string phoneNumber, string billingaddress)
+        { //For getting email (PK) through the rest of the credentials
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.phoneNumber = phoneNumber;
+            this.billingaddress = billingaddress;
+        }
+        public bool Equals(Holder h) { return email == h.email && firstName.ToLower() == h.firstName.ToLower() && lastName.ToLower() == h.lastName.ToLower() && phoneNumber == h.phoneNumber && billingaddress.ToLower() == h.billingaddress.ToLower(); }
     }
 }
