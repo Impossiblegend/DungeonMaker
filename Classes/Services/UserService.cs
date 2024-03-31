@@ -71,7 +71,7 @@ namespace DungeonMaker
             SafeExecute();
         }
         public static void ChangeProfilePic(string newImage, User user)
-        {
+        { //Change user profile pic
             command.CommandText = "UPDATE Users SET profilePicture = '" + newImage + "' WHERE email = '" + user.email + "'";
             SafeExecute();
         }

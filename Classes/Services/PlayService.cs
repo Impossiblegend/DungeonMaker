@@ -82,7 +82,7 @@ namespace DungeonMaker.Classes.Services
             return games;
         }
         public static int CountStars(User user) 
-        {
+        { //Counts stars collected in all the user's game history
             int stars = 0;
             foreach (Game game in GetUserGames(user)) stars += game.stars;
             return stars;

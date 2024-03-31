@@ -341,7 +341,7 @@ namespace DungeonMaker
         }
 
         protected void FeedbackDataList_ItemDataBound(object sender, DataListItemEventArgs e)
-        {
+        { //Makes feedback datalist items' text expandable on click through js
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 Label body = (Label)e.Item.FindControl("Feedback");
