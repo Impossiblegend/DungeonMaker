@@ -87,7 +87,9 @@ namespace DungeonMaker
         {
             CheckBox CB = (CheckBox)sender;
             DataListItem item = (DataListItem)CB.NamingContainer;
-            CommentService.ChangeFeatured(int.Parse(((Label)item.FindControl("feedbackID")).Text));
+            Label feedbackID = (Label)item.FindControl("feedbackID");
+            CommentService.ChangeFeatured(int.Parse(feedbackID.Text));
         }
+        //CommentService.ChangeFeatured(int.Parse(((Label)((DataListItem)((CheckBox)sender).NamingContainer).FindControl("feedbackID")).Text));
     }
 }

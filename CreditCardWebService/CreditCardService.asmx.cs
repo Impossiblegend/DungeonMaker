@@ -43,13 +43,14 @@ namespace CreditCardWebService
             OleDbCommand command = new OleDbCommand(query, Conn);
             Conn.Open();
             try { return Convert.ToInt32(command.ExecuteScalar()); }
+            catch { return 0; }
             finally { Conn.Close(); }
         }
         [WebMethod]
         public bool TransactionSuccess(string cardNum, double total)
         { //Attempts to complete transaction, returns whether successful
             this.cardNum = cardNum;
-            if (Denied("SUM(limit - " + total + ")") || Denied("DATEDIFF('day', DATE(), validityDate)")) return false;
+            if (Denied("SUM(limit - " + total + ")") || Denied("DATEDIFF('Day', DATE(), validityDate)")) return false;
             OleDbConnection Conn = new OleDbConnection(GetConnectionString());
             OleDbCommand command = new OleDbCommand("INSERT INTO Transactions(creditCard, total, dateOfPurchase, companyName) VALUES(@creditCard, @total, @date, 'Dungeon Maker')", Conn);
             command.Parameters.AddWithValue("@creditCard", cardNum);

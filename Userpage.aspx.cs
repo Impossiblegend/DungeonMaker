@@ -219,8 +219,7 @@ namespace DungeonMaker
             }
             else Alert("File size too large.");
             Avatar.ImageUrl = filePath;
-            if (Master is Site && user.email == userpage.email) 
-                ((Site)Master).ImageUrl = filePath;
+            if (Master is Site master && user.email == userpage.email) master.ImageUrl = filePath;
         }
 
         [WebMethod]

@@ -9,6 +9,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.IO;
 using DungeonMaker.Classes.Types;
+using System.Web.Services;
 
 namespace DungeonMaker
 {
@@ -43,7 +44,7 @@ namespace DungeonMaker
                 TRAPTYPE.Text = TRAPTYPE.Text.Remove(TRAPTYPE.Text.Length - 1);
             }
         }
-        [System.Web.Services.WebMethod]
+        [WebMethod]
         public static void GameEnd(string timeElapsed, string starsCollected, string deathCount, bool victory)
         {
             Play playPage = new Play();

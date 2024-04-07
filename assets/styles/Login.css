@@ -125,7 +125,7 @@ body {
 .flag-icon {
     position: absolute;
     right: 17%;
-    top: 38%;
+    top: 35.5%;
     transform: translateY(-50%);
     z-index: 1;
 }

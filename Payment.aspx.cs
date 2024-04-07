@@ -25,7 +25,7 @@ namespace DungeonMaker
             {
                 CS = new CreditCardService();
                 Session["service"] = CS;
-                card = GetCardByQuery("SELECT * FROM CardHolders, CreditCards WHERE email = '" + user.email + "' AND rememberMe");
+                card = GetCardByQuery("SELECT * FROM CardHolders INNER JOIN CreditCards ON CreditCards.cardHolder = CardHolders.email WHERE email = '" + user.email + "' AND rememberMe");
                 Session["card"] = card;
                 //Styles that differ from Login.aspx - whose stylesheet I reused here
                 LastNameLabel.Style["margin-left"] = "75px";
@@ -38,7 +38,7 @@ namespace DungeonMaker
                         element.Style["margin-bottom"] = "2px";
                     }
                 }
-                CardProviderIcon.Style["top"] = "54.5%";
+                CardProviderIcon.Style["top"] = "51.5%";
                 if (card != null)
                 { //If customer is known, autofill fields
                     FirstNameTextBox.Text = card.holder.firstName;
@@ -87,7 +87,7 @@ namespace DungeonMaker
                 num = long.Parse(card[0].ToString()); 
             }
             catch { EnableButtonState(true, "Credit card number is invalid."); return; }
-            if (card.Length < 15) { EnableButtonState(true, "Credit card number length is incorrect."); return; }
+            if (card.Length < 14) { EnableButtonState(true, "Credit card number length is incorrect."); return; }
             CardProviderIcon.ImageUrl = GetProvider(num);
             EnableButtonState(false, "");
         }
@@ -130,7 +130,8 @@ namespace DungeonMaker
                         { EnableButtonState(true, "A required field is empty."); return; }
             StoreService SS = new StoreService();
             Holder holder = new Holder(FirstNameTextBox.Text, LastNameTextBox.Text, PhoneNumTextBox.Text, AddressTextBox.Text);
-            holder.email = CS.GetEmailByHolder(holder);
+            try { holder.email = CS.GetEmailByHolder(holder); }
+            catch { holder.email = null; }
             Card card;
             if (this.card == null) this.card = GetCardByQuery("SELECT * FROM CardHolders, CreditCards WHERE creditCardNumber = '" + CreditcardTextBox.Text + "' AND rememberMe");
             if (!holder.Equals(this.card.holder)) { EnableButtonState(true, "Mismatch in one or more required criteria."); return; }
