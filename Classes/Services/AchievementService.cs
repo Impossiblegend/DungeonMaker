@@ -34,7 +34,7 @@ namespace DungeonMaker.Classes.Services
             finally { Conn.Close(); }
         }
         public static void Achieve(string title, User user) 
-        {
+        { //User achievements
             command.CommandText = "INSERT INTO UserAchievements(achievement, awardee, dateReceived) VALUES(@title, @user, @date)";
             command.Parameters.AddWithValue("@title", title);
             command.Parameters.AddWithValue("@user", user.email);
@@ -42,7 +42,7 @@ namespace DungeonMaker.Classes.Services
             SafeExecute();
         }
         public static int UserCreditsTotal(User user) 
-        {
+        { //Returns all credits gained from achievements
             command.CommandText = "SELECT SUM(A.creditsWorth) AS TotalCredits FROM Achievements A INNER JOIN UserAchievements UA " +
                 "ON A.achievementTitle = UA.achievement WHERE UA.awardee = '" + user.email + "'";
             Conn.Open();
@@ -66,14 +66,14 @@ namespace DungeonMaker.Classes.Services
             finally { Conn.Close(); }
         }
         public static List<string> GetAchievementsByUser(User user) 
-        {
+        { //Returns all achievements of a given user
             List<string> achievements = new List<string>();
             DataTable table = GeneralService.GetDataSetByQuery("SELECT achievement FROM UserAchievements WHERE awardee = '" + user.email + "'", "Achievements").Tables[0];
             foreach (DataRow row in table.Rows) achievements.Add(row[0].ToString());
             return achievements;
         }
         public static void ChangeDescription(string title, string description) 
-        {
+        { //Changes an achievement type description (admin)
             command.CommandText = "UPDATE Achievements SET description = ? WHERE achievementTitle = ?";
             command.Parameters.AddWithValue("@description", description);
             command.Parameters.AddWithValue("@achievementTitle", title);
