@@ -274,7 +274,7 @@ namespace DungeonMaker
         }
 
         private void BindButtonChange(DataListItem item) 
-        {
+        { //UX mods
             Button bt = (Button)item.FindControl("DeleteButton");
             bool isEnabled = bt.Text == "Disable";
             ((Button)item.FindControl("PlayButton")).Enabled = !isEnabled;
@@ -286,16 +286,16 @@ namespace DungeonMaker
             User userpage = new User(((Label)e.Item.FindControl("Email")).Text);
             switch (e.CommandName) 
             {
-                case "Visit_Click":
+                case "Visit_Click": //Redirects to selected user's userpage
                     Session["userPage"] = userpage;
                     Response.Redirect("Userpage.aspx");
                     break;
-                case "Ban_Click":
+                case "Ban_Click": /*Un/bans user*/
                     UserService.ChangeBlockState(userpage);
                     Button banBtn = (Button)e.Item.FindControl("BanButton");
                     banBtn.Text = banBtn.Text == "Ban" ? "Unban" : "Ban";
                     break;
-                case "Logs_Click":
+                case "Logs_Click": //Redirects to selected user's logs page
                     Session["userPage"] = userpage;
                     Response.Redirect("Logs.aspx");
                     break;
@@ -303,7 +303,7 @@ namespace DungeonMaker
         }
 
         protected void UsersDataList_ItemDataBound(object sender, DataListItemEventArgs e)
-        {
+        { //predisplay necessary changes
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 if (this.user.IsAdmin())

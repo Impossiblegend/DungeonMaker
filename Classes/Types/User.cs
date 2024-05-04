@@ -48,7 +48,7 @@ namespace DungeonMaker.Classes.Types
             this.profilePicture = user["profilePicture"].ToString();
         }
         public User()
-        {
+        { //For guests only
             this.elevation = 0;
             this.username = "Guest";
             this.email = null;
@@ -60,7 +60,7 @@ namespace DungeonMaker.Classes.Types
         public bool IsAdmin() { return this.elevation == 2; }
         public bool IsBanned() { return this.elevation <= 0; }
         public int GetCredits() 
-        { 
+        { //Calculates user's balance
             AchievementService AS = new AchievementService(); StoreService SS = new StoreService(); PlayService PS = new PlayService();
             int sum = AchievementService.UserCreditsTotal(this) - 
                 StoreService.SumUserPurchases(this) + 
@@ -71,7 +71,7 @@ namespace DungeonMaker.Classes.Types
             return sum + StoreService.SumCreditPurchases(this);
         }
         public List<string> GetTrapTypes() 
-        {
+        { //Returns all trap types the user owns
             DataSet ds = GeneralService.GetDataSetByQuery("SELECT Products.type FROM Purchases INNER JOIN Products ON Purchases.type = Products.type WHERE owner = '" + this.email + 
                 "' AND class = 'trap' OR class = 'misc'", "Purchases");
             List<string> traps = new List<string>();

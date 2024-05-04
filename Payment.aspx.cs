@@ -56,7 +56,7 @@ namespace DungeonMaker
             if (card == null) card = (Card)Session["card"];
         }
         private Card GetCardByQuery(string query)
-        {
+        { //Returns the first card result in a given SQL query
             DataRow row = null;
             try { row = CS.GetDataSetByQuery(query, "CreditCards").Tables[0].Rows[0]; }
             catch { return null; }

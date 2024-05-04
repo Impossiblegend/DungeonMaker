@@ -22,11 +22,10 @@ namespace DungeonMaker
         protected void Page_Load(object sender, EventArgs e)
         {
             if (userpage == null) userpage = (User)Session["userPage"];
-            if (userpage.elevation == 0) Response.Redirect("Login.aspx");
             if (user == null) user = (User)Session["user"];
-            UserService US = new UserService(); PlayService PS = new PlayService(); AchievementService AS = new AchievementService();
             if (!IsPostBack)
             {
+                if (userpage.elevation == 0) Response.Redirect("Login.aspx");
                 string query = "SELECT mapID, mapName, Maps.creationDate, thumbnail, isPublic FROM Maps WHERE creator = '" + userpage.email + "' ORDER BY mapID DESC";
                 ds = GeneralService.GetDataSetByQuery(query, "Maps");
                 MapsDataList.DataSource = ds;
@@ -47,7 +46,6 @@ namespace DungeonMaker
                     row["Password"] = userpage.GetRedactedPassword();
                     row["Email"] = userpage.email;
                     row["Date"] = userpage.creationDate.ToShortDateString();
-                    StoreService SS = new StoreService();
                     row["CreditsText"] = userpage.IsAdmin() ? "<p style='font-size:30px;'>&#8734;</p>" : Utility.DecimalCommas(userpage.GetCredits().ToString());
                     dataTable.Rows.Add(row);
                     UserGridView.DataSource = dataTable;
@@ -56,7 +54,6 @@ namespace DungeonMaker
                     ((Site)Master).CoinVisible = false;
                 }
                 else StatsGridView.Style["bottom"] = "40%";
-                if (user.email == null && userpage.email == null) Response.Redirect("Register.aspx");
                 dataTable = new DataTable(); dataTable.Columns.Add("Maps Created"); dataTable.Columns.Add("Games Played"); dataTable.Columns.Add("Achievements"); 
                 dataTable.Columns.Add("Stars Collected"); dataTable.Columns.Add("Deaths"); dataTable.Columns.Add("Total Time Played"); dataTable.Columns.Add("Since Joined");
                 row = dataTable.NewRow();
@@ -71,6 +68,7 @@ namespace DungeonMaker
                 StatsGridView.DataSource = dataTable;
                 StatsGridView.DataBind();
             }
+            UserService US = new UserService(); PlayService PS = new PlayService(); AchievementService AS = new AchievementService();
             if (user == userpage || user.IsAdmin())
             { //Rewritten with each postback for AJAX dynamic text changes
                 UserGridView.Rows[0].Cells[0].Text = userpage.username;
@@ -79,7 +77,7 @@ namespace DungeonMaker
             }
         }
         private int SumGamesField(string field) 
-        {
+        { //Specfic query fromat
             try { return int.Parse(GeneralService.GetStringByQuery("SELECT SUM(" + field + ") FROM Games WHERE player = '" + userpage.email + "'")); }
             catch { return 0; }
         }
@@ -91,16 +89,16 @@ namespace DungeonMaker
             DataTable dt = ds.Tables[0];
             switch (e.CommandName) 
             {
-                case "PlayButton":
+                case "PlayButton": //Redirects to play selected map
                     Session["map"] = map;
                     Response.Redirect("Play.aspx");
                     break;
-                case "EditButton":
+                case "EditButton": //Switches selected map to edit template
                     MapsDataList.EditItemIndex = Convert.ToBoolean(e.CommandArgument) ? e.Item.ItemIndex : -1;
                     MapsDataList.DataSource = GeneralService.GetDataSetByQuery("SELECT mapID, mapName, Maps.creationDate, thumbnail, isPublic FROM Maps WHERE creator = '" + userpage.email + "' ORDER BY mapID DESC", "Maps");
                     MapsDataList.DataBind();
                     break;
-                case "PrivacyButton":
+                case "PrivacyButton": //Changes privacy state of a map
                     Button btn = (Button)e.Item.FindControl("PrivacyButton");
                     btn.Text = (btn.Text == "Public") ? "Private" : "Public";
                     btn.BackColor = (btn.Text == "Public") ? ColorTranslator.FromHtml("#009900") : ColorTranslator.FromHtml("#990000");
@@ -108,7 +106,7 @@ namespace DungeonMaker
                     break;
                 case "DeleteButton":
                     if (PlayService.countGames(map.mapID) == 0)
-                    {
+                    { //Deletes map
                         map.Delete();
                         DataRow rowToDelete = dt.Select("mapID = " + map.mapID).FirstOrDefault();
                         if (rowToDelete != null) dt.Rows.Remove(rowToDelete);
@@ -116,14 +114,14 @@ namespace DungeonMaker
                         MapsDataList.DataBind();
                     }
                     else
-                    {
+                    { /*Disables/enables map*/
                         Button bt = (Button)e.Item.FindControl("DeleteButton");
                         bool isDisabled = bt.Text == "Disable";
                         bt.Text = isDisabled ? "Enable" : "Disable";
                         MapService.ChangeValid(map.mapID);
                     }
                     break;
-                case "RenameButton":
+                case "RenameButton": //Switches rename textbox with map name label
                     TextBox tb = (TextBox)e.Item.FindControl("RenameTextBox");
                     Label title = (Label)e.Item.FindControl("Title");
                     if (!tb.Visible)
@@ -141,7 +139,7 @@ namespace DungeonMaker
                         title.Visible = true;
                     }
                     break;
-                case "SubmitButton":
+                case "SubmitButton": //Changes map thumbnail
                     FileUpload fu = (FileUpload)e.Item.FindControl("ThumbnailUploader");
                     if (!fu.HasFile) Alert("Please choose a new thumbnail before submitting it.");
                     else
@@ -193,8 +191,10 @@ namespace DungeonMaker
             }
         }
         private bool IsExist(int mapID)
-        {
-            foreach (Map map in (List<Map>)Cache["playedMaps"]) if (map.mapID == mapID) return true;
+        { //Checks if a given map was played, ever
+            foreach (Map map in (List<Map>)Cache["playedMaps"]) 
+                if (map.mapID == mapID) 
+                    return true;
             return false;
         }
 
