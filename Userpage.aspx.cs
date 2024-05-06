@@ -33,7 +33,7 @@ namespace DungeonMaker
                 MapsDataList.DataBind();
                 if (MapsDataList.Items.Count == 0) 
                     EmptyLabel.Text = user == userpage ? "Create dungeons for them to appear here!" : "This user has not created any dungeons yet.";
-                Avatar.ImageUrl = userpage.profilePicture;
+                AvatarImg.ImageUrl = userpage.profilePicture;
                 UsernameLabel.Text = userpage.username;
                 AvatarUploader.Attributes.Add("accept", ".jpg,.png");
                 DataTable dataTable; DataRow row;
@@ -53,7 +53,14 @@ namespace DungeonMaker
                     UserGridView.Visible = true;
                     ((Site)Master).CoinVisible = false;
                 }
-                else StatsGridView.Style["bottom"] = "40%";
+                else
+                {
+                    StatsGridView.Style["position"] = "absolute";
+                    StatsGridView.Style["bottom"] = "50%";
+                    ((Site)Master).yPosition = -43;
+                    AvatarUploader.Visible = false;
+                    AvatarSubmitButton.Visible = false;
+                }
                 dataTable = new DataTable(); dataTable.Columns.Add("Maps Created"); dataTable.Columns.Add("Games Played"); dataTable.Columns.Add("Achievements"); 
                 dataTable.Columns.Add("Stars Collected"); dataTable.Columns.Add("Deaths"); dataTable.Columns.Add("Total Time Played"); dataTable.Columns.Add("Since Joined");
                 row = dataTable.NewRow();
@@ -198,14 +205,9 @@ namespace DungeonMaker
             return false;
         }
 
-        [WebMethod]
-        public static void AvatarUpload() 
-        { //AJAX call
-            Userpage userpageInstance = new Userpage();
-            userpageInstance.Avatar_Click();
-        }
-        private void Avatar_Click()
+        protected void AvatarSubmitButton_OnClick(object sender, EventArgs e)
         { //Updates user avatar in database, current userpage and masterpage (if applicable)
+            if (!AvatarUploader.HasFile) Alert("File not selected - profile picture not updated.");
             FileInfo prev = new FileInfo(Server.MapPath(userpage.profilePicture));
             try { prev.Delete(); }
             catch { Alert("Deletion error, likely due to physical path."); }
@@ -218,7 +220,7 @@ namespace DungeonMaker
                 UserService.ChangeProfilePic("assets/profiles/" + fileName, userpage);
             }
             else Alert("File size too large.");
-            Avatar.ImageUrl = filePath;
+            AvatarImg.ImageUrl = filePath;
             if (Master is Site master && user.email == userpage.email) master.ImageUrl = filePath;
         }
 
@@ -228,6 +230,7 @@ namespace DungeonMaker
             Userpage userpageInstance = new Userpage();
             userpageInstance.ChangeField(int.Parse(column), newValue);
         }
+
         private void ChangeField(int column, string value)
         { //Reflects GridView changes to database and Session
             User userpage = (User)Session["userPage"];

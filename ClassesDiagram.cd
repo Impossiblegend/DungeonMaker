@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DungeonMaker.GeneralService">
+    <Position X="12.25" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAQAAAAAAAAAEAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Services\GeneralService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DungeonMaker.MapService">
+    <Position X="9.75" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AQAACCAAAkAAAADgAAIAAAQAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Services\MapService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DungeonMaker.UserService">
+    <Position X="9.75" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAgAAgAAAADAEAAAQAAAAACAAAAAAAEAA=</HashCode>
+      <FileName>Classes\Services\UserService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DungeonMaker.Utility">
+    <Position X="2.5" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Classes\Utility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DungeonMaker.Classes.Services.AchievementService">
+    <Position X="12" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAIAAAAgADAQACAQAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Classes\Services\AchievementService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DungeonMaker.Classes.Services.CommentService">
+    <Position X="12.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAADAAAAAQAAAAIAAAAAAAgAAA=</HashCode>
+      <FileName>Classes\Services\CommentService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DungeonMaker.Classes.Services.PlayService">
+    <Position X="14.25" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAQAQAAAAAAAAALAAAAAYAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Classes\Services\PlayService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DungeonMaker.Classes.Services.StoreService">
+    <Position X="14.25" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>gAQAAAAAAQIAAAAAQQAADAAAAAQAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Services\StoreService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DungeonMaker.Classes.Types.Comment">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIgAAgAAAAAAAAAAAAAYAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Types\Comment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DungeonMaker.Classes.Types.Game">
+    <Position X="4.5" Y="0.5" Width="1.25" />
+    <TypeIdentifier>
+      <HashCode>AAABEABAAAAAAAAAAAAAAAABAAAAAAABAAAIIAQAAAA=</HashCode>
+      <FileName>Classes\Types\Game.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DungeonMaker.Classes.Types.GameObject">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>Classes\Types\GameObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DungeonMaker.Classes.Types.Map">
+    <Position X="4.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAEBIAAAACAAIAABAgAAAAAEQAAAwAAAAAEAAAAA=</HashCode>
+      <FileName>Classes\Types\Map.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DungeonMaker.Classes.Types.Trap">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Types\Trap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DungeonMaker.Classes.Types.User">
+    <Position X="1" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EgAAAEAAAAAAABAgAAAAAAEACAAkAABAAAAAAAgAAAA=</HashCode>
+      <FileName>Classes\Types\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

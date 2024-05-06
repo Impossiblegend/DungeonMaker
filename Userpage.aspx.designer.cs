@@ -24,13 +24,13 @@ namespace DungeonMaker
         protected global::System.Web.UI.WebControls.Panel ProfilePanel;
 
         /// <summary>
-        /// Avatar control.
+        /// AvatarImg control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton Avatar;
+        protected global::System.Web.UI.WebControls.Image AvatarImg;
 
         /// <summary>
         /// AvatarUploader control.
@@ -40,6 +40,15 @@ namespace DungeonMaker
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload AvatarUploader;
+
+        /// <summary>
+        /// AvatarSubmitButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AvatarSubmitButton;
 
         /// <summary>
         /// UsernameLabel control.

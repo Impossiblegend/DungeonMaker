@@ -18,6 +18,7 @@ namespace DungeonMaker
         }
         public bool CoinVisible { set { imgCredits.Style["display"] = value ? "block" : "none"; } }
         public string UserCredits { set { litCredits.Text = value.ToString(); } }
+        public int yPosition { set { litCredits.Style["bottom"] = value + "%"; } }
         private User user;
         protected void Page_Load(object sender, EventArgs e)
         {

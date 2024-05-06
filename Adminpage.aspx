@@ -7,7 +7,7 @@
     <div class="content-wrapper">
         <asp:Panel ID="FeedbackPanel" runat="server" CssClass="datalist-container">
             <asp:Label ID="FeedbackLabel" runat="server" Text="Select feedback to feature on explore page:" CssClass="title" Font-Bold="true" ></asp:Label>
-            <asp:DataList ID="FeedbackDataList" runat="server" RepeatColumns="4" CellPadding="4" RepeatDirection="Horizontal" OnItemDataBound="FeedbackDataList_ItemDataBound" OnItemCommand="FeedbackDataList_ItemCommand" >
+            <asp:DataList ID="FeedbackDataList" runat="server" RepeatColumns="4" CellPadding="4" RepeatDirection="Horizontal" OnItemDataBound="FeedbackDataList_ItemDataBound" >
                 <ItemTemplate>
                     <div class="item-template">
                         <asp:Label ID="Sender" runat="server" CssClass="item-label" Text='<%# Bind("username") %>'></asp:Label> <br />

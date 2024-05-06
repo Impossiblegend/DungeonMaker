@@ -26,7 +26,7 @@ namespace DungeonMaker
         {
             if (!Convert.ToBoolean(((ImageButton)e.Item.FindControl("Thumbnail")).CommandArgument)) Response.Redirect("Store.aspx");
             Label cost = (Label)e.Item.FindControl("Cost");
-            if (user.GetCredits() >= int.Parse(cost.Text.Remove(cost.Text.IndexOf(' ')))) 
+            if (user.GetCredits() >= int.Parse(cost.Text.Remove(cost.Text.IndexOf(' '))) || user.IsAdmin()) 
             {
                 Session["mapType"] = ((Label)e.Item.FindControl("MapTypeName")).Text;
                 Response.Redirect("Create.aspx");

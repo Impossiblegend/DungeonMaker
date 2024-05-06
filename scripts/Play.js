@@ -288,7 +288,7 @@ function update(time) {
     }
     
     if (cursors.up.isDown && player.body.touching.down && canJump)
-        player.setVelocityY(-500);
+        player.setVelocityY(-550);
     if (entrance) {
         portalEmpty.anims.play('entry', true);
         entrance = false;
@@ -332,7 +332,7 @@ function hitTrap(player, trap) {
 }
 
 function restart(event) {
-    if (event.key === 'r') { // 'r' iskeyCode 82
+    if (event.key === 'r' || event.key === 'ר') { // 'r' iskeyCode 82
         player.x = TRAPX[portNum] - 2;
         player.y = TRAPY[portNum] - 2;
         gameOver = true;

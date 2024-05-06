@@ -9,6 +9,7 @@ using System.Data.OleDb;
 using DungeonMaker.Classes.Types;
 using DungeonMaker.Classes.Services;
 using System.Web.UI.HtmlControls;
+using System.Text.RegularExpressions;
 
 namespace DungeonMaker
 {
@@ -65,6 +66,7 @@ namespace DungeonMaker
             int passLen = PWTB.Text.Length;
             if (string.IsNullOrEmpty(UserNameTB.Text) || string.IsNullOrEmpty(Gmail_TextBox.Text) || string.IsNullOrEmpty(PWTB.Text)) IsSignUp.Text = "Please fill in all fields.";
             else if (passLen < 4 || passLen > 12) IsSignUp.Text = "Password length must be 4-12 characters. Yours is " + passLen + ".";
+            else if (!Regex.IsMatch(UserNameTB.Text, "^[a-zA-Z0-9]*$")) IsSignUp.Text = "Username must only contain numbers and English (Latin) letters.";
             else if (!UserService.FieldExists("email", Gmail_TextBox.Text) && !UserService.FieldExists("username", UserNameTB.Text))
             {
                 UserService.InsertUser(UserNameTB.Text, Gmail_TextBox.Text, PWTB.Text);

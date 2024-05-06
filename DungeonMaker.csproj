@@ -132,6 +132,7 @@
     <Content Include="scripts\Userpage.js" />
     <Content Include="Store.aspx" />
     <Content Include="Userpage.aspx" />
+    <Content Include="ClassesDiagram.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

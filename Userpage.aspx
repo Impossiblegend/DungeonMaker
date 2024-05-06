@@ -5,8 +5,11 @@
     <link rel="stylesheet" href="assets/styles/Userpage.css" />
     <div class="center-container">
         <asp:Panel ID="ProfilePanel" runat="server" CssClass="panel" ClientIDMode="Static">
-            <asp:ImageButton ID="Avatar" runat="server" Height="100px" Width="100px" CssClass="picture" ClientIDMode="Static" />
-            <asp:FileUpload ID="AvatarUploader" runat="server" Visible="false" ClientIDMode="Static" />
+            <asp:Image ID="AvatarImg" runat="server" Height="100px" Width="100px" CssClass="picture"/> <br />
+            <div class="upload-container">
+                <asp:FileUpload ID="AvatarUploader" runat="server" />
+                <asp:Button ID="AvatarSubmitButton" runat="server" Text="Confirm change" OnClick="AvatarSubmitButton_OnClick" />
+            </div>
             <asp:Label ID="UsernameLabel" runat="server" CssClass="item-label" Text=" " ClientIDMode="Static"></asp:Label>
             <div class="gridview-container">
                 <asp:GridView ID="UserGridView" runat="server" AutoGenerateColumns="False" CssClass="gridview-style">
