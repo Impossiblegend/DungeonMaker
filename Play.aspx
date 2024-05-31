@@ -18,6 +18,7 @@
             <asp:TextBox ID="TRAPX" runat="server" width = "0px" hidden="true"></asp:TextBox>
             <asp:TextBox ID="TRAPY" runat="server" width = "0px" hidden="true"></asp:TextBox>
             <asp:TextBox ID="TRAPTYPE" runat="server" width = "0px" hidden="true"></asp:TextBox>
+            <asp:TextBox ID="TIME" runat="server" width = "0px" hidden="true"></asp:TextBox>
         </div>
     </form>
     <script src="scripts/Play.js"></script>

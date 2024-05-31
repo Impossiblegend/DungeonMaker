@@ -24,8 +24,8 @@ namespace DungeonMaker
             user = (User)Session["user"];
             PlayService PS = new PlayService();
             //Default sort: newest. Queries must reset with each postback
-            mapQuery = "SELECT Maps.mapID, Maps.mapName, Users.username, Maps.thumbnail, Maps.mapType, Maps.isValid FROM (Users INNER JOIN Maps ON " +
-                "Users.email = Maps.creator) WHERE mapName LIKE '%%' AND isPublic ORDER BY mapID DESC";
+            mapQuery = "SELECT Maps.mapID, Maps.mapName, Users.username, Maps.thumbnail, Maps.mapType, Maps.isValid, Maps.estTime FROM " +
+                "(Users INNER JOIN Maps ON Users.email = Maps.creator) WHERE mapName LIKE '%%' AND isPublic ORDER BY mapID DESC";
             userQuery = "SELECT email, username, profilePicture FROM Users WHERE username LIKE '%%' ORDER BY Users.creationDate";
             if (!IsPostBack)
             {
@@ -52,8 +52,9 @@ namespace DungeonMaker
                     ScriptManager.RegisterStartupScript(this, GetType(), "Display", "document.getElementById('prevList').style.display = 'block';", true);
                     if (!user.IsBanned())
                     {
-                        string RecentMapsQuery = "SELECT TOP 5 Maps.mapID, Maps.mapName, Maps.thumbnail, Maps.isValid FROM ((Games INNER JOIN Users ON Games.player = Users.email) " +
-                            "INNER JOIN Maps ON Games.mapID = Maps.mapID) WHERE Games.player = '" + user.email + "' ORDER BY Games.gameID DESC";
+                        string RecentMapsQuery = "SELECT TOP 5 Maps.mapID, Maps.mapName, Maps.thumbnail, Maps.isValid, Maps.estTime FROM " +
+                            "((Games INNER JOIN Users ON Games.player = Users.email) INNER JOIN Maps ON Games.mapID = Maps.mapID) WHERE " +
+                            "Games.player = '" + user.email + "' ORDER BY Games.gameID DESC";
                         DataTable table = GeneralService.GetDataSetByQuery(RecentMapsQuery, "Maps").Tables[0], distinctDataTable = table.Clone();
                         //DISTINCT does not work with ORDER BY in Access, so the following code selects distinct items programatically
                         HashSet<string> distinctItems = new HashSet<string>();
@@ -73,13 +74,13 @@ namespace DungeonMaker
                         RecentlyPlayedPanel.Visible = true;
                     }
                 }
-                string query = "SELECT Maps.mapID, Maps.mapName, Maps.thumbnail, Maps.isValid, COUNT(Games.mapID) AS playCount, Users.username AS creatorUsername " +
-                    "FROM (Maps LEFT JOIN Games ON Maps.mapID = Games.mapID) LEFT JOIN Users ON Maps.creator = Users.email WHERE isPublic " +
-                    "GROUP BY Maps.mapID, Maps.mapName, Maps.thumbnail, Maps.isValid, Users.username ORDER BY COUNT(Games.mapID) DESC";
+                string query = "SELECT Maps.mapID, Maps.mapName, Maps.thumbnail, Maps.isValid, Maps.estTime, COUNT(Games.mapID) AS playCount, Users.username " +
+                    "AS creatorUsername FROM (Maps LEFT JOIN Games ON Maps.mapID = Games.mapID) LEFT JOIN Users ON Maps.creator = Users.email WHERE isPublic " +
+                    "GROUP BY Maps.mapID, Maps.mapName, Maps.thumbnail, Maps.isValid, Maps.estTime, Users.username ORDER BY COUNT(Games.mapID) DESC";
                 PopularMapsDataList.DataSource = GeneralService.GetDataSetByQuery(query, "Maps").Tables[0].AsEnumerable().Take(5).CopyToDataTable();
                 // ↑ Equivalent to SQL "TOP 5" which didn't work for me in this query ↑
                 PopularMapsDataList.DataBind();
-                query = "SELECT TOP 5 mapID, mapName, username, thumbnail, isValid FROM Users INNER JOIN Maps ON Users.email = Maps.creator WHERE isPublic ORDER BY mapID DESC";
+                query = "SELECT TOP 5 mapID, mapName, username, thumbnail, isValid, estTime FROM Users INNER JOIN Maps ON Users.email = Maps.creator WHERE isPublic ORDER BY mapID DESC";
                 NewestMapsDataList.DataSource = GeneralService.GetDataSetByQuery(query, "Maps");
                 NewestMapsDataList.DataBind();
                 query = "SELECT Feedback.*, Users.username, Users.profilePicture FROM Users INNER JOIN Feedback ON Feedback.sender = Users.email WHERE Feedback.isFeatured";
@@ -323,6 +324,8 @@ namespace DungeonMaker
             {
                 Label title = (Label)e.Item.FindControl("Title");
                 title.Text = title.Text.Remove(title.Text.Length - 1); //Remove thumbnail name handler (map count suffix)
+                Label time = (Label)e.Item.FindControl("EstimatedTime");
+                time.Text = Utility.SecToMin(int.Parse(time.Text));
                 Map map = null;
                 if (user.IsAdmin() || (DataList)sender == RecentlyPlayedDataList) 
                 { //No need to scan list if its result won't be used

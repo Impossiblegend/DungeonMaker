@@ -8,14 +8,12 @@ namespace DungeonMaker
 {
     public class Utility
     {
-        public static string SecToMin(int sec)
-        { //e.g. 128 --> "02:08"
-            string min = "";
-            if (sec < 600) min = "0";
-            min += sec / 60 + ":";
-            if (sec % 60 < 10) min += "0";
-            min += sec % 60;
-            return min;
+        public static string SecToMin(int sec) { return string.Format("{0:D2}:{1:D2}", sec / 60, sec % 60); } //e.g. 128 --> "02:08"
+
+        public static int MinToSec(string time)
+        { //e.g. "02:08" --> 128
+            string[] parts = time.Split(':');
+            return (int.Parse(parts[0]) * 60) + int.Parse(parts[1]);
         }
 
         public static string DecimalCommas(string st)

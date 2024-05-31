@@ -63,7 +63,7 @@ namespace DungeonMaker
             OleDbConnection Conn = new OleDbConnection(Utility.GetConnectionString());
             OleDbCommand command = new OleDbCommand();            
             command.CommandText = "INSERT INTO Maps(creator, mapType, creationDate, mapName, isPublic, estTime, thumbnail, isValid) " +
-                "VALUES(@creator, @mapType, @date, @mapName, True, 0, @thumbnail, True)";
+                "VALUES(@creator, @mapType, @date, @mapName, True, 90, @thumbnail, True)";
             command.Parameters.AddWithValue("@creator", email);
             command.Parameters.AddWithValue("@mapType", mapType);
             command.Parameters.AddWithValue("@date", DateTime.Today);
@@ -125,6 +125,14 @@ namespace DungeonMaker
             OleDbConnection Conn = new OleDbConnection(Utility.GetConnectionString());
             OleDbCommand command = new OleDbCommand("UPDATE Maps SET thumbnail = @thumbnail WHERE mapID = " + mapID, Conn);
             command.Parameters.AddWithValue("@thumbnail", path);
+            GeneralService.ExecuteNonQuery(command, Conn);
+        }
+
+        public static void ChangeTime(int mapID, int sec) 
+        {
+            OleDbConnection Conn = new OleDbConnection(Utility.GetConnectionString());
+            OleDbCommand command = new OleDbCommand("UPDATE Maps SET estTime = @sec WHERE mapID = " + mapID, Conn);
+            command.Parameters.AddWithValue("@sec", sec);
             GeneralService.ExecuteNonQuery(command, Conn);
         }
     }

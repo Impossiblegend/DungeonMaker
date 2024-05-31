@@ -54,6 +54,7 @@
                     <div class="maps-template">
                         <asp:Label ID="Title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
                         <asp:Label ID="Creator" runat="server" CssClass="item-label" Text='<%# Bind("username") %>'></asp:Label> <br />
+                        <asp:Label ID="EstimatedTime" runat="server" CssClass="item-label" Text='<%# Bind("estTime") %>'></asp:Label> <br />
                         <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" Width="0px"></asp:Label>
                         <asp:Image ID="Thumbnail" runat="server" Width="200px" CssClass="item-image" Height="100px" ImageUrl='<%# Bind("thumbnail") %>'/>
                         <asp:Button ID="PlayButton" runat="server" Text="Play" Height="35px" Width="145px" CssClass="item-button"  CommandName="PlayButton" Enabled='<%# Bind("isValid") %>' />
@@ -73,6 +74,7 @@
                     <div class="maps-template">
                         <asp:Label ID="title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
                         <asp:Label ID="Creator" runat="server" CssClass="item-label"></asp:Label> <br />
+                        <asp:Label ID="EstimatedTime" runat="server" CssClass="item-label" Text='<%# Bind("estTime") %>'></asp:Label> <br />
                         <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" ></asp:Label>
                         <asp:Image ID="Thumbnail" runat="server" Width="150px" CssClass="item-image" Height="75px" ImageUrl='<%# Bind("thumbnail") %>'/>
                         <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton" Enabled='<%# Bind("isValid") %>'/> <br />
@@ -91,6 +93,7 @@
                     <div class="maps-template">
                         <asp:Label ID="title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
                         <asp:Label ID="Creator" runat="server" CssClass="item-label" Text='<%# Bind("creatorUsername") %>'></asp:Label> <br />
+                        <asp:Label ID="EstimatedTime" runat="server" CssClass="item-label" Text='<%# Bind("estTime") %>'></asp:Label> <br />
                         <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" ></asp:Label>
                         <asp:Image ID="Thumbnail" runat="server" Width="150px" CssClass="item-image" Height="75px" ImageUrl='<%# Bind("thumbnail") %>'/>
                         <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton" Enabled='<%# Bind("isValid") %>'/> <br />
@@ -109,6 +112,7 @@
                     <div class="maps-template">
                         <asp:Label ID="Title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
                         <asp:Label ID="Creator" runat="server" CssClass="item-label" Text='<%# Bind("username") %>'></asp:Label> <br />
+                        <asp:Label ID="EstimatedTime" runat="server" CssClass="item-label" Text='<%# Bind("estTime") %>'></asp:Label> <br />
                         <asp:Label ID="mapID" runat="server" Text='<%# Bind("mapID") %>' Visible="false" Height="0px"></asp:Label>
                         <asp:Image ID="Thumbnail" runat="server" Width="150px" CssClass="item-image" Height="75px" ImageUrl='<%# Bind("thumbnail") %>'/>
                         <asp:Button ID="PlayButton" runat="server" Text="Play" Height="30px" Width="110px" CssClass="item-button"  CommandName="PlayButton" Enabled='<%# Bind("isValid") %>'/> <br />
@@ -133,7 +137,7 @@
     <asp:Panel ID="patchNotesPanel" runat="server" CssClass="patch-notes-panel" ScrollBars="Horizontal">
         <h2>Patch Notes</h2>
         <ul id="notesList" runat="server">
-            <li>Added gameslog</li>
+            <li>Added new trap type: turret</li>
             <li>Added this panel</li>
             <li>Fixed bugs</li>
         </ul>

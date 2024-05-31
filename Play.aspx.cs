@@ -21,6 +21,7 @@ namespace DungeonMaker
             {
                 Map map = (Map)Session["map"];
                 MAPTYPE.Text = map.mapType;
+                TIME.Text = map.estTime.ToString();
                 foreach (GameObject star in map.stars) 
                 { 
                     STARX.Text += star.x + "_"; 

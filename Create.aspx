@@ -26,6 +26,10 @@
             <asp:Button ID="Submit" class="container" runat="server" OnClientClick="saveMap()"  OnClick="Submit_Click" Text="SAVE & FINISH" BackColor="Green" />
             <asp:TextBox ID="mapName_TextBox" runat="server" placeholder="Name your map"></asp:TextBox>
             <asp:Button ID="Discard" runat="server" Text="QUIT & DISCARD" OnClientClick="confirmDiscard(); return false;" BackColor="Red"/>
+            <asp:Panel ID="errorPanel" runat="server" CssClass="error-panel">
+                <asp:Label ID="errorMessage" runat="server" ></asp:Label> <br /> <br />
+                <asp:Button ID="closeButton" runat="server" Text="Close" OnClick="closeButton_Click" CssClass="btn" />
+        </asp:Panel>
         </div>
     </form>
     <script src="scripts/Create.js"></script>

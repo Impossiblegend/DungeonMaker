@@ -43,6 +43,7 @@ var STARY = document.getElementById("STARY").value.split("_");
 var TRAPX = document.getElementById("TRAPX").value.split("_")
 var TRAPY = document.getElementById("TRAPY").value.split("_");
 var TRAPTYPE = document.getElementById("TRAPTYPE").value.split("_");
+var TIME = document.getElementById("TIME").value;
 var game = new Phaser.Game(config);
 const self = this;
 var canJump = true;
@@ -208,8 +209,12 @@ function create() {
 let vx = 0;
 
 function update(time) {
-    gameRuntime = time * 0.001 - 1; //Converted to Seconds
-    timeText.setText("Time Elapsed: " + Math.round(gameRuntime) + " s");
+    gameRuntime = Math.round(time * 0.001 - 1); //Converted to Seconds
+    timeText.setText("Time Elapsed: " + gameRuntime + " s");
+    if (gameRuntime >= TIME) {
+        gameEnd(); //End game if over est. time
+        return false;
+    }
     if (player.x < 10 || player.x > 1132) {
         vx = 0;
         player.setVelocityX(vx);

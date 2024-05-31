@@ -26,7 +26,7 @@ namespace DungeonMaker
             if (!IsPostBack)
             {
                 if (userpage.elevation == 0) Response.Redirect("Login.aspx");
-                string query = "SELECT mapID, mapName, Maps.creationDate, thumbnail, isPublic FROM Maps WHERE creator = '" + userpage.email + "' ORDER BY mapID DESC";
+                string query = "SELECT mapID, mapName, Maps.creationDate, thumbnail, isPublic, estTime FROM Maps WHERE creator = '" + userpage.email + "' ORDER BY mapID DESC";
                 ds = GeneralService.GetDataSetByQuery(query, "Maps");
                 MapsDataList.DataSource = ds;
                 Session["ds"] = ds;
@@ -101,8 +101,10 @@ namespace DungeonMaker
                     Response.Redirect("Play.aspx");
                     break;
                 case "EditButton": //Switches selected map to edit template
+                    if (MapsDataList.EditItemIndex == e.Item.ItemIndex) MapService.ChangeTime(map.mapID, Utility.MinToSec(((TextBox)e.Item.FindControl("EstimatedTimeTextBox")).Text));
                     MapsDataList.EditItemIndex = Convert.ToBoolean(e.CommandArgument) ? e.Item.ItemIndex : -1;
-                    MapsDataList.DataSource = GeneralService.GetDataSetByQuery("SELECT mapID, mapName, Maps.creationDate, thumbnail, isPublic FROM Maps WHERE creator = '" + userpage.email + "' ORDER BY mapID DESC", "Maps");
+                    string query = "SELECT mapID, mapName, Maps.creationDate, thumbnail, isPublic, estTime FROM Maps WHERE creator = '" + userpage.email + "' ORDER BY mapID DESC";
+                    MapsDataList.DataSource = GeneralService.GetDataSetByQuery(query, "Maps");
                     MapsDataList.DataBind();
                     break;
                 case "PrivacyButton": //Changes privacy state of a map
@@ -169,7 +171,7 @@ namespace DungeonMaker
             }
         }
         protected void MapsDataList_ItemDataBound(object sender, DataListItemEventArgs e)
-        {
+        { //Predisplay changes needed for maps
             if (user == null) user = (User)Session["user"];
             if (userpage == null) userpage = (User)Session["userPage"];
             bool isPublic = (bool)DataBinder.Eval(e.Item.DataItem, "isPublic");
@@ -179,6 +181,8 @@ namespace DungeonMaker
             title.Text = title.Text.Remove(title.Text.Length - 1);
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
+                Label time = (Label)e.Item.FindControl("EstimatedTime");
+                time.Text = Utility.SecToMin(int.Parse(time.Text));
                 ((Button)e.Item.FindControl("EditButton")).Visible = user.IsAdmin() || user.email == userpage.email;
                 Label date = (Label)e.Item.FindControl("CreationDate");
                 date.Text = date.Text.Remove(date.Text.IndexOf(' '));
@@ -188,6 +192,7 @@ namespace DungeonMaker
             {
                 Button btn = (Button)e.Item.FindControl("PrivacyButton");
                 btn.Text = isPublic ? "Public" : "Private";
+                ((TextBox)e.Item.FindControl("EstimatedTimeTextBox")).Text = Utility.SecToMin(int.Parse(btn.CommandArgument));
                 btn.BackColor = isPublic ? ColorTranslator.FromHtml("#009900") : ColorTranslator.FromHtml("#990000");
                 if (IsExist(map.mapID))
                 {

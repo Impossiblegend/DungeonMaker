@@ -54,6 +54,7 @@
                 <div class="maps-template">
                     <asp:Label ID="Title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
                     <asp:Label ID="CreationDate" runat="server" CssClass="item-label" Text='<%# Bind("creationDate") %>' ToolTip="Date map was created" ></asp:Label> <br />
+                    <asp:Label ID="EstimatedTime" runat="server" CssClass="item-label" Text='<%# Bind("estTime") %>' ToolTip="Estimated time to complete map" ></asp:Label> <br />
                     <asp:Label ID="MapID" runat="server" Visible="false" Text='<%# Bind("mapID") %>' ></asp:Label>
                     <asp:Image ID="Thumbnail" runat="server" Width="225px" CssClass="item-image" Height="110px" ImageUrl='<%# Bind("thumbnail") %>'/>
                     <asp:Button ID="PlayButton" runat="server" Text="Play" Height="25px" Width="72px" CssClass="item-button" CommandName="PlayButton" BackColor="#c0c0c0"/>
@@ -63,8 +64,10 @@
             <EditItemTemplate>
                 <div class="maps-template">
                     <asp:Label ID="Title" runat="server" CssClass="item-label" Text='<%# Bind("mapName") %>' ></asp:Label> <br />
+                    <asp:Label ID="EstimatedTimeLabel" runat="server" CssClass="top">Time to defeat </asp:Label>
+                    <asp:TextBox ID="EstimatedTimeTextBox" runat="server" TextMode="Time" ToolTip="Finish editing to confirm change"></asp:TextBox> <br />
                     <asp:Label ID="MapID" runat="server" Visible="false" Text='<%# Bind("mapID") %>' ></asp:Label>
-                    <asp:Button ID="PrivacyButton" runat="server" Text='<%# Bind("isPublic") %>' Height="25px" Width="72px" CssClass="item-button" CommandName="PrivacyButton"/>
+                    <asp:Button ID="PrivacyButton" runat="server" Text='<%# Bind("isPublic") %>' Height="25px" Width="72px" CssClass="item-button" CommandName="PrivacyButton" CommandArgument='<%# Bind("estTime") %>'/>
                     <asp:Button ID="DeleteButton" runat="server" Text="Delete" Height="25px" Width="72px" CssClass="Delete-Button" CommandName="DeleteButton" BackColor="#000000" ToolTip="This action cannot be undone" />
                     <asp:TextBox ID="RenameTextBox" runat="server" Visible="false"></asp:TextBox>
                     <asp:Button ID="RenameButton" runat="server" Text="Rename" Height="25px" Width="72px" CssClass="item-button" CommandName="RenameButton" BackColor="#c0c0c0"/> <br /> <br />

@@ -79,7 +79,7 @@ class MapCreator extends Phaser.Scene {
                 break;
             default: break;
         }
-        creditsLabel = this.add.text(16, 16, 'Credits left: ' + maxCredits, { fontSize: '14px', fill: '#000' });
+        creditsLabel = this.add.text(16, 16, 'Credits left: ' + maxCredits, { fontSize: '14px', fill: '#ff0000' });
         const emptyPortal = this.add.sprite(1180, 50, 'portalEmpty').setScale(2);
         const fullPortal = this.add.sprite(1260, 50, 'portalFull').setScale(2);
         const saw = this.add.sprite(1225, 125, 'saw').setScale(0.15);

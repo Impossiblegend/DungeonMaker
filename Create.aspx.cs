@@ -25,13 +25,28 @@ namespace DungeonMaker
             if (user.email == null || user.elevation < 1) Response.Redirect("Register.aspx");
             if (!IsPostBack) 
             {
-                TB1.Text = Session["mapType"].ToString();
+                Reinstate();
                 StoreService SS = new StoreService();
                 TB2.Text = StoreService.GetTypeCost(TB1.Text).ToString();
                 foreach (string st in user.GetTrapTypes()) TB6.Text += st + "_";
             }
         }
-        private void alert(string alert) { ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + alert + "');", true); }
+
+        private void alert(string alert) 
+        {
+            Reinstate();
+            errorMessage.Text = alert;
+            errorPanel.Style["display"] = "block";
+        }
+
+        protected void closeButton_Click(object sender, EventArgs e) 
+        {
+            Reinstate();
+            errorPanel.Style["display"] = "none"; 
+        }
+
+        private void Reinstate() { TB1.Text = Session["mapType"].ToString(); }
+
         protected void Submit_Click(object sender, EventArgs e)
         { //Saves everything and finishes map creation
             MapService MS = new MapService();
